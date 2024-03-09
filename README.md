@@ -2,6 +2,8 @@
 
 This project is aimed to port P2ASW to the leaked CSGO engine to no longer worry about Alien Swarm's limitations.<br>
 Partially used code from https://github.com/tupoy-ya/Kisak-Strike and my other project, https://github.com/EpicSentry/HL2-CSGO<br>
+What is P2ASW? Check it out here: https://github.com/EpicSentry/P2ASW/<br>
+This repository uses Git LFS for libraries and the platform folder.<br>
 
 **Features:**
 - Removed Scaleform.
