@@ -11,7 +11,7 @@ This repository uses Git LFS for libraries and the platform folder.<br>
 - CSGO Usermessage system, everything now makes use of the CUsrMsg class.
 - VPhysics DLL code included.
 - Mostly working save/restore.
-- Bink video DLL compiling from source.
+- Valve Bink video DLL compiling from source.
 
 **Differences/stuff removed in P2GO:**<br>
 - SourceTV/GOTV removed (Not important for Portal 2)<br>
