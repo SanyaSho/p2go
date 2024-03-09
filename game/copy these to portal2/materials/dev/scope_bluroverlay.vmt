@@ -1,0 +1,8 @@
+unlitgeneric
+{
+	$basetexture _rt_SmallFB0	
+	$detail dev/scope_vignette
+	$detailscale 1
+	$detailblendmode 8	
+	$alpha 1
+}

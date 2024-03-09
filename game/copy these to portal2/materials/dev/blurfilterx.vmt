@@ -1,0 +1,14 @@
+"BlurFilterX"
+{
+	"$basetexture" "_rt_SmallFB0"
+	"$bloomscale" "1"
+	"$ignorez" 1
+	"%noToolTexture" 1
+	
+	"Proxies"
+	{
+		"blurfilterx"
+		{
+		}
+	}				
+}

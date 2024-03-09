@@ -1,0 +1,1 @@
+start srcds.exe -game portal2 -console -insecure

@@ -1,0 +1,17 @@
+Project bink
+
+IncludePath $(RAGE_DIR)\base\src
+
+Files {
+	audio.cpp
+	audio.h
+	binkfile.cpp
+	movie.cpp
+	movie.h
+	radppu_spurs.cpp
+	radppu.h
+}
+
+Custom {
+	binkspu.task
+}

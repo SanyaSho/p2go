@@ -1,0 +1,4 @@
+downsample //does a nice 4-tap sample
+{
+	$basetexture _rt_FullFrameFB
+}

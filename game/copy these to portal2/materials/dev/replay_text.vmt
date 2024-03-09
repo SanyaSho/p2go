@@ -1,0 +1,5 @@
+"unlitgeneric"
+{
+	$additive 1
+	$basetexture "dev\replay_text.vtf"
+}

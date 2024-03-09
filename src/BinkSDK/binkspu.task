@@ -1,0 +1,10 @@
+/* @RSNE @MTD
+   Bink provides an SPU implementation which is in binkspu.a and binkspu_spurs.a. 
+   We just need to link those together - no code necessary here. See bink_spu.bat for gorier details.
+ */
+
+// VSI doesn't realise that it needs to relink this task when the libraries
+// change.  So as a hack, include bink.h to get this file to recompile.  bink.h
+// defines BinkBuildNumber, so it should always get updated with the libraries.
+
+#include "bink_include.h"

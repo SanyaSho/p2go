@@ -1,0 +1,9 @@
+screenspace_general
+{
+	$basetexture	_rt_fullframefb
+	$texture1		dev\replay_noise.vtf
+	$alphablend		1
+	
+	$writez			0
+	$pixshader		cs_replay_ps30	
+}

@@ -1,0 +1,6 @@
+unlitworld_screensample
+{
+	"$basetexture" _rt_fullscreen
+	"$additive"    1
+	"$writez"      0
+}

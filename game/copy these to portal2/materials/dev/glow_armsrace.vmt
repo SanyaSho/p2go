@@ -1,0 +1,9 @@
+"vertexlitgeneric"
+{
+	$additive				1
+	$envmap					"models/effects/cube_white"
+	$envmaptint				"[255 0 0]"
+	$envmapfresnel			1
+	$envmapfresnelminmaxexp "[0 255 18]"
+	$alpha					0.8
+}

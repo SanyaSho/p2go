@@ -1,0 +1,5 @@
+lib/public/dmecontrols.lib filter=lfs diff=lfs merge=lfs -text
+*.lib filter=lfs diff=lfs merge=lfs -text
+game/platform/shaders/fxc/vertexlit_sob_ps30.vcs filter=lfs diff=lfs merge=lfs -text
+game/platform/shaders/fxc/character_ps30.vcs filter=lfs diff=lfs merge=lfs -text
+game/platform/shaders/fxc/lightmappedgeneric_ps30.vcs filter=lfs diff=lfs merge=lfs -text
