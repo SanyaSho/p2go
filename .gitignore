@@ -176,6 +176,8 @@ game/bin/*
 !game/bin/steam_api.dll
 !game/bin/steam.inf
 !game/bin/steam_appid.txt
+!game/portal2/steam.inf
+!game/portal2/steam_appid.txt
 game/portal2/*
 game/portal2_dlc1/*
 game/portal2_dlc2/*
