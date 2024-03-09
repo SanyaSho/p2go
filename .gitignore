@@ -181,7 +181,7 @@ game/portal2_dlc1/*
 game/portal2_dlc2/*
 game/portal2_dlc3/*
 game/bin/tools/*
-game/platform/*
+//game/platform/*
 *.mdmp
 
 
