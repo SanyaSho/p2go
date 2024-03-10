@@ -44,7 +44,7 @@ obj*/
 
 # Specific Source build products
 _vpc_/
-src/vscript/languages/squirrel/vsquirrel/init_nut.h
+//src/vscript/languages/squirrel/vsquirrel/init_nut.h
 generated_proto/
 
 # shader files
@@ -185,5 +185,7 @@ game/portal2_dlc3/*
 game/bin/tools/*
 //game/platform/*
 *.mdmp
+!src/lib/win32/*
+!src/lib/win32/2015/*
 
 
