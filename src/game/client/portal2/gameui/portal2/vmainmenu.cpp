@@ -302,10 +302,6 @@ CEG_NOINLINE void MainMenu::OnCommand( const char *command )
 		//CBaseModPanel::GetSingleton().OpenWindow(WT_NEWGAME, this, true);
 		return;
 	}
-	else if ( !Q_strcmp( command, "LoadLastSave" ) )
-	{
-		engine->ClientCmd_Unrestricted("load main"); //TODO: make this more descriptive in case of an error
-	}
 	else if ( !Q_strcmp( command, "DeveloperCommentary" ) )
 	{
 #ifdef _GAMECONSOLE

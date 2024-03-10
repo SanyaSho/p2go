@@ -152,6 +152,9 @@
 #include "c_rumble.h"
 #include "viewpostprocess.h"
 //#include "cstrike15_gcmessages.pb.h"
+#ifdef PORTAL2
+#include "soundinfo.h"
+#endif
 
 #include "achievements_and_stats_interface.h"
 
@@ -1948,7 +1951,7 @@ bool CHLClient::HandleGameUIEvent( const InputEvent_t &inputEvent )
 bool CHLClient::GetSoundSpatialization(  SpatializationInfo_t& info )
 {
 
-#ifdef PORTAL2_REAL
+#ifdef PORTAL2
 
 // 	Vector vListenerOrigin;
 // 	VectorCopy( info.info.vListenerOrigin, vListenerOrigin );

@@ -17,6 +17,7 @@
 
 #if defined ( PORTAL2 )
 #include "usermessages.h"
+#include "portal2_usermessages.pb.h"
 #include "hud_macros.h"
 #endif
 
@@ -201,31 +202,37 @@ bool IsEntityCreationAllowedInScripts( void )
 	return g_VScriptGameSystem.m_bAllowEntityCreationInScripts;
 }
 
-#if defined ( PORTAL2_REAL ) //TODO
-void __MsgFunc_SetMixLayerTriggerFactor( bf_read &msg )
+#if defined ( PORTAL2 )
+bool __MsgFunc_SetMixLayerTriggerFactor( const CUsrMsg_SetMixLayerTriggerFactor &msg )
 {
-	char buf[MAX_PATH];
+	//char buf[MAX_PATH];
 
-	msg.ReadString( buf, ARRAYSIZE( buf ), false );
-	int iLayerID = engine->GetMixLayerIndex( buf );
+	//msg.ReadString( buf, ARRAYSIZE( buf ), false );
+	const std::string& layerName = msg.layername();
+	int iLayerID = engine->GetMixLayerIndex(layerName.c_str());
 	if ( iLayerID < 0 )
 	{
-		Warning( "Invalid mix layer passed to SetMixLayerTriggerFactor: '%s'\n", buf ); 
-		return;
+		Warning( "Invalid mix layer passed to SetMixLayerTriggerFactor: '%s'\n", layerName.c_str());
+		return false;
 	}
-	msg.ReadString( buf, ARRAYSIZE( buf ), false );
-	int iGroupID = engine->GetMixGroupIndex( buf );
+	const std::string& groupName = msg.mixgroupname();
+	int iGroupID = engine->GetMixGroupIndex(groupName.c_str());
 	if ( iGroupID < 0 )
 	{
-		Warning( "Invalid mix group passed to SetMixLayerTriggerFactor: '%s'\n", buf ); 
-		return;
+		Warning( "Invalid mix group passed to SetMixLayerTriggerFactor: '%s'\n", groupName.c_str());
+		return false;
 	}
 
-	engine->SetMixLayerTriggerFactor( iLayerID, iGroupID, msg.ReadFloat() );
+	float factor = msg.factor();
+	engine->SetMixLayerTriggerFactor(iLayerID, iGroupID, factor);
+
+	return true;
 }
 
 class CSetMixLayerTriggerHelper : public CAutoGameSystem 
 {
+	// Bind msg first
+	CUserMessageBinder m_UMCMsgSetMixLayerTriggerFactor;
 	virtual bool Init()
 	{
 		for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
