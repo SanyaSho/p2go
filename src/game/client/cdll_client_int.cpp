@@ -1285,7 +1285,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	IGameSystem::Add( ClientThinkList() );
 	IGameSystem::Add( ClientSoundscapeSystem() );
 	IGameSystem::Add( PerfVisualBenchmark() );
-//	IGameSystem::Add( MumbleSystem() ); TODO!!
+//	IGameSystem::Add( MumbleSystem() );
 
 #if defined( CLIENT_DLL ) && defined( COPY_CHECK_STRESSTEST )
 	IGameSystem::Add( GetPredictionCopyTester() );
@@ -1572,7 +1572,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 #ifdef PORTAL2
 	if ( !g_pMatchFramework )
 		return false;
-	//GameInstructor_Init(); TODO!!
+	GameInstructor_Init();
 	//  if client.dll needs to register any matchmaking extensions do it here:
 	// 	if ( IMatchExtensions *pIMatchExtensions = g_pMatchFramework->GetMatchExtensions() )
 	// 		pIMatchExtensions->RegisterExtensionInterface(
@@ -1740,7 +1740,7 @@ void CHLClient::Shutdown( void )
 	}
 
 #ifdef PORTAL2
-	//GameInstructor_Shutdown(); TODO!!
+	GameInstructor_Shutdown();
 #endif
 
     if ( g_pAchievementsAndStatsInterface )

@@ -21,7 +21,8 @@
 #include "matchmaking/mm_helpers.h"
 
 #if defined( PORTAL2 )
-#include "matchmaking/portal2/imatchext_portal2.h"
+//#include "matchmaking/portal2/imatchext_portal2.h"
+#include "matchmaking/cstrike15/imatchext_cstrike15.h"
 #endif
 
 #if defined( CSTRIKE15 )

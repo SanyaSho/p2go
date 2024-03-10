@@ -39,7 +39,7 @@
 #include "tier1/utlsymbol.h"
 
 // See comments in UtlSymbol on why this is useful
-//DECLARE_PRIVATE_SYMBOLTYPE( CGameInstructorSymbol );
+DECLARE_PRIVATE_SYMBOLTYPE(CGameInstructorSymbol);
 
 //-----------------------------------------------------------------------------
 // This class represents a single target to be tracked by the locator
@@ -51,7 +51,7 @@ public:
 	Vector		m_vecOrigin;			// The location in the world to draw on the locator
 
 	// ONLY the locator panel should fiddle with these fields.
-	bool		m_isActive;		
+	bool		m_isActive;
 	int			m_serialNumber;
 	int			m_frameLastUpdated;
 	bool		m_bOnscreen;
@@ -60,14 +60,14 @@ public:
 	bool		m_bIsDrawing;
 	bool		m_bIconNoTarget;
 	float		m_distFromPlayer;
-	CHudTexture	*m_pIcon_onscreen;
-	CHudTexture	*m_pIcon_offscreen;
+	CHudTexture* m_pIcon_onscreen;
+	CHudTexture* m_pIcon_offscreen;
 	int			m_iBindingTick;
 	float		m_flNextBindingTick;
 	float		m_flNextOcclusionTest;
 	int			m_iBindingChoicesCount;
-	const char	*(m_pchBindingChoices[ MAX_LOCATOR_BINDINGS_SHOWN ]);
-	int			m_iBindChoicesOriginalToken[ MAX_LOCATOR_BINDINGS_SHOWN ];
+	const char* (m_pchBindingChoices[MAX_LOCATOR_BINDINGS_SHOWN]);
+	int			m_iBindChoicesOriginalToken[MAX_LOCATOR_BINDINGS_SHOWN];
 
 	// Fields for drawing
 	int			m_targetX;				// screen X position of the actual target
@@ -98,82 +98,82 @@ public:
 	int			m_lastXPos;				// screen X position last frame
 	int			m_lastYPos;				// ''     Y
 
-	CLocatorTarget( void );
-	void Activate( int serialNumber );
-	void Deactivate( bool bNoFade = false );
+	CLocatorTarget(void);
+	void Activate(int serialNumber);
+	void Deactivate(bool bNoFade = false);
 	void Update();
 
-	int GetIconX( void );
-	int GetIconY( void );
-	int GetIconCenterX( void );
-	int GetIconCenterY( void );
-	int GetIconWidth( void );
-	int GetIconHeight( void );
+	int GetIconX(void);
+	int GetIconY(void);
+	int GetIconCenterX(void);
+	int GetIconCenterY(void);
+	int GetIconWidth(void);
+	int GetIconHeight(void);
 
-	void AddIconEffects( int add )			{ m_iEffectsFlags |= add; }
-	void RemoveIconEffects( int remove )	{ m_iEffectsFlags &= ~remove; }
-	int GetIconEffectsFlags()				{ return m_iEffectsFlags; }
-	void SetIconColor( Color color )		{ m_rgbaIconColor = color; }
-	Color GetIconColor( void ) const		{ return m_rgbaIconColor; }
-	void SetCaptionColor( Color col )		{ m_captionColor = col; }
-	void SetCaptionColor( const char *pszCaptionColor );
+	void AddIconEffects(int add) { m_iEffectsFlags |= add; }
+	void RemoveIconEffects(int remove) { m_iEffectsFlags &= ~remove; }
+	int GetIconEffectsFlags() { return m_iEffectsFlags; }
+	void SetIconColor(Color color) { m_rgbaIconColor = color; }
+	Color GetIconColor(void) const { return m_rgbaIconColor; }
+	void SetCaptionColor(Color col) { m_captionColor = col; }
+	void SetCaptionColor(const char* pszCaptionColor);
 	bool IsStatic();
 	bool IsPresenting();
 	void StartTimedLerp();
 	void StartPresent();
 	void EndPresent();
 
-	void UpdateVguiTarget( void );
-	vgui::Panel *GetVguiTarget( void );
-	void SetVguiTargetName( const char *pchVguiTargetName );
-	//const char *GetVguiTargetName( void ) { return m_szVguiTargetName.String(); }
-	void SetVguiTargetLookup( const char *pchVguiTargetLookup );
-	//const char *GetVguiTargetLookup( void ) { return m_szVguiTargetLookup.String(); }
-	void SetVguiTargetEdge( int nVguiEdge );
-	int GetVguiTargetEdge( void ) const { return m_nVguiTargetEdge; }
+	void UpdateVguiTarget(void);
+	vgui::Panel* GetVguiTarget(void);
+	void SetVguiTargetName(const char* pchVguiTargetName);
+	const char* GetVguiTargetName(void) { return m_szVguiTargetName.String(); }
+	void SetVguiTargetLookup(const char* pchVguiTargetLookup);
+	const char* GetVguiTargetLookup(void) { return m_szVguiTargetLookup.String(); }
+	void SetVguiTargetEdge(int nVguiEdge);
+	int GetVguiTargetEdge(void) const { return m_nVguiTargetEdge; }
 
-	void SetOnscreenIconTextureName( const char *pszTexture );
-	void SetOffscreenIconTextureName( const char *pszTexture );
-	void SetBinding( const char *pszBinding );
-	//void SetSteamControllerBindingToOrigin( EControllerActionOrigin *pOrigins, int nOriginalToken, const char *pszActionName );
-	const char *UseBindingImage( char *pchIconTextureName, size_t bufSize );
-	void SetIconNoTarget( bool bIconNoTarget ) { m_bIconNoTarget = bIconNoTarget; }
+	void SetOnscreenIconTextureName(const char* pszTexture);
+	void SetOffscreenIconTextureName(const char* pszTexture);
+	void SetBinding(const char* pszBinding);
+	//void SetSteamControllerBindingToOrigin(EControllerActionOrigin* pOrigins, int nOriginalToken, const char* pszActionName); who even owns steam controllers? xinput surely works anyway
+	const char* UseBindingImage(char* pchIconTextureName, size_t bufSize);
+	void SetIconNoTarget(bool bIconNoTarget) { m_bIconNoTarget = bIconNoTarget; }
 
-	//const char *GetOnscreenIconTextureName()	{ return m_szOnscreenTexture.String(); }
-	//const char *GetOffscreenIconTextureName()	{ return m_szOffscreenTexture.String(); }
-	//const char *GetBinding()			{ return m_szBinding.String(); }
+	const char* GetOnscreenIconTextureName() { return m_szOnscreenTexture.String(); }
+	const char* GetOffscreenIconTextureName() { return m_szOffscreenTexture.String(); }
+	const char* GetBinding() { return m_szBinding.String(); }
 
-	void SetVisible( bool bVisible );
-	bool IsVisible( void );
+	void SetVisible(bool bVisible);
+	bool IsVisible(void);
 
-	void SetCaptionText( const char *pszText, const char *pszParam );
-	const wchar_t *GetCaptionText( void )	{ return (const wchar_t *)m_wszCaption.Base(); }
-	bool HasCaptionText( void )			{ return m_wszCaption.Count() > 1; }
+	void SetCaptionText(const char* pszText, const char* pszParam);
+	const wchar_t* GetCaptionText(void) { return (const wchar_t*)m_wszCaption.Base(); }
+	bool HasCaptionText(void) { return m_wszCaption.Count() > 1; }
 
-	void DrawBindingName( const char *pchDrawName )		{ m_pchDrawBindingName = pchDrawName; }
-	void DrawBindingNameOffscreen( const char *pchDrawName )	{ m_pchDrawBindingNameOffscreen = pchDrawName; }
+	void DrawBindingName(const char* pchDrawName) { m_pchDrawBindingName = pchDrawName; }
+	void DrawBindingNameOffscreen(const char* pchDrawName) { m_pchDrawBindingNameOffscreen = pchDrawName; }
 
-	const char *DrawBindingName( void )				{ return m_pchDrawBindingName; }
-	const char *DrawBindingNameOffscreen( void )	{ return m_pchDrawBindingNameOffscreen; }
+	const char* DrawBindingName(void) { return m_pchDrawBindingName; }
+	const char* DrawBindingNameOffscreen(void) { return m_pchDrawBindingNameOffscreen; }
 
-	bool IsOnScreen()	{ return m_bOnscreen; }
-	bool IsOccluded()	{ return m_bOccluded; }
+	bool IsOnScreen() { return m_bOnscreen; }
+	bool IsOccluded() { return m_bOccluded; }
 
 
 private:
-	/*CGameInstructorSymbol		m_szVguiTargetName;
-	CGameInstructorSymbol		m_szVguiTargetLookup;*/
+	CGameInstructorSymbol		m_szVguiTargetName;
+	CGameInstructorSymbol		m_szVguiTargetLookup;
 	vgui::DHANDLE<vgui::Panel>	m_hVguiTarget;
 	int							m_nVguiTargetEdge;
 
-	/*CGameInstructorSymbol	m_szOnscreenTexture;
+	CGameInstructorSymbol	m_szOnscreenTexture;
 	CGameInstructorSymbol	m_szOffscreenTexture;
-	CGameInstructorSymbol	m_szBinding;*/
+	CGameInstructorSymbol	m_szBinding;
 
 	bool		m_bWasControllerLast;
 	bool		m_bWasSteamControllerLast;
-	const char	*m_pchDrawBindingName;
-	const char	*m_pchDrawBindingNameOffscreen;
+	const char* m_pchDrawBindingName;
+	const char* m_pchDrawBindingNameOffscreen;
 	int			m_iEffectsFlags;
 	Color		m_rgbaIconColor;
 	CUtlVector< wchar_t > m_wszCaption;
@@ -183,9 +183,9 @@ public:
 };
 
 extern int Locator_AddTarget();
-extern void Locator_RemoveTarget( int hTarget );
-CLocatorTarget *Locator_GetTargetFromHandle( int hTarget );
-void Locator_ComputeTargetIconPositionFromHandle( int hTarget );
+extern void Locator_RemoveTarget(int hTarget);
+CLocatorTarget* Locator_GetTargetFromHandle(int hTarget);
+void Locator_ComputeTargetIconPositionFromHandle(int hTarget);
 
 
 #endif // L4D_HUD_LOCATOR_H
