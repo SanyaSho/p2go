@@ -1137,8 +1137,7 @@ bool C_Portal_Player::CreateMove( float flInputSampleTime, CUserCmd *pCmd )
 
 	pCmd->player_held_entity = ( m_hUseEntToSend ) ? ( m_hUseEntToSend->entindex() ) : ( 0 );
 	pCmd->held_entity_was_grabbed_through_portal = ( m_hUseEntThroughPortal ) ? ( m_hUseEntThroughPortal->entindex() ) : ( 0 );
-	// Engine function doesn't exist in swarm, hopefully prediction is a good substitute
-	pCmd->command_acknowledgements_pending = pCmd->command_number - prediction->GetLastAcknowledgedCommandNumber(); /* engine->GetLastAcknowledgedCommand() */
+	pCmd->command_acknowledgements_pending = pCmd->command_number - engine->GetLastAcknowledgedCommand();
 	pCmd->predictedPortalTeleportations = 0;
 	for( int i = 0; i != m_PredictedPortalTeleportations.Count(); ++i )
 	{

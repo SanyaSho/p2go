@@ -443,8 +443,7 @@ static void FullSyncPhysicsObject( IPhysicsObject *pSource, IPhysicsObject *pDes
 		pDest->SetMaterialIndex( pSource->GetMaterialIndex() );
 		pDest->SetContents( pSource->GetContents() );
 
-		// FIXME: Not in Swarm, Needs replacement?
-		//pDest->SyncWith( pSource );
+		pDest->SyncWith( pSource );
 	}	
 
 	//Damping
