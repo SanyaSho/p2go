@@ -36,7 +36,7 @@ VS 2015 should work out of the box with no additional changes necessary.<br>
 # Debugging the engine
 - Set launcher_main as the startup project (if it isn't already) by right clicking it and pressing "Set as Startup Project".
 - Right click launcher_main, go to properties and click on the debugging section. Set "Command" to point to your compiled portal2.exe (in the game folder).
-- Set "Command Arguments" to "-game -insecure -sw" (feel free to add more such as +sv_cheats 1).
+- Set "Command Arguments" to "-game "portal2" -insecure -sw" (feel free to add more such as +sv_cheats 1).
 - Press "Local Windows Debugger" at the top of Visual Studio to then launch the game and debug it.
 ![image](https://github.com/EpicSentry/p2go/assets/82910317/a4648027-3309-4e14-b21c-83b2637bfcfc)<br>
 Above is an example of a correctly set up debugger.<br>
