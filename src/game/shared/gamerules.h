@@ -182,6 +182,8 @@ public:
 	//Allow thirdperson camera.
 	virtual bool AllowThirdPersonCamera(void) { return false; }
 
+	virtual void RegisterScriptFunctions(void) { };
+
 	virtual void ClientCommandKeyValues(edict_t *pEntity, KeyValues *pKeyValues) {}
 
 	// IsConnectedUserInfoChangeAllowed allows the clients to change
