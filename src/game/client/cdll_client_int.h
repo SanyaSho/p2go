@@ -102,7 +102,7 @@ extern CSteamAPIContext *steamapicontext;
 #endif
 extern ISoundEmitterSystemBase *soundemitterbase;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 extern IGameTypes *g_pGameTypes;
 extern IP4 *p4;
 #endif

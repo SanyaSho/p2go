@@ -96,7 +96,7 @@ void CMessage::InputShowMessage( inputdata_t &inputdata )
 
 	if ( m_spawnflags & SF_MESSAGE_ALL )
 	{
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 		UTIL_ClientPrintAll( HUD_PRINTCENTER, STRING( m_iszMessage ) );
 #else
 		UTIL_ShowMessageAll( STRING( m_iszMessage ) );
@@ -115,7 +115,7 @@ void CMessage::InputShowMessage( inputdata_t &inputdata )
 
 		if ( pPlayer && pPlayer->IsPlayer() )
 		{
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 			CRecipientFilter filterPlayer;
 			filterPlayer.MakeReliable();
 			filterPlayer.AddRecipient( ToBasePlayer( pPlayer ) );

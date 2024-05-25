@@ -1370,7 +1370,7 @@ void CCollisionEvent::FluidStartTouch( IPhysicsObject *pObject, IPhysicsFluidCon
 			return;
 
 		// We are generating too many splashes in CStrike15 as well, so enable this
-#if defined( INFESTED_DLL ) || defined( CSTRIKE15 )
+#if defined( INFESTED_DLL ) || defined( CSTRIKE15_REAL )
 		// prevent too many splashes spawning at once across different entities
 		float flGlobalTimeSinceLastSplash = gpGlobals->curtime - m_flLastSplashTime;
 		if ( flGlobalTimeSinceLastSplash < 0.1f )

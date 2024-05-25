@@ -34,7 +34,7 @@
 #include "precipitation_shared.h"
 #include "shot_manipulator.h"
 #include "modelentities.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "fx_cs_shared.h"
 #include "cs_player.h"
 #endif
@@ -2331,7 +2331,7 @@ void CEnvGunfire::ShootThink()
 
 	Vector vecEnd;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 
 	CEconItemDefinition *pItemDef = GetItemSchema()->GetItemDefinitionByName( STRING(m_iszWeaponName) );
 	if ( pItemDef && pItemDef->GetDefinitionIndex() != 0 )
@@ -2727,7 +2727,7 @@ void CEnvGunfire::FireBullet(
 
 		// === Damage applied later ===
 #endif
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 		// [dkorus] note: values are changed inside of HandleBulletPenetration
 		bool bulletStopped = pPlayer->HandleBulletPenetration( flPenetration, iEnterMaterial, hitGrate, tr, vecDir, pSurfaceData, flPenetrationModifier,
 													  flDamageModifier, bDoEffects, iDamageType, flPenetrationPower, nPenetrationCount, vecSrc, flDistance,

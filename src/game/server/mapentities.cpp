@@ -18,7 +18,7 @@
 #include "datacache/imdlcache.h"
 #include "world.h"
 #include "toolframework/iserverenginetools.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "cs_gamerules.h"
 #include "weapon_csbase.h"
 #include "econ_entity_creation.h"
@@ -31,7 +31,7 @@
 static CStringRegistry *g_pClassnameSpawnPriority = NULL;
 extern edict_t *g_pForceAttachEdict;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 extern ConVar mp_weapons_allow_map_placed;
 #endif
 

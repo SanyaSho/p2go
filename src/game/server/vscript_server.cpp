@@ -263,7 +263,7 @@ static void SendToConsole( const char *pszCommand )
 
 static void SendToConsoleServer( const char *pszCommand )
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	// Parse the text into distinct commands
 	const char *pCurrentCommand = pszCommand;
 	int nOffsetToNextCommand;

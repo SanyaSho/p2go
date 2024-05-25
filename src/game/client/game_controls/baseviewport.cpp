@@ -174,7 +174,7 @@ CBaseViewport::CBaseViewport() : vgui::EditablePanel(NULL, "CBaseViewport")
 	m_bHasParent = false;
 	m_pActivePanel = NULL;
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	m_pLastActivePanel = NULL;
 #endif
 
@@ -453,11 +453,11 @@ void CBaseViewport::ShowPanel(IViewPortPanel* pPanel, bool state)
 				// so we can restore it later
 				if (pPanel->CanReplace(m_pActivePanel->GetName()))
 				{
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL_REAL )
 					m_pLastActivePanel = m_pActivePanel;
 #endif
 
-#ifdef CSTRIKE15 
+#ifdef CSTRIKE15_REAL 
 					// in cs, if the scoreboard tries to hide the spectator via this method, just skip it
 					IViewPortPanel* pSpecGuiPanel = FindPanelByName(PANEL_SPECGUI);
 					if (pSpecGuiPanel != m_pActivePanel)
@@ -472,7 +472,7 @@ void CBaseViewport::ShowPanel(IViewPortPanel* pPanel, bool state)
 				}
 				else
 				{
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 					m_pLastActivePanel = pPanel;
 #endif
 					return;
@@ -491,7 +491,7 @@ void CBaseViewport::ShowPanel(IViewPortPanel* pPanel, bool state)
 			m_pActivePanel = NULL;
 		}
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		// restore the previous active panel if it exists
 		if (m_pLastActivePanel)
 		{
@@ -546,7 +546,7 @@ void CBaseViewport::RecreatePanel(const char* szPanelName)
 			m_pActivePanel = NULL;
 		}
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		if (m_pLastActivePanel == panel)
 		{
 			m_pLastActivePanel = NULL;
@@ -585,7 +585,7 @@ void CBaseViewport::RemoveAllPanels(void)
 	m_Panels.RemoveAll();
 	m_UnorderedPanels.RemoveAll();
 	m_pActivePanel = NULL;
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	m_pLastActivePanel = NULL;
 #endif
 
@@ -712,7 +712,7 @@ void CBaseViewport::OnThink()
 	if (m_pActivePanel && !m_pActivePanel->IsVisible())
 	{
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		if (m_pLastActivePanel)
 		{
 			if (m_pLastActivePanel->CanBeReopened())

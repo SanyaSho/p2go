@@ -1256,7 +1256,7 @@ void CShaderDeviceMgrDx8::ComputeDXSupportLevel( HardwareCaps_t &caps )
 		return;
 	}
 		
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	if ( caps.m_bDX10Card ) // Note that we don't tie vertex textures to 30 shaders anymore
 	{
 		caps.m_nMinDXSupportLevel = 92;
@@ -3691,7 +3691,7 @@ void CShaderDeviceDx8::RefreshFrontBufferNonInteractive()
 
 	bool bInStartupMode = ( m_NonInteractiveRefresh.m_Mode == MATERIAL_NON_INTERACTIVE_MODE_STARTUP );
 	
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_real )
 	if ( bInStartupMode )
 	{
 		// Render the initial vtf loading screen to match how we render our Scaleform backgrounds,
@@ -4065,7 +4065,7 @@ void CShaderDeviceDx8::Present()
 //    used to seeing.
 // TV's generally have a 2.5 gamma, so we need to convert our 2.2 frame buffer into a 2.5 frame buffer for display on a TV
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 ConVar mat_monitorgamma_pwl2srgb( "mat_monitorgamma_pwl2srgb", "0" );
 ConVar mat_monitorgamma_vganonpwlgamma( "mat_monitorgamma_vganonpwlgamma", "2.2" );
 #else

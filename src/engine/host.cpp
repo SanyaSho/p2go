@@ -4718,7 +4718,7 @@ bool IsLowViolence_CommandLine()
 bool IsLowViolence_Secure()
 {
 	// CS:GO does not have any low violence regions. Ignore what Steam reports.
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	return false;
 #endif
 
@@ -4767,7 +4767,7 @@ bool IsLowViolence_Registry()
 	}
 
 // CS:GO does not have any low violence regions. Ignore the registry settings.
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	return false;
 #endif
 

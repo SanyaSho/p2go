@@ -133,7 +133,7 @@ void Precache( void )
 
 //	BaseClass::Precache();
 }
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 void C_BaseViewModel::UpdateStatTrakGlow( void )
 {
 	//approach the ideal in 2 seconds
@@ -239,7 +239,7 @@ bool C_BaseViewModel::Simulate( void )
 {
 	int nSlot = GET_ACTIVE_SPLITSCREEN_SLOT();
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD_ENT( GetOwner() );
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	UpdateParticles( nSlot );
 	UpdateStatTrakGlow();
 #endif
@@ -765,7 +765,7 @@ int C_BaseViewModel::DrawModel( int flags, const RenderableInstance_t &instance 
 		*/
 	}
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	if ( flags && vm_draw_addon.GetBool() 
 #ifdef IRONSIGHT
 		&& (GetScopeStencilMaskMode() == false) 

@@ -613,6 +613,11 @@ bool CKeyValuesSystem::GetKeyValuesExpressionSymbol( const char *name )
 			return cvRef.GetBool();
 	}
 
+	if (!V_stricmp(name, "DECK"))
+	{
+		return false;
+	}
+
 	// purposely warn on these to prevent syntax errors
 	// need to get these fixed asap, otherwise unintended false behavior
 	Warning( "KV Conditional: Unknown symbol %s\n", name );

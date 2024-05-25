@@ -44,7 +44,7 @@
 #include "gamestringpool.h"
 #include "tier1/callqueue.h"
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 #include "cs_gamerules.h"
 #include "c_cs_player.h"
 #endif

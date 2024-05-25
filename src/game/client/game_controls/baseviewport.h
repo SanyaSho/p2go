@@ -147,7 +147,7 @@ protected:
 	bool				m_bFullscreenViewport;
 	IViewPortPanel* m_pActivePanel;
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	IViewPortPanel* m_pLastActivePanel;
 #endif
 

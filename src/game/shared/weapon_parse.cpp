@@ -462,13 +462,13 @@ void FileWeaponInfo_t::Parse(KeyValues *pKeyValuesData, const char *szWeaponName
 	}
 }
 
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 const char* FileWeaponInfo_t::GetWorldModel(const CEconItemView* pWepView, int iTeam) const
 #else
 const char* FileWeaponInfo_t::GetWorldModel(int iTeam) const
 #endif
 {
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 	if (pWepView && pWepView->IsValid())
 	{
 		const char *pchWorldOverride = pWepView->GetStaticData()->GetEntityOverrideModel();
@@ -486,13 +486,13 @@ const char* FileWeaponInfo_t::GetWorldModel(int iTeam) const
 	}
 }
 
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 const char* FileWeaponInfo_t::GetViewModel(const CEconItemView* pWepView, int iTeam) const
 #else
 const char* FileWeaponInfo_t::GetViewModel(int iTeam) const
 #endif
 {
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 	if (pWepView && pWepView->IsValid())
 	{
 		const char *pchViewOverride = pWepView->GetStaticData()->GetViewOverrideModel();
@@ -510,13 +510,13 @@ const char* FileWeaponInfo_t::GetViewModel(int iTeam) const
 	}
 }
 
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 const char* FileWeaponInfo_t::GetWorldDroppedModel(const CEconItemView* pWepView, int iTeam) const
 #else
 const char* FileWeaponInfo_t::GetWorldDroppedModel(int iTeam) const
 #endif
 {
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 	if (pWepView && pWepView->IsValid())
 	{
 		const char *pchWorldDroppedModel = pWepView->GetItemDefinition()->GetWorldDroppedModel();
@@ -530,13 +530,13 @@ const char* FileWeaponInfo_t::GetWorldDroppedModel(int iTeam) const
 	return szWorldModel;
 }
 
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 const char* FileWeaponInfo_t::GetPrimaryAmmo(const CEconItemView* pWepView) const
 #else
 const char* FileWeaponInfo_t::GetPrimaryAmmo(void) const
 #endif
 {
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 	if (pWepView && pWepView->IsValid())
 	{
 		// TODO: replace visual data with attributes when attributes support strings.
@@ -552,13 +552,13 @@ const char* FileWeaponInfo_t::GetPrimaryAmmo(void) const
 	return szAmmo1;
 }
 
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 int FileWeaponInfo_t::GetPrimaryAmmoType(const CEconItemView* pWepView) const
 #else
 int FileWeaponInfo_t::GetPrimaryAmmoType(void) const
 #endif
 {
-#if defined ( CSTRIKE15 ) || defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
+#if defined ( TF_CLIENT_DLL ) || defined ( TF_DLL ) && !defined ( NO_STEAM )
 	if (pWepView && pWepView->IsValid())
 	{
 		// TODO: replace visual data with attributes when attributes support strings.

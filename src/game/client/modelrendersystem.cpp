@@ -527,7 +527,7 @@ void CModelRenderSystem::ComputeModelLODs( int nModelTypeCount, ModelListByType_
 		return;
 	}
 		
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	// Always slam r_lod to 0 for CS:GO.
 	int nLOD = 0;
 #else

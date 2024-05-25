@@ -15,7 +15,7 @@
 #include "utlvector.h"
 #include "baseplayer_shared.h"
 #include "shared_classnames.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "weapon_csbase.h"
 	#ifdef CLIENT_DLL
 	#include "c_cs_player.h"
@@ -40,7 +40,7 @@ public:
 	virtual void AddViewModelBob( CBasePlayer *owner, Vector& eyePosition, QAngle& eyeAngles );
 	virtual void ApplyViewModelPitchAndDip( CBasePlayer *owner, Vector& origin, QAngle& angles );
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	virtual void CalcViewModelView( CBasePlayer *owner, const Vector& eyePosition, const QAngle& eyeAngles );
 
 #if defined( CLIENT_DLL )

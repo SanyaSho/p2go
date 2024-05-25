@@ -169,7 +169,7 @@ void C_VGuiScreen::GetAimEntOrigin( IClientEntity *pAttachedTo, Vector *pOrigin,
 			pEnt->GetAttachment( m_nAttachmentIndex, *pOrigin, *pAngles );
 		}
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 		
 		// For some reason FormatViewModelAttachment is causing bad transforms on the attachment position.
 		// We will probably need to fix this for split screen support.
@@ -202,7 +202,7 @@ void C_VGuiScreen::CreateVguiScreen( const char *pTypeName )
 	// Clear out any old screens.
 	DestroyVguiScreen();
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	
 	// Asserts were firing for screens because they had EFL_USE_PARTITION_WHEN_NOT_SOLID but no physics data.
 	SetSolid( SOLID_NONE );

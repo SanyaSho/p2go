@@ -432,7 +432,7 @@ void PlayImpactSound( CBaseEntity *pEntity, trace_t &tr, Vector &vecServerOrigin
 			C_BaseEntity::EmitSound( filter, NULL, pbulletImpactSoundName, pdata->soundhandles.bulletImpact, &vecOrigin );
 		}
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 		// play a ricochet based on the material
 		float flRicoChance = 0.0f;
 		switch( pdata->game.material )

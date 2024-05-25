@@ -39,6 +39,7 @@ $Configuration
 		$PreprocessorDefinitions			"$BASE;DLLNAME=$OUTBINNAME"
 		$PreprocessorDefinitions			"$BASE;PS3SDK_INSTALLED" [$PS3SDKINSTALLED]
 		$PreprocessorDefinitions			"$BASE;XDK_INSTALLED" [$XDKINSTALLED]
+		$PreprocessorDefinitions			"$BASE;CSTRIKE15" // I know this is really not the spot to do this in, but it's convenient.
 	}
 
 	$Compiler [$WIN32] // This is already enabled for WIN64.

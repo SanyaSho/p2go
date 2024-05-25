@@ -41,7 +41,7 @@ ConVar	sv_specnoclip	( "sv_specnoclip", "1", FCVAR_ARCHIVE | FCVAR_NOTIFY | FCVA
 ConVar	sv_maxspeed		( "sv_maxspeed", "320", FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_RELEASE);
 
 ConVar	sv_accelerate	( "sv_accelerate", "5.5", FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_RELEASE, "Linear acceleration amount (old value is 5.6)" );
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 ConVar	sv_accelerate_use_weapon_speed	( "sv_accelerate_use_weapon_speed", "1", FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_RELEASE );
 ConVar	sv_accelerate_debug_speed	( "sv_accelerate_debug_speed", "0", FCVAR_NOTIFY | FCVAR_REPLICATED | FCVAR_RELEASE );
 #endif

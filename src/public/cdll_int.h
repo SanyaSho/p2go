@@ -1102,7 +1102,7 @@ public:
 	virtual void			GetStatus( char *buffer, int bufsize ) = 0;
 
 	// find out if the chat display is up
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	virtual bool			IsChatRaised( void ) = 0;
 	virtual bool			IsRadioPanelRaised( void ) = 0;
 	virtual bool			IsBindMenuRaised( void ) = 0;

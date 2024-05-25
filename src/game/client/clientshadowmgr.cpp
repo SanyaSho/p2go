@@ -111,7 +111,7 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 // Slam blobby shadows to disabled in CS:GO (RTT shadows are also disabled too).
 static ConVar r_disable_update_shadow( "r_disable_update_shadow", "1", FCVAR_CHEAT );
 #else
@@ -4335,7 +4335,7 @@ void CClientShadowMgr::ReprojectShadows()
 
 	bool bRenderToTextureActive = r_shadowrendertotexture.GetBool();
 
-	#ifdef CSTRIKE15
+	#ifdef CSTRIKE15_REAL
 	// Slamming this to always disabled in cstrike, because every map has CSM now and this is causing problems with reloading envmaps from BSP's on the 2nd time through maps with a dedicated server.
 	// 3/28 - this is now slammed to 0 in CS:GO's cpu_level.csv
 	//if ( g_CascadeLightManager.IsEnabledAndActive() && engine->MapHasLightMapAlphaData() )

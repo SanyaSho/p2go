@@ -25,14 +25,14 @@
 
 
 // Comment this out when we release.
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	#if !defined ( _CERT )
 // 		#define ALLOW_DEVELOPMENT_CVARS
 	#endif
 #endif
 
 // This enables the l4d style of culling all cvars that are not marked FCVAR_RELEASE :
-#define CULL_ALL_CVARS_NOT_FCVAR_RELEASE
+//#define CULL_ALL_CVARS_NOT_FCVAR_RELEASE
 
 //-----------------------------------------------------------------------------
 // Statically constructed list of ConCommandBases, 

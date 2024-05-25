@@ -36,7 +36,7 @@ static void mat_phong_lightmappedgeneric_changed( IConVar *var, const char *pOld
 }
 ConVar mat_phong_lightmappedgeneric( "mat_phong_lightmappedgeneric", "1", FCVAR_DEVELOPMENTONLY, "0 = disable, 1 = default, 2 = visualize phong component only (no diffuse)", mat_phong_lightmappedgeneric_changed );
 
-#if defined( CSTRIKE15 ) && defined( _X360 )
+#if defined( CSTRIKE15_REAL ) && defined( _X360 )
 static ConVar r_shader_srgbread( "r_shader_srgbread", "1", 0, "1 = use shader srgb texture reads, 0 = use HW" );
 #else
 static ConVar r_shader_srgbread( "r_shader_srgbread", "0", 0, "1 = use shader srgb texture reads, 0 = use HW" );

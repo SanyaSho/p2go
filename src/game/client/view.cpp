@@ -41,7 +41,7 @@
 #include "ScreenSpaceEffects.h"
 #include "vgui_int.h"
 #include "engine/SndInfo.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "c_cs_player.h"
 #endif
 #ifdef GAMEUI_UISYSTEM2_ENABLED
@@ -52,7 +52,7 @@
 #include "gameui/portal2/basemodpanel.h"
 #elif defined( SWARM_DLL )
 #include "swarm/gameui/swarm/basemodpanel.h"
-#elif defined( CSTRIKE15 )
+#elif defined( CSTRIKE15_REAL )
 #include "gameui/basemodpanel.h"
 #else
 #error "GAMEUI_EMBEDDED"
@@ -720,7 +720,7 @@ void CViewRender::SetUpView()
 		GetClientMode()->OverrideView( &GetView() );
 	}
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	CBasePlayer *pCameraMan = NULL;
 	if ( g_bEngineIsHLTV )
 		pCameraMan = HLTVCamera()->GetCameraMan();

@@ -115,7 +115,7 @@ static ConVar	cl_smoothtime	(
 	true, 2.0
 	 );
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 ConVar	spec_freeze_time( "spec_freeze_time", "3.0", FCVAR_RELEASE | FCVAR_REPLICATED, "Time spend frozen in observer freeze cam." );
 ConVar	spec_freeze_traveltime( "spec_freeze_traveltime", "0.3", FCVAR_RELEASE | FCVAR_REPLICATED, "Time taken to zoom in to frame a target in observer freeze cam.", true, 0.01, false, 0 );
 ConVar	spec_freeze_traveltime_long( "spec_freeze_traveltime_long", "0.45", FCVAR_CHEAT | FCVAR_REPLICATED, "Time taken to zoom in to frame a target in observer freeze cam when they are far away.", true, 0.01, false, 0 );
@@ -2425,7 +2425,7 @@ bool C_BasePlayer::ShouldDrawLocalPlayer()
 IClientModelRenderable *C_BasePlayer::GetClientModelRenderable()
 {
 
-#if defined ( CSTRIKE15 )// Since cstrike15 does not do glow, we can go ahead and use fast path for teammates.
+#if defined ( CSTRIKE15_REAL )// Since cstrike15 does not do glow, we can go ahead and use fast path for teammates.
 	
 	// We can enable mostly opaque models to cause players to be rendered in both the opaque and the translucent fast paths
 	// allowing both alpha and non alpha materials to show up.

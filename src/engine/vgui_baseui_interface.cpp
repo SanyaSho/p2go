@@ -1348,7 +1348,7 @@ void CEngineVGui::ActivateGameUI()
 	
 //Reapplying this hack so that the game doesn't pause when the player opens up the menu.
 //This existed initially but was removed with the Portal 2 integration.
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( sv.IsPlayingSoloAgainstBots() )
 	{
 		Cbuf_AddText( Cbuf_GetCurrentPlayer(), "pause\n" );
@@ -1389,7 +1389,7 @@ bool CEngineVGui::HideGameUI()
 		staticGameUIFuncs->OnGameUIHidden();
 	}
 
-#if defined (CSTRIKE15)
+#if defined (CSTRIKE15_REAL)
 	// Decouple the pause menu and console window: ensure we hide the console when the game UI is hidden (eg. when we hit ESC key)
 	HideConsole();
 #endif // CSTRIKE15

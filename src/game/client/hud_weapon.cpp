@@ -18,7 +18,7 @@
 
 using namespace vgui;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 
 #if defined( INCLUDE_SCALEFORM )
 extern bool IsTakingAFreezecamScreenshot( void );
@@ -67,7 +67,7 @@ CHudWeapon::CHudWeapon( const char *pElementName ) :
 
 bool CHudWeapon::ShouldDraw()
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 
 	//0 = default
 	//1 = default static

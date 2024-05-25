@@ -17,10 +17,6 @@
 #include "shared_classnames.h"
 #include "ihasowner.h"
 
-#ifdef CSTRIKE15
-#include "cs_shareddefs.h"
-#endif
-
 class CBaseCombatWeapon;
 class CBaseCombatCharacter;
 class CVGuiScreen;
@@ -204,7 +200,7 @@ public:
 
 private:
 	CBaseViewModel( const CBaseViewModel & ); // not defined, not accessible
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	void					UpdateParticles( int nSlot );
 
 	virtual void 			OnNewParticleEffect( const char *pszParticleName, CNewParticleEffect *pNewParticleEffect );
@@ -244,7 +240,7 @@ private:
 
 public:
 	float					m_fCycleOffset;
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	void					UpdateStatTrakGlow( void );
 	void					SetStatTrakGlowMultiplier( float flNewIdealGlow ) { m_flStatTrakGlowMultiplierIdeal = flNewIdealGlow; }
 	const float				GetStatTrakGlowMultiplier( void ){ return m_flStatTrakGlowMultiplier; }

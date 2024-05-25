@@ -2024,7 +2024,7 @@ CEG_NOINLINE void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, b
 			// It is critical to get map info by the actual levelname that is being loaded, because
 			// for level transitions the server is still in the old map and the game settings returned
 			// will reflect the old state of the server.
-			pChapterInfo = g_pMatchExt->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo );
+			//pChapterInfo = g_pMatchExt->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo ); // TODO!!
 			Q_strncpy( chGameMode, pGameSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
 		}
 	}

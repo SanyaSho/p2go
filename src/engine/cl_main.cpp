@@ -2834,7 +2834,7 @@ void CL_Move(float accumulated_extra_samples, bool bFinalTick )
 	// show warning message/UI
 	if ( hasProblem )
 	{
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		con_nprint_t np;
 		np.time_to_live = 1.0;
 		np.index = 2;
@@ -2855,7 +2855,7 @@ void CL_Move(float accumulated_extra_samples, bool bFinalTick )
 			// write time until connection is dropped to a convar
 			cl_connection_trouble_info.SetValue( CFmtStr( "disconnect(%0.3f)", flRemainingTime ) );
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 			np.index = 3;
 			Con_NXPrintf( &np, "Auto-disconnect in %.1f seconds", flRemainingTime );
 #endif
@@ -3166,7 +3166,7 @@ unsigned int CL_GetStartupIndex()
 //-----------------------------------------------------------------------------
 void CL_GetStartupImage( char *pOutBuffer, int nOutBufferSize )
 {
-#if defined( CSTRIKE15)
+#if defined( CSTRIKE15_REAL)
 	// CStrike15 uses a specific startup image instead of the random image.
 	// CSGO always uses a widescreen format image, regardless of the screen resolution,
 	// to match how the Scaleform background is drawn.  CVideoMode_Common::DrawStartupGraphic
@@ -3535,7 +3535,7 @@ void CL_InitCloudSettingsCvar()
 			#endif
 		}
 
-		#if defined( CSTRIKE15 )
+		#if defined( CSTRIKE15_REAL )
 		// Cloud isn't used in CS:GO for now
 		// This may eventually become optional, but we need to wipe out people's settings
 		// So that it's opt-in for existing players in the future

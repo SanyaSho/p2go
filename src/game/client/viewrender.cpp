@@ -3510,7 +3510,7 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 
 	if( IsPS3() )
 	{
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		extern bool ShouldDrawHudViewfinder();
 		// HUD viewfinder has complex material that isn't handled correctly by deferred queuing in material system, so we shouldn't attempt to 
 		if( !ShouldDrawHudViewfinder() )

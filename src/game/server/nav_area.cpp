@@ -4874,7 +4874,7 @@ void CNavArea::UpdateBlocked( bool force, int teamID )
 		&tr );
 
 	}
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	if ( force )
 	{
 		if ( teamID == TEAM_ANY )

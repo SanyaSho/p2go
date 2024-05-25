@@ -105,7 +105,7 @@ public:
 
 #define MAX_CLIMB_SPEED		200
 
-#if defined(TF_DLL) || defined(TF_CLIENT_DLL) || defined( CSTRIKE15 )
+#if defined(TF_DLL) || defined(TF_CLIENT_DLL) || defined( CSTRIKE15_REAL )
 
 	#define TIME_TO_DUCK_MSECS		200
 
@@ -127,7 +127,7 @@ inline float FractionUnDucked( int msecs )
 	return clamp( (float)msecs / (float)TIME_TO_UNDUCK_MSECS, 0.0f, 1.0f );
 }
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #define MAX_WEAPON_SLOTS		6	// hud item selection slots
 #define MAX_WEAPON_POSITIONS	6	// max number of items within a slot
 #define MAX_ITEM_TYPES			6	// hud item selection slots
@@ -343,7 +343,7 @@ enum AmmoPosition_t
 
 // Humans only have left and right hands, though we might have aliens with more
 //  than two, sigh
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 
 #define MAX_VIEWMODELS			2
 
@@ -1014,7 +1014,7 @@ enum
 bool IsHeadTrackingEnabled();
 
 // If this is defined, all of the scopeguard objects are NULL'd out to reduce overhead
-#if defined( CSTRIKE15 ) || defined( HL2 ) //&& !defined( _GAMECONSOLE )  // Split screen removed from console.
+#if defined( CSTRIKE15_REAL ) || defined( HL2 ) //&& !defined( _GAMECONSOLE )  // Split screen removed from console.
 #define SPLIT_SCREEN_STUBS
 #endif
 
@@ -1026,7 +1026,7 @@ bool IsHeadTrackingEnabled();
 	#endif
 #elif defined( PORTAL2 )
 	#define MAX_SPLITSCREEN_PLAYERS 2
-#elif defined ( CSTRIKE15 )
+#elif defined ( CSTRIKE15_REAL )
 #if defined( _GAMECONSOLE )
 	#define MAX_SPLITSCREEN_PLAYERS 1 // Split screen removed from console.
 #else

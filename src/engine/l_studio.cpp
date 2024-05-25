@@ -2736,7 +2736,7 @@ int CModelRender::DrawModel(
 
 static inline int GetLOD()
 {
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	// Always slamp r_lod to 0 in CS:GO.
 	return 0;
 #else
@@ -3274,7 +3274,7 @@ int CModelRender::DrawStaticPropArrayFast( StaticPropRenderInfo_t *pProps, int c
 	bool bForceCubemap = r_showenvcubemap.GetBool();
 	int drawnCount = 0;
 	int forcedLodSetting = GetLOD();
-#ifndef CSTRIKE15
+#ifndef CSTRIKE15_REAL
 	if ( r_staticprop_lod.GetInt() >= 0 )
 	{
 		forcedLodSetting = r_staticprop_lod.GetInt();

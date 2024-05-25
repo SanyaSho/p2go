@@ -2772,7 +2772,7 @@ void ClientDLL_Init( void )
 				
 				bFailed = true;
 			}
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 			// CS:GO requires CSM support for fairness. (This is primarily here in case the user is hacking/copying their moddefaults.txt or dxsupport.cfg from another product).
 			else if ( !g_pMaterialSystemHardwareConfig->SupportsCascadedShadowMapping() )
 			{

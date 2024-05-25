@@ -13,7 +13,7 @@
 #if defined( PS3SDK_INSTALLED ) 
 #define PS3_CROSS_PLAY
 #endif
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 #if defined( PS3_CROSS_PLAY ) || defined ( _PS3 )
 #include "ps3sceCelp8.h"
 #define SOUND_PC_CELP_ENABLED

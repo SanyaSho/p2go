@@ -387,7 +387,7 @@ void CC_UpgradePortalGun( void )
 	}
 }
 
-static ConCommand upgrade_portal("upgrade_portalgun", CC_UpgradePortalGun, "Equips the player with a single portal portalgun. Use twice for a dual portal portalgun.\n\tArguments:   	none ", FCVAR_CHEAT);
+static ConCommand upgrade_portal("upgrade_portalgun", CC_UpgradePortalGun, "Equips the player with a single portal portalgun. Use twice for a dual portal portalgun.\n\tArguments:   	none "); // TODO!! HACK!! This shouldn't be cheat protected
 
 void CC_UpgradePotatoGun( void )
 {
@@ -405,7 +405,7 @@ void CC_UpgradePotatoGun( void )
 	}
 }
 
-static ConCommand upgrade_potato("upgrade_potatogun", CC_UpgradePotatoGun, "Upgrades to the portalgun to the dual portalgun with potatos attached\n\tArguments:   	none ", FCVAR_CHEAT);
+static ConCommand upgrade_potato("upgrade_potatogun", CC_UpgradePotatoGun, "Upgrades to the portalgun to the dual portalgun with potatos attached\n\tArguments:   	none "); // TODO!! HACK!! This shouldn't be cheat protected
 
 static void change_portalgun_linkage_id_f( const CCommand &args )
 {

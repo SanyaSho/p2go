@@ -110,7 +110,7 @@
 #include "fmtstr.h"
 #include "mathlib/aabb.h"
 #include "env_cascade_light.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "cstrike15/cs_player.h"
 #include "gametypes/igametypes.h"
 #include "cs_shareddefs.h"
@@ -777,7 +777,7 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 		scriptmanager = (IScriptManager *)appSystemFactory( VSCRIPT_INTERFACE_VERSION, NULL );
 	}
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( ( g_pGameTypes = (IGameTypes *)appSystemFactory( VENGINE_GAMETYPES_VERSION, NULL )) == NULL )
 		return false;
 #endif
@@ -917,7 +917,7 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	// init the gamestatsupload connection
 	gamestatsuploader->InitConnection();
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	// Load the game types.
 	g_pGameTypes->Initialize();
 #endif
@@ -2871,7 +2871,7 @@ void CServerGameEnts::CheckTransmit( CCheckTransmitInfo *pInfo, const unsigned s
 
 		CBasePlayer *pPlayer = dynamic_cast< CBasePlayer* >( pEnt );
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 		// Team Lead in gungame should be always visible in counter-strike. Yes, even if he's out of PVS. Yes, even if he's behind the wall.
 		if ( pPlayer && static_cast< CCSPlayer* >( pPlayer )->m_isCurrentGunGameTeamLeader )
 		{ // do not check PVS or occlusion for a gun game team leader

@@ -3607,7 +3607,7 @@ bool CNetChan::IsValidFileForTransfer( const char *pszFilename )
 		|| V_stristr( pszFilename, "addons/" )
 		|| V_stristr( pszFilename, "cfg/" )
 		|| V_stristr( pszFilename, "~/" )
-		|| V_stristr( pszFilename, "gamemodes.txt" )
+		//|| V_stristr( pszFilename, "gamemodes.txt" )
 		)
 		return false;
 

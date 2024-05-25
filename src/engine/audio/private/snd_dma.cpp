@@ -1382,7 +1382,7 @@ CAudioSource *S_LoadSound( CSfxTable *pSfx, channel_t *ch, SoundError &soundErro
 				// forcing the streamer to do more work all these static sounds now stream
 				// freed memory devoted to more textures
 				"player/footsteps",
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 				"weapons/",
 #endif
 				"gamestartup",

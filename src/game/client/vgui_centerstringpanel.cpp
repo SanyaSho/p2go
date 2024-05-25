@@ -18,7 +18,7 @@
 #include "vgui/IScheme.h"
 #include "vgui/IPanel.h"
 
-#if defined ( CSTRIKE15 ) && defined ( INCLUDE_SCALEFORM )
+#if defined ( CSTRIKE15_REAL ) && defined ( INCLUDE_SCALEFORM )
 #include "Scaleform/HUD/sfhudinfopanel.h"
 #endif // CSTRIKE15
 
@@ -26,7 +26,7 @@
 #include "tier0/memdbgon.h"
 
 // [jason] Forward the message to the Scaleform info panel
-#if defined ( CSTRIKE15 ) && defined ( INCLUDE_SCALEFORM )
+#if defined ( CSTRIKE15_REAL ) && defined ( INCLUDE_SCALEFORM )
 #define FORWARD_PRIORITY_MSG( x )												\
 		{																		\
 			CHudElement *pElement = GetHud().FindElement( "SFHudInfoPanel" );	\
@@ -226,7 +226,7 @@ void CCenterStringLabel::OnTick( void )
 bool CCenterStringLabel::ShouldDraw( void )
 {
 	// [jason] This element only exists to forward center print messages to the Scaleform InfoPanel
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	return false;
 #endif
 

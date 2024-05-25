@@ -47,10 +47,10 @@ void NET_Shutdown( void );
 const char *UTIL_GetBaseDir( void );
 bool g_bVGui = false;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 const char *g_gameName = "csgo";
 #else
-const char *g_gameName = "hl2";
+const char *g_gameName = "portal2";
 #endif
 
 #if defined ( _WIN32 )

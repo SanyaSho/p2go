@@ -144,7 +144,7 @@ ConVar r_drawbrushmodels( "r_drawbrushmodels", "1", FCVAR_CHEAT, "Render brush m
 
 ConVar r_shadowrendertotexture( "r_shadowrendertotexture", "0" );
 
-#if ( defined( CSTRIKE15 ) && defined( _PS3 ) )
+#if ( defined( CSTRIKE15 ) && defined( _PS3 ) ) // wow, INSANE ifdef here
 ConVar r_flashlightdepthtexture( "r_flashlightdepthtexture", "1" );
 #else
 ConVar r_flashlightdepthtexture( "r_flashlightdepthtexture", "1" );
@@ -901,7 +901,7 @@ void InitWellKnownRenderTargets( void )
 	g_QuarterSizedFBTexture1.Init( CreateQuarterSizedFBTexture( 1, 0 ) );			
 	*/
 	g_QuarterSizedFBTexture1.Init( CreateQuarterSizedFBTexture( 1, 0 ) );
-#if ! ( defined( LEFT4DEAD ) || defined( CSTRIKE15 ) )
+#if ! ( defined( LEFT4DEAD ) || defined( CSTRIKE15_REAL ) )
 	g_QuarterSizedFBTexture2.Init( CreateQuarterSizedFBTexture( 2, 0 ) );
 	g_QuarterSizedFBTexture3.Init( CreateQuarterSizedFBTexture( 3, 0 ) );			
 #endif
@@ -1240,7 +1240,7 @@ void InitStartupScreen()
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	pRenderContext->SetNonInteractiveTempFullscreenBuffer( pTexture, MATERIAL_NON_INTERACTIVE_MODE_STARTUP );
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	pTexture = materials->FindTexture( "console/spinner", TEXTURE_GROUP_OTHER );
 	pRenderContext->SetNonInteractivePacifierTexture( pTexture, 0.5f, 0.5f, 0.2f );
 

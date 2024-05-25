@@ -2609,7 +2609,7 @@ int CClientLeafSystem::ComputeTranslucency( int nFrameNumber, int nViewID, int n
 	}
 
 // CTSRIKE15 only using cascade shadow mapping - code below is for projected shadow
-#ifndef CSTRIKE15
+#ifndef CSTRIKE15_REAL
 	// Update shadows
 	for ( int i = 0; i < nCount; ++i )
 	{

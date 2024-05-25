@@ -2497,7 +2497,7 @@ CON_COMMAND( killserver, "Shutdown the server." )
 }
 
 // [hpe:jason] Enable ENGINE_VOICE for Cstrike 1.5, all platforms
-#if defined( CSTRIKE15 ) 
+#if defined( CSTRIKE15_REAL ) 
 	ConVar voice_vox( "voice_vox", "false", FCVAR_DEVELOPMENTONLY ); // Controls open microphone (no push to talk) settings
 	#undef NO_ENGINE_VOICE
 #else

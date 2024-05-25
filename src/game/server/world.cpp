@@ -39,7 +39,7 @@
 #include "music.h"
 #endif
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15REAL )
 #include "gametypes.h"
 #endif
 
@@ -733,7 +733,7 @@ void CWorld::Spawn( void )
 
 #if defined( CSTRIKE15 )
 	// reinitialize all of the game type kv file data because we may have new things availible to us in the filesystem mounted from the bsp that we didn't have when the gamemodes.txt was first parsed
-	g_pGameTypes->Initialize( true );
+	//g_pGameTypes->Initialize( true );
 #endif
 
 	g_EventQueue.Init();

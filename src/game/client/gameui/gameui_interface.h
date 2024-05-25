@@ -15,8 +15,8 @@
 #include "vgui_controls/PHandle.h"
 #include "convar.h"
 
-#if defined ( CSTRIKE15 )
-#error "DEPRICIATED: Use the gameui_interface in the cstrike15 folder"
+#if defined ( CSTRIKE15_REAL )
+#error "DEPRICIATED: Use the gameui_interface in the cstrike15 folder" // nah
 #endif 
 class IGameClientExports;
 class CCommand;

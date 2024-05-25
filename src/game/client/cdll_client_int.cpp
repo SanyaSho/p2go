@@ -105,7 +105,7 @@
 #include "tier2/tier2_logging.h"
 #include "Sprite.h"
 #include "vgui_video.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "gametypes/igametypes.h"
 #include "c_keyvalue_saver.h"
 #include "cs_workshop_manager.h"
@@ -132,7 +132,7 @@
 #endif
 #elif defined( SWARM_DLL )
 #include "swarm/gameui/swarm/basemodpanel.h"
-#elif defined( CSTRIKE15 )
+#elif defined( CSTRIKE15_REAL )
 #include "cstrike15/gameui/basepanel.h"
 #else
 #error "GAMEUI_EMBEDDED"
@@ -158,7 +158,7 @@
 
 #include "achievements_and_stats_interface.h"
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 #include "iachievementmgr.h"
 #include "hud.h"
 #include "hud_element_helper.h"
@@ -985,7 +985,7 @@ public:
 
 	virtual void			ShutdownMovies();
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_real )
 	virtual bool			IsChatRaised( void );
 	virtual bool			IsRadioPanelRaised( void );
 	virtual bool			IsBindMenuRaised( void );
@@ -1519,7 +1519,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	if ( !g_pRenderToRTHelper->Init() )
 		return false;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( ( g_pGameTypes = (IGameTypes *)appSystemFactory( VENGINE_GAMETYPES_VERSION, NULL )) == NULL )
 		return false;
 
@@ -1578,7 +1578,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	// 		INTERFACEVERSION_SERVERGAMEDLL, static_cast< IServerGameDLL * >( this ) );
 #endif // PORTAL2
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	if ( !g_pMatchFramework )
 		return false;
 	GameInstructor_Init();
@@ -1688,7 +1688,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	g_PuzzleMaker.Init();
 #endif // PORTAL2_PUZZLEMAKER
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	// Load the game types.
 	g_pGameTypes->Initialize();
 #endif
@@ -2432,7 +2432,7 @@ void ConfigureCurrentSystemLevel()
 	char szModName[32] = "sdk";
 #elif defined ( SOB_CLIENT_DLL )
 	char szModName[32] = "ep2";
-#elif defined ( CSTRIKE15 )
+#elif defined ( CSTRIKE15_REAL )
 	char szModName[32] = "csgo";
 #elif defined ( HL2_CLIENT_DLL )
 	char szModName[32] = "hl2";
@@ -4386,7 +4386,7 @@ void CHLClient::ShutdownMovies()
 	//VGui_StopAllVideoPanels();
 }
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 bool CHLClient::IsChatRaised( void )
 {
 #if defined( INCLUDE_SCALEFORM )
@@ -4538,7 +4538,7 @@ const CUtlVector< Frustum_t, CUtlMemoryAligned< Frustum_t,16 > >* CHLClient::Get
 
 bool CHLClient::IsSubscribedMap( const char *pchMapName, bool bOnlyOnDisk )
 {
-#if !defined ( NO_STEAM ) && defined( CSTRIKE15 )
+#if !defined ( NO_STEAM ) && defined( CSTRIKE15_REAL )
 	return g_CSGOWorkshopMaps.IsSubscribedMap( pchMapName, bOnlyOnDisk );
 #endif
 	return false;
@@ -4546,7 +4546,7 @@ bool CHLClient::IsSubscribedMap( const char *pchMapName, bool bOnlyOnDisk )
 
 bool CHLClient::IsFeaturedMap( const char *pchMapName, bool bOnlyOnDisk )
 {
-#if !defined ( NO_STEAM ) && defined( CSTRIKE15 )
+#if !defined ( NO_STEAM ) && defined( CSTRIKE15_REAL )
 	return g_CSGOWorkshopMaps.IsFeaturedMap( pchMapName, bOnlyOnDisk );
 #endif
 	return false;
@@ -4554,14 +4554,14 @@ bool CHLClient::IsFeaturedMap( const char *pchMapName, bool bOnlyOnDisk )
 
 void CHLClient::DownloadCommunityMapFile( PublishedFileId_t id )
 {
-#if !defined ( NO_STEAM ) && defined( CSTRIKE15 )
+#if !defined ( NO_STEAM ) && defined( CSTRIKE15_REAL )
 	g_CSGOWorkshopMaps.DownloadMapFile( id );
 #endif
 }
 
 float CHLClient::GetUGCFileDownloadProgress( PublishedFileId_t id )
 {
-#if !defined ( NO_STEAM ) && defined( CSTRIKE15 )
+#if !defined ( NO_STEAM ) && defined( CSTRIKE15_REAL )
 	return g_CSGOWorkshopMaps.GetFileDownloadProgress( id );
 #else
 	return 0.0f;
@@ -4597,143 +4597,17 @@ void CHLClient::DetermineSubscriptionKvToAdvertise( KeyValues *kvLocalPlayer )
 {
 	/* Removed for partner depot */
 }
-//char const * CHLClient::GetRichPresenceStatusString()
-//{
-	//useless, just making the compiler shut up
-//	return "fixme";
-//}
-
-class CHLClientAutoRichPresenceUpdateOnConnect
-{
-public:
-	CHLClientAutoRichPresenceUpdateOnConnect() : m_SteamCallback_OnServersConnected( this, &CHLClientAutoRichPresenceUpdateOnConnect::Steam_OnServersConnected ) {}
-
-	STEAM_CALLBACK( CHLClientAutoRichPresenceUpdateOnConnect, Steam_OnServersConnected, SteamServersConnected_t, m_SteamCallback_OnServersConnected )
-	{
-		( void ) clientdll->GetRichPresenceStatusString();
-	}
-};
-
 char const * CHLClient::GetRichPresenceStatusString()
 {
-	// doesnt work :(
-	ISteamFriends *pf = steamapicontext->SteamFriends();
-	if ( !pf )
-		return "";
-
-	bool bConnectedToServer = engine->IsInGame();
-
-	static CHLClientAutoRichPresenceUpdateOnConnect s_RPUpdater; // construct auto RP updater upon first rich presence update
-	
-	// Status string
-	static CFmtStr sRichPresence;
-	sRichPresence.Clear();
-
-	// Map (Dust II, Office, etc.)
-	char const *szMap = NULL;
-	char const *szGameMap = NULL;
-	
-	if ( bConnectedToServer )
-	{
-		szMap = engine->GetLevelNameShort();
-		szGameMap = szMap;
-		{	// Resolve known map names
-				 if ( !V_stricmp( szGameMap, "cs_assault"		)	) szGameMap = "Assault"					;
-			else if ( !V_stricmp( szGameMap, "cs_italy"			)	) szGameMap = "Italy"					;
-			else if ( !V_stricmp( szGameMap, "cs_militia"		)	) szGameMap = "Militia"					;
-			else if ( !V_stricmp( szGameMap, "cs_office"		)	) szGameMap = "Office"					;
-			else if ( !V_stricmp( szGameMap, "de_aztec"			)	) szGameMap = "Aztec"					;
-			else if ( !V_stricmp( szGameMap, "de_dust"			)	) szGameMap = "Dust"					;
-			else if ( !V_stricmp( szGameMap, "de_dust2"			)	) szGameMap = "Dust II"					;
-			else if ( !V_stricmp( szGameMap, "de_mirage"		)	) szGameMap = "Mirage"					;
-			else if ( !V_stricmp( szGameMap, "de_overpass"		)	) szGameMap = "Overpass"				;
-			else if ( !V_stricmp( szGameMap, "de_cbble"			)	) szGameMap = "Cobblestone"				;
-			else if ( !V_stricmp( szGameMap, "de_train"			)	) szGameMap = "Train"					;
-			else if ( !V_stricmp( szGameMap, "de_inferno"		)	) szGameMap = "Inferno"					;
-			else if ( !V_stricmp( szGameMap, "de_nuke"			)	) szGameMap = "Nuke"					;
-			else if ( !V_stricmp( szGameMap, "de_shorttrain"	)	) szGameMap = "Shorttrain"				;
-			else if ( !V_stricmp( szGameMap, "de_shortdust"		)	) szGameMap = "Shortdust"				;
-			else if ( !V_stricmp( szGameMap, "de_vertigo"		)	) szGameMap = "Vertigo"					;
-			else if ( !V_stricmp( szGameMap, "de_balkan"		)	) szGameMap = "Balkan"					;
-			else if ( !V_stricmp( szGameMap, "random"			)	) szGameMap = "Random"					;
-			else if ( !V_stricmp( szGameMap, "ar_baggage"		)	) szGameMap = "Baggage"					;
-			else if ( !V_stricmp( szGameMap, "ar_monastery"		)	) szGameMap = "Monastery"				;
-			else if ( !V_stricmp( szGameMap, "ar_shoots"		)	) szGameMap = "Shoots"					;
-			else if ( !V_stricmp( szGameMap, "de_embassy"		)	) szGameMap = "Embassy"					;
-			else if ( !V_stricmp( szGameMap, "de_bank"			)	) szGameMap = "Bank"					;
-			else if ( !V_stricmp( szGameMap, "de_lake"			)	) szGameMap = "Lake"					;
-			else if ( !V_stricmp( szGameMap, "de_depot"			)	) szGameMap = "Depot"					;
-			else if ( !V_stricmp( szGameMap, "de_safehouse"		)	) szGameMap = "Safehouse"				;
-			else if ( !V_stricmp( szGameMap, "de_sugarcane"		)	) szGameMap = "Sugarcane"				;
-			else if ( !V_stricmp( szGameMap, "de_stmarc"		)	) szGameMap = "St. Marc"				;
-			else if ( !V_stricmp( szGameMap, "training1"		)	) szGameMap = "Weapons Course"			;
-			else if ( !V_stricmp( szGameMap, "cs_museum"		)	) szGameMap = "Museum"					;
-			else if ( !V_stricmp( szGameMap, "cs_thunder"		)	) szGameMap = "Thunder"					;
-			else if ( !V_stricmp( szGameMap, "de_favela"		)	) szGameMap = "Favela"					;
-			else if ( !V_stricmp( szGameMap, "cs_downtown"		)	) szGameMap = "Downtown"				;
-			else if ( !V_stricmp( szGameMap, "de_seaside"		)	) szGameMap = "Seaside"					;
-			else if ( !V_stricmp( szGameMap, "de_library"		)	) szGameMap = "Library"					;
-			else if ( !V_stricmp( szGameMap, "cs_motel"			)	) szGameMap = "Motel"					;
-			else if ( !V_stricmp( szGameMap, "de_cache"			)	) szGameMap = "Cache"					;
-			else if ( !V_stricmp( szGameMap, "de_ali"			)	) szGameMap = "Ali"						;
-			else if ( !V_stricmp( szGameMap, "de_ruins"			)	) szGameMap = "Ruins"					;
-			else if ( !V_stricmp( szGameMap, "de_chinatown"		)	) szGameMap = "Chinatown"				;
-			else if ( !V_stricmp( szGameMap, "de_gwalior"		)	) szGameMap = "Gwalior"					;
-			else if ( !V_stricmp( szGameMap, "cs_agency"		)	) szGameMap = "Agency"					;
-			else if ( !V_stricmp( szGameMap, "cs_siege"			)	) szGameMap = "Siege"					;
-			else if ( !V_stricmp( szGameMap, "de_blackgold"		)	) szGameMap = "Black Gold"				;
-			else if ( !V_stricmp( szGameMap, "de_castle"		)	) szGameMap = "Castle"					;
-			else if ( !V_stricmp( szGameMap, "de_overgrown"		)	) szGameMap = "Overgrown"				;
-			else if ( !V_stricmp( szGameMap, "de_mist"			)	) szGameMap = "Mist"					;
-			else if ( !V_stricmp( szGameMap, "cs_rush"			)	) szGameMap = "Rush"					;
-			else if ( !V_stricmp( szGameMap, "cs_insertion"		)	) szGameMap = "Insertion"				;
-			else if ( !V_stricmp( szGameMap, "cs_workout"		)	) szGameMap = "Workout"					;
-			else if ( !V_stricmp( szGameMap, "cs_backalley"		)	) szGameMap = "Back Alley"				;
-			else if ( !V_stricmp( szGameMap, "de_bazaar"		)	) szGameMap = "Bazaar"					;
-			else if ( !V_stricmp( szGameMap, "de_marquis"		)	) szGameMap = "Marquis"					;
-			else if ( !V_stricmp( szGameMap, "de_season"		)	) szGameMap = "Season"					;
-			else if ( !V_stricmp( szGameMap, "de_facade"		)	) szGameMap = "Facade"					;
-			else if ( !V_stricmp( szGameMap, "de_log"			)	) szGameMap = "Log"						;
-			else if ( !V_stricmp( szGameMap, "de_rails"			)	) szGameMap = "Rails"					;
-			else if ( !V_stricmp( szGameMap, "de_resort"		)	) szGameMap = "Resort"					;
-			else if ( !V_stricmp( szGameMap, "de_zoo"			)	) szGameMap = "Zoo"						;
-			else if ( !V_stricmp( szGameMap, "cs_cruise"		)	) szGameMap = "Cruise"					;
-			else if ( !V_stricmp( szGameMap, "de_coast"			)	) szGameMap = "Coast"					;
-			else if ( !V_stricmp( szGameMap, "de_empire"		)	) szGameMap = "Empire"					;
-			else if ( !V_stricmp( szGameMap, "de_mikla"			)	) szGameMap = "Mikla"					;
-			else if ( !V_stricmp( szGameMap, "de_royal"			)	) szGameMap = "Royal"					;
-			else if ( !V_stricmp( szGameMap, "de_santorini"		)	) szGameMap = "Santorini"				;
-			else if ( !V_stricmp( szGameMap, "de_tulip"			)	) szGameMap = "Tulip"					;
-			else if ( !V_stricmp( szGameMap, "gd_crashsite"		)	) szGameMap = "Crashsite"				;
-			else if ( !V_stricmp( szGameMap, "gd_lake"			)	) szGameMap = "Lake"					;
-			else if ( !V_stricmp( szGameMap, "gd_bank"			)	) szGameMap = "Bank"					;
-			else if ( !V_stricmp( szGameMap, "gd_cbble"			)	) szGameMap = "Cobblestone"				;
-			else if ( !V_stricmp( szGameMap, "gd_sugarcane"		)	) szGameMap = "Sugarcane"				;
-			else if ( !V_stricmp( szGameMap, "coop_cementplant"	)	) szGameMap = "Phoenix Compound"		;
-			else { szGameMap = "Test"; }
-		}
-	}
-
-	if ( szGameMap && *szGameMap )
-	{
-		if ( sRichPresence.Length() > 0 )
-			sRichPresence.Append( ' ' );
-		sRichPresence.AppendFormat( "%s", szGameMap );
-	}
-
-	if ( !sRichPresence.Length() )
-	{	// Default RP
-		sRichPresence.AppendFormat( "Playing on Samsung Smart Fridge" );
-	}
-
-	pf->SetRichPresence( "status", sRichPresence.Get() );
-	pf->SetRichPresence( "version", CFmtStr( "%d", engine->GetEngineBuildNumber() ) );
-
-	return sRichPresence.Get();
+	//useless, just making the compiler shut up
+	return "fixme";
 }
+
+// Sadly had to remove the rich presence code as it didnt work lol
+
 int CHLClient::GetInEyeEntity() const
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	C_CSPlayer* player = GetLocalOrInEyeCSPlayer();
 	if (player != nullptr)
 	{
@@ -4799,7 +4673,7 @@ void CHLClient::EngineGotvSyncPacket( const CEngineGotvSyncPacket *pPkt )
 
 void CHLClient::OnTickPre( int tickcount )
 {
-#if defined( CSTRIKE15 ) && !defined( CSTRIKE_REL_BUILD )
+#if defined( CSTRIKE15_REAL ) && !defined( CSTRIKE_REL_BUILD )
 	// We always strip this out in REL builds. 
 	// We're about to tick over, notify g_pFatDemoRecorder so it can do its magic.
 	g_pFatDemoRecorder->OnTickPre( tickcount );

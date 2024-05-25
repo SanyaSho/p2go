@@ -28,7 +28,7 @@
 #include "c_asw_marine.h"
 #include "asw_input.h"
 #endif
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 #include "c_cs_player.h"
 #endif
 
@@ -1007,7 +1007,7 @@ void CClient_Precipitation::CreateParticlePrecip( void )
 	{
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 		C_CSPlayer *pPlayer = GetLocalOrInEyeCSPlayer();
 #else
 		C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();
@@ -1390,7 +1390,7 @@ void CClient_Precipitation::EmitParticles( float fTimeDelta )
 	{
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 	
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 		C_CSPlayer *pPlayer = GetLocalOrInEyeCSPlayer();
 #else
 		C_BasePlayer *pPlayer = C_BasePlayer::GetLocalPlayer();

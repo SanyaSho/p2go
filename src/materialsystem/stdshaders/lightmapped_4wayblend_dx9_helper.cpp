@@ -28,7 +28,7 @@ extern ConVar mat_ambient_light_g;
 extern ConVar mat_ambient_light_b;
 
 
-#if defined( CSTRIKE15 ) && defined( _X360 )
+#if defined( CSTRIKE15_REAL ) && defined( _X360 )
 static ConVar r_shader_srgbread( "r_shader_srgbread", "1", 0, "1 = use shader srgb texture reads, 0 = use HW" );
 #else
 static ConVar r_shader_srgbread( "r_shader_srgbread", "0", 0, "1 = use shader srgb texture reads, 0 = use HW" );

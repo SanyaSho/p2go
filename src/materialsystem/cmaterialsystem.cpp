@@ -87,7 +87,7 @@ static ConVar mat_picmip( "mat_picmip", "0", FCVAR_NONE, "", true, -10, true, 4 
 ConVar csm_quality_level( "csm_quality_level", "0", 0, "Cascaded shadow map quality level, [0,3], 0=VERY_LOW, 3=HIGHEST" );
 
 // Moving this here (instead of in viewpostprocess.cpp) so videocfg.cpp can modify its value early during init based off whatever setting is in video.txt
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 ConVar mat_software_aa_strength( "mat_software_aa_strength", "-1.0", 0, "Software AA - perform a software anti-aliasing post-process (an alternative/supplement to MSAA). This value sets the strength of the effect: (0.0 - off), (1.0 - full)" );
 #else
 ConVar mat_software_aa_strength( "mat_software_aa_strength", IsPS3()? "0" : "-1.0", 0, "Software AA - perform a software anti-aliasing post-process (an alternative/supplement to MSAA). This value sets the strength of the effect: (0.0 - off), (1.0 - full)" );

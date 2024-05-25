@@ -2335,7 +2335,7 @@ void CTempEnts::LevelInit()
 {
 
 // We don't use any of these models in CSTRIKE15
-#if !defined (CSTRIKE15)
+#if !defined (CSTRIKE15_REAL)
 
 #if !defined (TF_CLIENT_DLL) && !defined (DOTA_DLL) && !defined (PORTAL2)
 	m_pSpriteMuzzleFlash[0] = (model_t *)engine->LoadModel( "sprites/ar2_muzzle1.vmt" );

@@ -796,12 +796,12 @@ bool CEngineAPI::SetStartupInfo( StartupInfo_t &info )
 #endif // CSTRIKE15
 	}
 
-	if ( !Steam3Client().IsInitialized() || !Steam3Client().SteamUser() ||
+	/*if (!Steam3Client().IsInitialized() || !Steam3Client().SteamUser() ||
 		!Steam3Client().SteamUser()->GetSteamID().IsValid() || !Steam3Client().SteamUser()->GetSteamID().BIndividualAccount() || !Steam3Client().SteamUser()->GetSteamID().GetAccountID() )
 	{
 		Error( "FATAL ERROR: Failed to connect with local Steam Client process!\n\nPlease make sure that you are running latest version of Steam Client.\nYou can check for Steam Client updates using Steam main menu:\n             Steam > Check for Steam Client Updates..." );
 		return false;
-	}
+	}*/
 
 	//
 	// Setup a search path for USRLOCAL data (configs / save games / etc.) that isn't intended to be shared across multiple accounts

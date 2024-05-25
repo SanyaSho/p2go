@@ -27,7 +27,7 @@
 #include "c_portal_player.h"
 #endif
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 #include "weapon_csbase.h"
 #include "c_cs_player.h"
 #endif
@@ -56,7 +56,7 @@ float g_flTonemapMinAvgLum = 3.0f;
 float g_flTonemapRate = 1.0f;
 
 #if defined( _X360 )
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 float g_flTonemapPercentTarget = 60.0f;
 #else
 // Move "up" the percent target to make X360 a bit brighter than it's been to compensate for our bad 8-bit histogram utilization and to also compensate for the non-PWL texture change.
@@ -91,7 +91,7 @@ static ConVar mat_tonemapping_occlusion_use_stencil( "mat_tonemapping_occlusion_
 static ConVar mat_autoexposure_max( "mat_autoexposure_max", "2", FCVAR_CHEAT );
 #if defined( _X360 )
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 static ConVar mat_autoexposure_max_multiplier("mat_autoexposure_max_multiplier","1.0", FCVAR_CHEAT);
 #else
 // Allow the max. pixel shader multiplier to be 50% higher to better utilize the available 8-bit output range, and to help compensate for the gamma ramp adjustments we've made. (At some point we should also adjust the PS3.)
@@ -2703,8 +2703,6 @@ bool DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 		// acquired the Boomer vomit particle system by way of my actions.
 		// -Ted
 		C_Portal_Player::RenderLocalScreenSpaceEffect( PAINT_SCREEN_SPACE_EFFECT, pRenderContext, x, y, w, h );
-		#else if CSTRIKE15
-//		C_CSPlayer::RenderLocalScreenSpaceEffect( AR_LEADER_SCREEN_SPACE_EFFECT, pRenderContext, x, y, w, h );
 		#endif
 
 

@@ -1006,7 +1006,7 @@ static bool HandleScaleformKey( const InputEvent_t &event )
 		}
 
 
-	#if defined ( CSTRIKE15 )
+	#if defined ( CSTRIKE15_REAL )
 
 		if ( !g_ClientDLL->IsLoadingScreenRaised() && !g_ClientDLL->IsChatRaised() && !g_ClientDLL->IsBindMenuRaised() && !g_ClientDLL->IsRadioPanelRaised() && !g_ClientDLL->IsTeamMenuRaised() )
 	#endif
@@ -1319,7 +1319,7 @@ void Key_Event( const InputEvent_t &event )
 			return;
 #endif
 	}
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	else if ( g_ClientDLL->IsChatRaised() || g_ClientDLL->IsBindMenuRaised() )
 	{
 		if ( FilterKey( event, KEY_UP_SCALEFORM, HandleScaleformKey ) )

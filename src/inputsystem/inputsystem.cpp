@@ -918,7 +918,7 @@ void CInputSystem::PollInputState_Windows()
 						g_pInputSystem->PostUserEvent( event );
 					}
 					
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 					// [will] - HACK: Allow cmd+a, cmd+c, cmd+v, cmd+x to go through, and treat them as the ctrl modified versions.
 					// This allows these to work in the Scaleform chat window.
 					if ( pEvent->m_ModifierKeyMask & (1<<eCommandKey)

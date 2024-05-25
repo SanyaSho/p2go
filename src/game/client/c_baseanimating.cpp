@@ -5237,7 +5237,7 @@ void C_BaseAnimating::DoAnimationEvents( CStudioHdr *pStudioHdr )
 	if ( bIsInvisible && !clienttools->IsInRecordingMode() )
 		return;
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	// We already handle muzzle flash events in CSTRIKE15.
 	// Also this code has a bug in that it always uses attachment 1 instead of by name.
 
@@ -6800,7 +6800,7 @@ bool C_BaseAnimating::InitAsClientRagdoll( const matrix3x4_t *pDeltaBones0, cons
 	return InitAsClientRagdoll( pDeltaBones0, pDeltaBones1, pCurrentBonePosition, boneDt, m_vecForce, bleedOut );
 }
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 
 // [msmith] We want shadows for the following entity classes.
 //          We could probably just get rid of this and turn on rtt shadows for everything that would use them.

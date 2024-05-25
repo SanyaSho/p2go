@@ -16,7 +16,7 @@
 #include "tier1/keyvalues.h"
 #include "toolframework/itoolframework.h"
 #include "toolframework_client.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "c_cs_player.h"
 #endif
 
@@ -128,7 +128,7 @@ void C_BaseCombatWeapon::OnDataChanged( DataUpdateType_t updateType )
 	C_BaseCombatCharacter *pOwner = GetOwner();
 	C_BasePlayer *pPlayer = ToBasePlayer( pOwner );
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	C_CSPlayer *pObservedPlayer = GetHudPlayer();
 	// check if weapon was dropped by local player or the player we are observing
 	if ( pObservedPlayer == pPlayer && pObservedPlayer->State_Get() == STATE_ACTIVE )

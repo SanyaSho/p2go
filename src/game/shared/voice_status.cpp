@@ -35,7 +35,7 @@
 #include "c_portal_gamestats.h"
 #endif
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 #include "c_cs_player.h"
 #include "matchmaking/imatchtitle.h"
 #include "matchmaking/iplayer.h"
@@ -63,7 +63,7 @@ ConVar voice_local_icon( "voice_local_icon", "0", FCVAR_NONE, "Draw local player
 ConVar voice_all_icons( "voice_all_icons", "0", FCVAR_NONE, "Draw all players' voice icons" );
 ConVar voice_icons_method( "voice_icons_method", "2", FCVAR_NONE, "0 = classic style, 1 = particles, 2 = integrated into target ID" );
 
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 ConVar cl_mute_enemy_team( "cl_mute_enemy_team", "0", FCVAR_ARCHIVE, "Block all communication from players on the enemy team." );
 ConVar cl_mute_all_but_friends_and_party( "cl_mute_all_but_friends_and_party", "0", FCVAR_ARCHIVE, "Only allow communication from friends and matchmaking party members. Doesn't apply to competitive matchmaking games." );
 #endif
@@ -475,7 +475,7 @@ void CVoiceStatus::UpdateSpeakerStatus(int entindex, int iSsSlot, bool bTalking)
 	if( entindex == -1 && iSsSlot >= 0 )
 	{
 		m_bTalking[ iSsSlot ] = !!bTalking;
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		if( bTalking )
 		{
 			// Enable voice for them automatically if they try to talk.
@@ -720,7 +720,7 @@ bool CVoiceStatus::IsPlayerBlocked(int iPlayer)
 
 bool CVoiceStatus::ShouldHideCommunicationFromPlayer( int iPlayerIndex )
 {
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 	C_CSPlayer* pLocalPlayer = C_CSPlayer::GetLocalCSPlayer();
 	if ( pLocalPlayer && pLocalPlayer->entindex() == iPlayerIndex )
 		return false;

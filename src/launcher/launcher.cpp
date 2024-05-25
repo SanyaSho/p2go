@@ -107,7 +107,7 @@ int MessageBox( HWND hWnd, const char *message, const char *header, unsigned uTy
 
 #if defined ( CSTRIKE15 )
 
-#define DEFAULT_HL2_GAMEDIR	"csgo"
+#define DEFAULT_HL2_GAMEDIR	"portal2"
 
 #else
 
@@ -1538,11 +1538,11 @@ extern "C" DLL_EXPORT int LauncherMain( int argc, char **argv )
 
 #if defined (CSTRIKE15)
 
-	// GS - If we didn't specify a game name then default to CSGO
+	// GS - If we didn't specify a game name then default to Portal 2
 	// This is required for running from a HDD Boot Game package
 	if ( CommandLine()->CheckParm( "-game") == NULL )
 	{
-		CommandLine()->AppendParm( "-game", "csgo" );
+		CommandLine()->AppendParm( "-game", "portal2" );
 	}
 
 #if defined _PS3

@@ -57,7 +57,7 @@
 #include "GameUI/IGameUI.h"
 #include "sv_main.h"
 #if defined( BINK_VIDEO )
-#include "bink/bink.h"
+#include "../BinkSDK/bink.h"
 #endif
 #include "vgui/IVGui.h"
 #include "IHammer.h"

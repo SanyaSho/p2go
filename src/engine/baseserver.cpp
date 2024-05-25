@@ -222,7 +222,7 @@ ConVar			sv_alternateticks( "sv_alternateticks", ( IsX360() ) ? "1" : "0", FCVAR
 ConVar			sv_allow_wait_command( "sv_allow_wait_command", "1", FCVAR_REPLICATED | FCVAR_RELEASE, "Allow or disallow the wait command on clients connected to this server." );
 #if !defined( CSTRIKE15 )
 // We are switching CStrike to always have lobbies associated with servers for community matchmaking
-ConVar			sv_allow_lobby_connect_only( "sv_allow_lobby_connect_only", "1",  FCVAR_RELEASE, "If set, players may only join this server from matchmaking lobby, may not connect directly." );
+ConVar			sv_allow_lobby_connect_only( "sv_allow_lobby_connect_only", "0",  FCVAR_RELEASE, "If set, players may only join this server from matchmaking lobby, may not connect directly." );
 #endif
 static ConVar   sv_reservation_timeout( "sv_reservation_timeout", "45", FCVAR_RELEASE, "Time in seconds before lobby reservation expires.", true, 5.0f, true, 180.0f );
 static ConVar   sv_reservation_grace( "sv_reservation_grace", "5", 0, "Time in seconds given for a lobby reservation.", true, 3.0f, true, 30.0f );
@@ -487,7 +487,7 @@ bool CBaseServer::IsSinglePlayerGame() const
 	if ( m_nMaxclients <= 1 )
 		return true;
 
-	#if !defined( PORTAL2 ) && !defined( CSTRIKE15 )
+	#if !defined( PORTAL2 ) && !defined( CSTRIKE15_REAL )
 	//
 	// Portal 2 offline splitscreen games should NOT be paused
 	// transition movies during loading rely on player think functions

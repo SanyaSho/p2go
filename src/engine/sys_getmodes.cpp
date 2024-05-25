@@ -793,7 +793,7 @@ void CVideoMode_Common::DrawStartupGraphic()
     IMaterial *pLoadingMaterial = g_pMaterialSystem->CreateMaterial( "__loading", pVMTKeyValues );
 
 // Don't draw the title text for CSS15
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 
 	pVMTKeyValues = new KeyValues( "UnlitGeneric" );
 #if defined( PORTAL2 )
@@ -879,7 +879,7 @@ void CVideoMode_Common::DrawStartupGraphic()
 		
 		float depth = 0.5f;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 		// Apply a custom scaling that mirrors the way we draw the Scaleform background texture
 		Assert( tw == th );
 
@@ -908,7 +908,7 @@ void CVideoMode_Common::DrawStartupGraphic()
 #endif // CSTRIKE15
 
 // Don't draw the title text for CSS15
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		// center align at bottom
 		int title_y = vgui::scheme()->GetProportionalScaledValue( 390 );
 		int title_w = vgui::scheme()->GetProportionalScaledValue( 240 );

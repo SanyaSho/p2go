@@ -30,7 +30,7 @@
 #include "fmtstr.h"
 #include "videocfg/videocfg.h"
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "cs_gamerules.h"
 #include "cs_team.h"
 #endif
@@ -670,7 +670,7 @@ void CPointServerCommand::InputCommand( inputdata_t& inputdata )
 	if ( !inputdata.value.String()[0] )
 		return;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	CBasePlayer *player = UTIL_GetListenServerHost();
 	// if we're on a dedicated server or a non-listen server, only accept whitelisted commands
 	if ( engine->IsDedicatedServer() || player == NULL )
@@ -824,8 +824,8 @@ void kill_helper( const CCommand &args, bool bVector, bool bExplode )
 	{
 		pPlayer = UTIL_GetCommandClient();
 	}
-#if defined ( CSTRIKE15 )
-	if ( !pPlayer || g_pGameRules->IgnorePlayerKillCommand() )
+#if defined ( CSTRIKE15_REAL )
+	if ( !pPlayer || g_pGameRules->IgnorePlayerKillCommand() ) // lame
 	{
 		return;
 	}

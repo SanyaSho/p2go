@@ -1104,7 +1104,7 @@ void CGameUI::ShowMessageDialog(const uint nType, vgui::Panel* pOwner)
 
 void CGameUI::ShowMessageDialog(const char* messageID, const char* titleID)
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #if defined( INCLUDE_SCALEFORM )
 	((CCStrike15BasePanel*)BasePanel())->OnOpenMessageBox(titleID, messageID, "#SFUI_Legend_Ok", MESSAGEBOX_FLAG_OK, NULL, NULL);
 #endif
@@ -1113,7 +1113,7 @@ void CGameUI::ShowMessageDialog(const char* messageID, const char* titleID)
 
 void CGameUI::CreateCommandMsgBox(const char* pszTitle, const char* pszMessage, bool showOk, bool showCancel, const char* okCommand, const char* cancelCommand, const char* closedCommand, const char* pszLegend)
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #if defined( INCLUDE_SCALEFORM )
 	((CCStrike15BasePanel*)BasePanel())->CreateCommandMsgBox(pszTitle, pszMessage, showOk, showCancel, okCommand, cancelCommand, closedCommand, pszLegend);
 #endif
@@ -1123,7 +1123,7 @@ void CGameUI::CreateCommandMsgBox(const char* pszTitle, const char* pszMessage, 
 
 void CGameUI::CreateCommandMsgBoxInSlot(ECommandMsgBoxSlot slot, const char* pszTitle, const char* pszMessage, bool showOk, bool showCancel, const char* okCommand, const char* cancelCommand, const char* closedCommand, const char* pszLegend)
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #if defined( INCLUDE_SCALEFORM )
 	((CCStrike15BasePanel*)BasePanel())->CreateCommandMsgBoxInSlot(slot, pszTitle, pszMessage, showOk, showCancel, okCommand, cancelCommand, closedCommand, pszLegend);
 #endif

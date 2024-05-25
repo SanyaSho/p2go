@@ -1933,7 +1933,7 @@ struct studiohwdata_t
 			return 0;
 
 		// On low GPU levels, we pull in the LOD transitions with a scale factor
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 		// Always slam the LOD transition scale factor to 1.0f in CS:GO. (Not that it should matter, we've disabled model LOD's, but just in case.)
 		float flSwitchPointModifier = 1.0f;
 #else

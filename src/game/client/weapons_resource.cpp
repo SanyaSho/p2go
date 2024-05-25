@@ -202,7 +202,7 @@ void WeaponsResource::LoadWeaponSprites( WEAPON_FILE_INFO_HANDLE hWeaponFileInfo
 		}
 	}
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	// Blast data into all of the Huds
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{

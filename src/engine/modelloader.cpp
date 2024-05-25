@@ -2796,7 +2796,7 @@ void Mod_LoadCubemapSamples( void )
 //-----------------------------------------------------------------------------
 void Mod_LoadSimpleWorldModel( const char *pMapBaseName )
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	// We only load the world imposter models for specific maps on cstrike15
 	if( !( V_stristr( pMapBaseName, "de_lake" ) ||
 		   V_stristr( pMapBaseName, "de_stmarc" ) ||
@@ -5318,7 +5318,7 @@ void CModelLoader::Map_LoadModelGuts( model_t *mod )
 		Mod_LoadCubemapSamples();
 	}
 
-#if defined( PORTAL2 ) || defined( CSTRIKE15 )
+#if defined( PORTAL2 ) || defined( CSTRIKE15_REAL )
 	{
 		MEM_ALLOC_CREDIT_("Mod_LoadSimpleWorldModel");
 		COM_TimestampedLog( "  Mod_LoadSimpleWorldModel" );

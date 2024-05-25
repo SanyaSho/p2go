@@ -81,7 +81,7 @@ static const char *gBugTokenTable[] = {
 
 
 // [jason] Forward Printf messages to the Scaleform voicestatus panel
-#if defined ( CSTRIKE15 )
+#if defined ( CSTRIKE15_REAL )
 inline void CS15ForwardStatusMsg( const char* text, int clientid )
 {
 	/* Removed for partner depot */
@@ -757,7 +757,7 @@ CBaseHudChat::CBaseHudChat( const char *pElementName )
 	vgui::HScheme scheme = vgui::scheme()->LoadSchemeFromFileEx( NULL, "resource/ChatScheme.res", "ChatScheme" );
 	SetScheme( scheme);
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 	g_pVGuiLocalize->AddFile( "resource/chat_%language%.txt" );
 #endif
 
@@ -1835,7 +1835,7 @@ void	CBaseHudChat::ChatPrintfW( int iPlayerIndex, int iFilter, const wchar_t *ws
 	}
 
 	// Forward message to Scaleform for display
-#if defined( CSTRIKE15 ) 
+#if defined( CSTRIKE15_REAL ) 
 
 	if ( iFilter != CHAT_FILTER_NONE )
 	{
@@ -1893,7 +1893,7 @@ void CBaseHudChat::ChatPrintf( int iPlayerIndex, int iFilter, const char *fmt, .
 		return;
 
 	// [jason] Forward message to Scaleform for display
-#if defined( CSTRIKE15 ) 
+#if defined( CSTRIKE15_REAL ) 
 
 	if ( iFilter != CHAT_FILTER_NONE )
 	{

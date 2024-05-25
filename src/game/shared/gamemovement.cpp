@@ -4393,7 +4393,7 @@ void CGameMovement::CheckFalling( void )
 		}
 	}
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	float flFallVel = player->m_Local.m_flFallVelocity;
 	if ( flFallVel > 16.0f && flFallVel <= PLAYER_FATAL_FALL_SPEED )
 	{

@@ -26,7 +26,7 @@
 #include <vgui_controls/AnimationController.h>
 #include <vgui/ISurface.h>
 #include "hud_lcd.h"
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	#include "c_cs_player.h"
 	#include "cs_gamerules.h"
 #endif
@@ -934,7 +934,7 @@ bool CHud::IsHidden( int iHudFlags )
 	if ( ( iHudFlags & HIDEHUD_NEEDSUIT ) && ( !localPlayer->IsSuitEquipped() ) )
 		return true;
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( CSGameRules() && CSGameRules()->IsPlayingTraining() )
 	{
 		C_CSPlayer *pCSPlayer = static_cast<C_CSPlayer *>( pPlayer );

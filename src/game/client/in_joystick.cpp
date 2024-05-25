@@ -143,7 +143,7 @@ ConVar joy_autosprint("joy_autosprint", "0", 0, "Automatically sprint when movin
 
 static ConVar joy_inverty("joy_inverty", "0", FCVAR_ARCHIVE | FCVAR_ARCHIVE_GAMECONSOLE | FCVAR_SS, "Whether to invert the Y axis of the joystick for looking." );
 
-#if !defined ( CSTRIKE15 )
+#if !defined ( CSTRIKE15_REAL )
 static ConVar joy_inverty_default( "joy_inverty_default", "0", FCVAR_ARCHIVE_GAMECONSOLE );				// Extracted & saved from profile
 static ConVar joy_movement_stick_default( "joy_movement_stick_default", "0", FCVAR_ARCHIVE_GAMECONSOLE );	// Extracted & saved from profile
 #endif

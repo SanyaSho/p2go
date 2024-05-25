@@ -187,7 +187,7 @@ void SCR_EndLoadingPlaque( void )
 	}
 	else if ( gfExtendedError )
 	{
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		if ( IsPC() )
 		{
 			EngineVGui()->ShowErrorMessage();

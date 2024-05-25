@@ -2156,7 +2156,7 @@ bool CBaseCombatCharacter::Weapon_EquipAmmoOnly( CBaseCombatWeapon *pWeapon )
 			int secondaryGiven	= (pWeapon->UsesClipsForAmmo2()) ? pWeapon->m_iClip2 : pWeapon->GetSecondaryAmmoCount();
 
 			bool bSuppressSound = false;
-#if defined (CSTRIKE15)
+#if defined (CSTRIKE15_REAL)
 			bSuppressSound = ShouldPickupItemSilently( this );
 #endif
 			CBaseCombatCharacter * pOwner = NULL;
@@ -2188,7 +2188,7 @@ bool CBaseCombatCharacter::Weapon_EquipAmmoOnly( CBaseCombatWeapon *pWeapon )
 			//Only succeed if we've taken ammo from the weapon
 			if ( takenPrimary > 0 || takenSecondary > 0 )
 			{
-#if defined (CSTRIKE15)
+#if defined (CSTRIKE15_REAL)
 				IGameEvent * event = gameeventmanager->CreateEvent( "ammo_pickup" );
 				if( event )
 				{

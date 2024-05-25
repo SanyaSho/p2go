@@ -172,7 +172,7 @@ void C_KeyValueSaver::MarkKeyValuesDirty( const char *pchFileName )
 
 bool C_KeyValueSaver::ReadKeyValues( KeyValueSaverData *pKeyValueData )
 {
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 #ifdef _GAMECONSOLE
 	DevMsg( "Read Game Instructor for splitscreen slot %d\n", m_nSplitScreenSlot );
 

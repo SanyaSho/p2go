@@ -260,7 +260,7 @@ bool CMultiplayRules::Damage_ShouldNotBleed( int iDmgType )
 CMultiplayRules::CMultiplayRules()
 {
 #ifndef CLIENT_DLL
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	// before we exec ANY cfg files or apply any convars, go through the bspconvar whitelist and set all convars in that list to their default value
 	KeyValues::AutoDelete pKV_wl( "convars" );
 	if ( pKV_wl->LoadFromFile( g_pFullFileSystem, "bspconvar_whitelist.txt", "GAME" ) )
@@ -1145,7 +1145,7 @@ CMultiplayRules::CMultiplayRules()
 			gameeventmanager->FireEvent( event );
 		}
 
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		for ( int i = 1; i <= MAX_PLAYERS; i++ )
 		{
 			CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
@@ -1189,7 +1189,7 @@ CMultiplayRules::CMultiplayRules()
 			}
 			return;
 		}
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 		const char* nextMapName = NULL;
 		if ( m_szNextLevelName && m_szNextLevelName[0] )
 		{

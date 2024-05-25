@@ -31,11 +31,6 @@
 	#include "c_physbox.h"
 	//#include "haptics\haptic_utils.h"
 
-#if defined( CSTRIKE15 )
-	#include "weapon_selection.h"
-	#include "c_cs_player.h"
-#endif
-
 	#define CRecipientFilter C_RecipientFilter
 
 #else
@@ -49,13 +44,6 @@
 	#include "ammodef.h"
 	#include "props.h"
 	#include "physobj.h"
-
-#if defined( CSTRIKE15 )
-	#include "weapon_c4.h"
-	#include "cs_shareddefs.h"
-	#include "cs_gamerules.h"
-#include "cs_player.h"
-#endif
 
 	#if defined( PORTAL )
 		#include "portal_player.h"
@@ -799,7 +787,7 @@ void CBasePlayer::PlayStepSound( Vector &vecOrigin, surfacedata_t *psurface, flo
 		IPhysicsSurfaceProps *physprops = MoveHelper()->GetSurfaceProps();
 		
 // footstep sounds
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 		const char *pRawSoundName = physprops->GetString( stepSoundName );
 		const char *pSoundName = NULL;
 		int const nStepCopyLen = V_strlen(pRawSoundName) + 4;
@@ -1055,7 +1043,7 @@ bool CBasePlayer::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex 
 			pViewModel->RemoveEffects( EF_NODRAW );
 		ResetAutoaim( );
 		OnSwitchWeapons( pWeapon );
-#if defined ( CLIENT_DLL ) && defined ( CSTRIKE15 )
+#if defined ( CLIENT_DLL ) && defined ( CSTRIKE15_REAL )
 		CBaseHudWeaponSelection *pHudSelection = GetHudWeaponSelection();
 		if ( pHudSelection )
 		{
@@ -1291,7 +1279,7 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 
 	const int NUM_TANGENTS = 8;
 
-#if defined( CSTRIKE15 ) && defined( GAME_DLL )
+#if defined( CSTRIKE15REAL ) && defined( GAME_DLL )
 	const int NUM_TRACES = 1;
 #else
 	const int NUM_TRACES = NUM_TANGENTS;
@@ -1329,7 +1317,7 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 			float centerZ = CollisionProp()->WorldSpaceCenter().z;
 			delta.z = IntervalDistance( tr.endpos.z, centerZ + CollisionProp()->OBBMins().z, centerZ + CollisionProp()->OBBMaxs().z );
 			float dist = delta.Length();
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 			CCSPlayer *pPlayer = dynamic_cast<CCSPlayer*>( pObject );
 			if ( (pPlayer && pPlayer->IsBot() && dist < PLAYER_USE_BOT_RADIUS) || dist < PLAYER_USE_RADIUS )
 			{
@@ -1385,7 +1373,7 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 		}
 	}
 
-#if defined( CSTRIKE15 ) && defined( GAME_DLL )
+#if defined( CSTRIKE15_REAL ) && defined( GAME_DLL )
 	CCSPlayer* pPlayer = ToCSPlayer( this );
 	const float MIN_DOT_FOR_WEAPONS = 0.99f;
 #endif
@@ -1404,7 +1392,7 @@ CBaseEntity *CBasePlayer::FindUseEntity()
 
 		float fMinimumDot = pObject->GetUseLookAtAngle();
 
-#if defined( CSTRIKE15 ) && defined( GAME_DLL )
+#if defined( CSTRIKE15_REAL ) && defined( GAME_DLL )
 		CWeaponCSBase *pWeapon = dynamic_cast<CWeaponCSBase*>( pObject );
 		CSWeaponType nWepType = WEAPONTYPE_UNKNOWN;
 		if ( pWeapon )
@@ -1584,7 +1572,7 @@ void CBasePlayer::PlayerUse ( void )
 
 	CBaseEntity *pUseEntity = FindUseEntity();
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	// in counterstrike 15, we need to allow the buy menu to open more easily
 	// The old code defaulted to using whatever you were pointing at.
 	// This code first checks to see if you're in a buy zone.  If that's true, 
@@ -2218,7 +2206,7 @@ void CBasePlayer::CalcViewRoll( QAngle& eyeAngles )
 	eyeAngles[ROLL] += side;
 }
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_real )
 #if defined( CLIENT_DLL )
 extern ConVar cl_use_new_headbob;
 //ConVar cl_headbob_freq( "cl_headbob_freq", "12", FCVAR_CLIENTDLL );
@@ -2229,7 +2217,7 @@ ConVar cl_headbob_land_dip_amt("cl_headbob_land_dip_amt", "4", FCVAR_CLIENTDLL )
 
 void CBasePlayer::CalcViewBob( Vector& eyeOrigin )
 {
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_real )
 #if defined( CLIENT_DLL )
 		if ( cl_use_new_headbob.GetBool() == false )
 			return;

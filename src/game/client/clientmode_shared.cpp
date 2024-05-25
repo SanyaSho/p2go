@@ -59,7 +59,7 @@
 #include "c_basehlplayer.h"
 #endif // PORTAL2
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 #include "c_cs_playerresource.h"
 #endif
 

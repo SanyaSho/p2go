@@ -8,7 +8,7 @@
 
 #ifdef CLIENT_DLL
 #include "prediction.h"
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 #include "c_cs_player.h"
 #endif
 #endif
@@ -52,7 +52,7 @@ CPredictedViewModel::~CPredictedViewModel()
 ConVar cl_wpn_sway_interp( "cl_wpn_sway_interp", "0.1", FCVAR_CLIENTDLL );
 ConVar cl_wpn_sway_scale( "cl_wpn_sway_scale", "1.6", FCVAR_CLIENTDLL|FCVAR_CHEAT );
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 extern ConVar	cl_use_new_headbob;
 #endif //CSTRIKE15
 
@@ -63,7 +63,7 @@ extern ConVar	cl_use_new_headbob;
 //-----------------------------------------------------------------------------
 void CPredictedViewModel::AddViewModelBob( CBasePlayer *owner, Vector& eyePosition, QAngle& eyeAngles )
 {
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 #ifdef CLIENT_DLL
 	if ( cl_use_new_headbob.GetBool() == false )
 		return;
@@ -241,7 +241,7 @@ void CPredictedViewModel::ApplyViewModelPitchAndDip( CBasePlayer *owner, Vector&
 #endif
 }
 
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 
 void CPredictedViewModel::CalcViewModelView( CBasePlayer *owner, const Vector& eyePosition, const QAngle& eyeAngles )
 {

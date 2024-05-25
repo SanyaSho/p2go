@@ -2060,7 +2060,7 @@ void CPrediction::_Update( int nSlot, bool received_new_world_update, bool valid
 	// This allows us to sample the world when it may not be ready to be sampled
 	Assert( C_BaseEntity::IsAbsQueriesValid() );
 	
-#ifndef CSTRIKE15 // this doesn't seem like it's applicable to the local cstrike player?
+#ifndef CSTRIKE15_REAL // this doesn't seem like it's applicable to the local cstrike player?
 	SetIdealPitch( nSlot, localPlayer, localPlayer->GetLocalOrigin(), localPlayer->GetLocalAngles(), localPlayer->m_vecViewOffset );
 #endif
 

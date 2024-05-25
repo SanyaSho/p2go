@@ -255,7 +255,7 @@ void GameTypes::ClearServerMapGroupInfo( void )
 // -------------------------------------------------------------------------------------------- //
 bool GameTypes::Initialize( bool force /* = false*/ )
 {
-	const char *fileName = "GameModes.txt";
+/*	const char* fileName = "GameModes.txt";
 
 	if ( m_Initialized &&
 		 !force )
@@ -395,7 +395,7 @@ bool GameTypes::Initialize( bool force /* = false*/ )
 	}
 
 	m_Initialized = true;
-
+	*/
 	return true;
 }
 

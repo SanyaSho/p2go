@@ -337,7 +337,7 @@ private:
 // to ease fragmentation due to streaming
 //-----------------------------------------------------------------------------
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 
 // CS:GO currently loads 518 anim blocks (most of which are in the 24-32K size range), I've made this 530 to allow for some additional animations that are coming soon.
 #define MAX_ANIMBLOCKS 530
@@ -2737,7 +2737,7 @@ studiohdr_t *CMDLCache::UnserializeMDL( MDLHandle_t handle, CMDLCacheData &cache
 	if ( !pStudioHdrIn )
 		return NULL;
 			
-#ifdef CSTRIKE15
+#ifdef CSTRIKE15_REAL
 	// Slamp root LOD to 0 for CS:GO
 	int nRootLOD = 0;
 #else

@@ -243,7 +243,7 @@ void Con_ShowConsole_f( void )
 
 		// [jason] Do not call this for CS:GO, since our loading screen is in Scaleform.  Additionally, this can
 		//	 cause a hang us during the load process since it prematurely fires OnEngineLevelLoadingFinished
-#if !defined( CSTRIKE15 )
+#if !defined( CSTRIKE15_REAL )
 		// remove any loading screen
 		SCR_EndLoadingPlaque();
 #endif

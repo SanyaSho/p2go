@@ -25,7 +25,7 @@
 #include "matchmaking/cstrike15/imatchext_cstrike15.h"
 #endif
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 #include "cs_gamerules.h"
 #include "matchmaking/cstrike15/imatchext_cstrike15.h"
 #endif
@@ -89,7 +89,7 @@ void EnableDisableInstructor( void )
 {
 	bool bEnabled = (!sv_gameinstructor_disable.GetBool() && gameinstructor_enable.GetBool());
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( CSGameRules() && CSGameRules()->IsPlayingTraining() )
 	{
 		bEnabled = true;
@@ -254,7 +254,7 @@ bool C_GameInstructor::Init( void )
 
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD( m_nSplitScreenSlot );
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( (!gameinstructor_enable.GetBool() || sv_gameinstructor_disable.GetBool()) && !(CSGameRules() && CSGameRules()->IsPlayingTraining()) )
 #else
 	if ( !gameinstructor_enable.GetBool() || sv_gameinstructor_disable.GetBool() )
@@ -381,7 +381,7 @@ void C_GameInstructor::Update( float frametime )
 
 	UpdateHiddenByOtherElements();
 
-#if defined( CSTRIKE15 )
+#if defined( CSTRIKE15_REAL )
 	if ( (!gameinstructor_enable.GetBool() || m_bNoDraw || m_bHiddenDueToOtherElements) && !(CSGameRules() && CSGameRules()->IsPlayingTraining()) )
 #else
 	if ( !gameinstructor_enable.GetBool() || m_bNoDraw || m_bHiddenDueToOtherElements )
