@@ -752,7 +752,6 @@ bool CSourceAppSystemGroup::Create()
     #if defined ( AVI_VIDEO )
  		{ LAUNCHER_APPSYSTEM( "valve_avi" ),			AVI_INTERFACE_VERSION },
     #endif 		
-#define BINK_VIDEO
     #if defined ( BINK_VIDEO )
  		{ LAUNCHER_APPSYSTEM( "valve_avi" ),			BIK_INTERFACE_VERSION },
  	#endif

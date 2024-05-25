@@ -174,7 +174,6 @@ bool CAudioDirectSound::Init(void)
 
 	if (SNDDMA_InitDirect() == SIS_SUCCESS)
 	{
-#define BINK_VIDEO
 #if defined ( BINK_VIDEO )
 		if (g_pBIK != NULL)
 		{

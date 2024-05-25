@@ -568,7 +568,6 @@ bool CEngineAPI::Connect( CreateInterfaceFn factory )
 		if ( !avi )
 			return false;
 	}
-#define BINK_VIDEO
 #if ( !defined( _GAMECONSOLE ) || defined( BINK_ENABLED_FOR_CONSOLE ) ) && defined( BINK_VIDEO )
 	bik = (IBik*)factory( BIK_INTERFACE_VERSION, NULL );
 	if ( !bik )

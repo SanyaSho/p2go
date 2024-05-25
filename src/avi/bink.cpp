@@ -3,7 +3,6 @@
 // Purpose: 
 //
 //=============================================================================
-#define BINK_VIDEO
 #if defined( BINK_VIDEO )
 
 #if !defined( _GAMECONSOLE ) || defined( BINK_ENABLED_FOR_CONSOLE )

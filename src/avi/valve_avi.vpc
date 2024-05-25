@@ -22,6 +22,7 @@ $Configuration
 		$AdditionalIncludeDirectories	"$BASE,..\common\quicktime_win32\"		[$QUICKTIME_WINDOWS]
 		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\dx9sdk\include"			[$WINDOWS]
 		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\thirdparty\sdl\include;$SRCDIR\thirdparty\sdl_mixer"	[$LINUXALL]
+		$PreprocessorDefinitions			"$BASE;BINK_VIDEO"
 	}
 	$Linker
 	{

@@ -2180,7 +2180,6 @@ void CGame::PlayVideoListAndWait(const char* szVideoFileList, bool bNeedHealthWa
 #endif
 #endif // DEDICATED
 }
-#define BINK_VIDEO
 //-----------------------------------------------------------------------------
 // Plays a Bink video until the video completes or user input cancels
 //-----------------------------------------------------------------------------

@@ -1051,7 +1051,6 @@ void S_Init( void )
 	{
 		S_EnableMusic(bPlaybackControl!=0);
 	}
-#define BINK_VIDEO
 #if defined( BINK_ENABLED_FOR_CONSOLE ) && defined(BINK_VIDEO)
 	bik->HookXAudio();
 #endif
