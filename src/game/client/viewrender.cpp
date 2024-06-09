@@ -58,8 +58,6 @@
 
 #define PARTICLE_USAGE_DEMO									// uncomment to get particle bar thing
 
-// TODO!! - any usage of DrawRecursivePortalViews has been commented out, the portal renderer just causes the game to crash and i dont know why
-
 #ifdef PORTAL
 #include "portal_render_targets.h"
 #include "portalrender.h"
