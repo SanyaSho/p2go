@@ -6880,7 +6880,7 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 	DrawOpaqueRenderables( pRenderContext, RENDERABLES_RENDER_PATH_NORMAL, DEPTH_MODE_NORMAL, NULL );
 
 #if defined( PORTAL )
-//	DrawRecursivePortalViews(); //Dave K: probably does nothing in this view, calling it anyway because it's contents were directly inside DrawTranslucentRenderables() a moment ago and I don't want to risk breaking anything
+	DrawRecursivePortalViews(); //Dave K: probably does nothing in this view, calling it anyway because it's contents were directly inside DrawTranslucentRenderables() a moment ago and I don't want to risk breaking anything
 #endif
 
 	// Iterate over all leaves and render objects in those leaves
@@ -7204,7 +7204,7 @@ void CAperturePhotoView::Draw()
 	if( bDrawEverything )
 	{
 #if defined( PORTAL )
-//		DrawRecursivePortalViews();
+		DrawRecursivePortalViews();
 #endif
 		DrawTranslucentRenderables( false, false );
 	}
@@ -7500,7 +7500,7 @@ void CShadowDepthView::Draw()
 		if ( r_flashlightdepth_drawtranslucents.GetBool() )
 		{
 #if defined( PORTAL )
-//			DrawRecursivePortalViews(); //Dave K: probably does nothing in this view, calling it anyway because it's contents were directly inside DrawTranslucentRenderables() a moment ago and I don't want to risk breaking anything
+			DrawRecursivePortalViews(); //Dave K: probably does nothing in this view, calling it anyway because it's contents were directly inside DrawTranslucentRenderables() a moment ago and I don't want to risk breaking anything
 #endif
 			DrawTranslucentRenderables( false, true );
 		}
@@ -8016,7 +8016,7 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 		if ( m_DrawFlags & DF_DRAW_ENTITITES )
 		{
 #if defined( PORTAL )
-//			DrawRecursivePortalViews();
+			DrawRecursivePortalViews();
 #endif
 			DrawDeferredClippedOpaqueRenderables( pRenderContext, RENDERABLES_RENDER_PATH_NORMAL, DEPTH_MODE_NORMAL, pArrFastClippedOpaqueRenderables );
 			DrawTranslucentRenderables( false, false );

@@ -1752,6 +1752,8 @@ void CBasePlayer::Event_Killed( const CTakeDamageInfo &info )
 
 	RumbleEffect( RUMBLE_STOP_ALL, 0, RUMBLE_FLAGS_NONE );
 
+	ClearUseEntity();
+
 	ForceDropOfCarriedPhysObjects();
 	
 	// this client isn't going to be thinking for a while, so reset the sound until they respawn
@@ -5191,6 +5193,9 @@ void CBasePlayer::Spawn(void)
 		gameeventmanager->FireEvent(event);
 	}
 #endif
+
+	m_bDuckEnabled = true;
+	m_bDropEnabled = true;
 
 	RumbleEffect(RUMBLE_STOP_ALL, 0, RUMBLE_FLAGS_NONE);
 

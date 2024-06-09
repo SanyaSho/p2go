@@ -405,7 +405,7 @@ void CPortalGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMov
 		// Cropping movement speed scales mv->m_fForwardSpeed etc. globally
 		// Once we crop, we don't want to recursively crop again, so we set the crop
 		// flag globally here once per usercmd cycle.
-		//m_bSpeedCropped = false; TODO: CROPPED SPEED
+		m_bSpeedCropped = false;
 
 		m_bInPortalEnv = (((CPortal_Player *)pPlayer)->m_hPortalEnvironment != NULL);
 

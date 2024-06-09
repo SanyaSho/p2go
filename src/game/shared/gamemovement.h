@@ -283,7 +283,8 @@ protected:
 	Vector m_CachedGetPointContentsPoint[ MAX_PLAYERS ][ MAX_PC_CACHE_SLOTS ];	
 
 //private:
-	int				m_iSpeedCropped;
+	//int				m_iSpeedCropped;
+	bool			m_bSpeedCropped;
 
 	bool			m_bProcessingMovement;
 	bool			m_bInStuckTest;

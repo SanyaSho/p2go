@@ -1339,7 +1339,7 @@ void CGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMove )
 	// Cropping movement speed scales mv->m_fForwardSpeed etc. globally
 	// Once we crop, we don't want to recursively crop again, so we set the crop
 	//  flag globally here once per usercmd cycle.
-	m_iSpeedCropped = SPEED_CROPPED_RESET;
+	m_bSpeedCropped = false;
 	
 	// StartTrackPredictionErrors should have set this
 	Assert( pPlayer->IsBot() ||  player == pPlayer );
@@ -4728,15 +4728,15 @@ void CGameMovement::SetDuckedEyeOffset( float duckFraction )
 //          bInAir - is the player in air
 //    NOTE: Only crop player speed once.
 //-----------------------------------------------------------------------------
-void CGameMovement::HandleDuckingSpeedCrop( void )
+void CGameMovement::HandleDuckingSpeedCrop(void)
 {
-	if ( !( m_iSpeedCropped & SPEED_CROPPED_DUCK ) && ( player->GetFlags() & FL_DUCKING ) && ( player->GetGroundEntity() != NULL ) )
+	if (!m_bSpeedCropped && (player->GetFlags() & FL_DUCKING) && (player->GetGroundEntity() != NULL))
 	{
 		float frac = 0.33333333f;
-		mv->m_flForwardMove	*= frac;
-		mv->m_flSideMove	*= frac;
-		mv->m_flUpMove		*= frac;
-		m_iSpeedCropped		|= SPEED_CROPPED_DUCK;
+		mv->m_flForwardMove *= frac;
+		mv->m_flSideMove *= frac;
+		mv->m_flUpMove *= frac;
+		m_bSpeedCropped = true;
 	}
 }
 

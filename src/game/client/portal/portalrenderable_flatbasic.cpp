@@ -475,8 +475,14 @@ void CPortalRenderable_FlatBasic::RenderPortalViewToBackBuffer( CViewRender *pVi
 
 			//DRAW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			{
-				PIXEVENT( pRenderContext, "PortalRender" );
-				ViewDrawScene_PortalStencil( pViewRender, portalView, &customVisibility );
+				g_viewBuilder.Init();
+
+				g_viewBuilder.SetPassFlags(PASS_BUILDLISTS | PASS_DRAWLISTS);
+
+				PIXEVENT(pRenderContext, "PortalRender");
+				ViewDrawScene_PortalStencil(pViewRender, portalView, &customVisibility);
+
+				g_viewBuilder.Purge();
 			}
 
 			SetViewEntranceAndExitPortals( pRenderingViewForPortalBackup, pRenderingViewExitPortalBackup );
