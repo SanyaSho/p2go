@@ -566,13 +566,13 @@ IClient *CBaseServer::ConnectClient ( const ns_address &adr, int protocol, int c
 
 	bool bIsLocalConnection = adr.IsLocalhost() || adr.IsLoopback();
 
-#ifndef NO_STEAM
+/*#ifndef NO_STEAM
 	if ( IsExclusiveToLobbyConnections() && !IsReserved() && !bIsLocalConnection )
 	{
-		RejectConnection( adr, "Server only accepting connections from game lobby %s %d.\n", sAdr.String(), challenge );
+		RejectConnection( adr, "Server only accepting connections from game lobby %s %d.\n", sAdr.String(), challenge ); // Possibly temporarily removed
 		return NULL;
 	}
-#endif
+#endif*/
 
 	// Listen server level background map is always a single 
 	//  player map, don't allow shenanigans or mayhem.

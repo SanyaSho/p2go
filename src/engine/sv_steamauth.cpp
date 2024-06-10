@@ -316,9 +316,9 @@ steam_no_good:
 		{
 			Msg( "Logging in as official server anonymously.\n" );
 		}
-		else if ( NET_IsDedicated() || sv.IsDedicated() )
+		/*else if (NET_IsDedicated() || sv.IsDedicated())
 		{
-			Warning( "****************************************************\n" );
+			Warning("****************************************************\n");
 			Warning( "*                                                  *\n" );
 			Warning( "*  No Steam account token was specified.           *\n" );
 			Warning( "*  Logging into anonymous game server account.     *\n" );
@@ -328,7 +328,7 @@ steam_no_good:
 			Warning( "*  http://steamcommunity.com/dev/managegameservers *\n" );
 			Warning( "*                                                  *\n" );
 			Warning( "****************************************************\n" );
-		}
+		}*/
 		else
 		{
 			Msg( "Logging into anonymous listen server account.\n" );

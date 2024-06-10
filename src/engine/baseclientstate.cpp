@@ -2278,7 +2278,7 @@ void CBaseClientState::HandleDeferredConnection()
 		if ( !dc.m_unGSSteamID || !CSteamID( dc.m_unGSSteamID ).BGameServerAccount() )
 		{
 			Disconnect( true ); // cannot retry this attempt - the GS SteamID is not good
-			COM_ExplainDisconnection( true, "You cannot connect to this CS:GO server because it is restricted to LAN connections only.\n" );
+			COM_ExplainDisconnection( true, "You cannot connect to this Portal 2 server because it is restricted to LAN connections only.\n" );
 			return;
 		}
 		
@@ -2296,19 +2296,6 @@ void CBaseClientState::HandleDeferredConnection()
 			g_pMatchFramework->GetEventsSubscription()->BroadcastEvent( kvCreateSession );
 		}
 
-		if ( !uiReservationCookie )
-		{
-			Disconnect( true );	// disconnect the current attempt, will retry with GC reservation
-			{
-				KeyValues *kvCreateSession = new KeyValues( "OnEngineLevelLoadingSession" );
-				kvCreateSession->SetString( "reason", "CreateSession" );
-				kvCreateSession->SetString( "adr", ns_address_render( dc.m_adrServerAddress ).String() );
-				kvCreateSession->SetUint64( "gsid", dc.m_unGSSteamID );
-				// NO PTR HERE, FORCE COOKIE: kvCreateSession->SetPtr( "ptr", &uiReservationCookie );
-				g_pMatchFramework->GetEventsSubscription()->BroadcastEvent( kvCreateSession );
-			}
-		}
-		else
 			SendConnectPacket( dc.m_adrServerAddress, dc.m_nChallenge, dc.m_nAuthprotocol, dc.m_unGSSteamID, dc.m_bGSSecure );
 #endif
 	}
