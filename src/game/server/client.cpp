@@ -332,8 +332,6 @@ void Host_Say( edict_t *pEdict, const CCommand &args, bool teamonly )
 PRECACHE_REGISTER_BEGIN( GLOBAL, ClientPrecache )
 #ifndef DOTA_DLL
 	// Precache cable textures.
-	PRECACHE( MODEL, "cable/phonecable.vmt" )
-	PRECACHE( MODEL, "cable/phonecable_red.vmt" )
 	PRECACHE( MODEL, "cable/cable.vmt" )
 	PRECACHE( MODEL, "cable/cable_lit.vmt" )
 	PRECACHE( MODEL, "cable/chain.vmt" )
@@ -356,8 +354,6 @@ PRECACHE_REGISTER_BEGIN( GLOBAL, ClientPrecache )
 	PRECACHE( GAMESOUND, "Player.PickupWeapon" )
 	PRECACHE( GAMESOUND, "Player.DenyWeaponSelection" )
 	PRECACHE( GAMESOUND, "Player.WeaponSelected" )
-	PRECACHE( GAMESOUND, "Player.WeaponSelected_CT")
-	PRECACHE( GAMESOUND, "Player.WeaponSelected_T")
 	PRECACHE( GAMESOUND, "Player.WeaponSelectionClose" )
 	PRECACHE( GAMESOUND, "Player.WeaponSelectionMoveSlot" )
 
