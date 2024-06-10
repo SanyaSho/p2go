@@ -2477,11 +2477,11 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 
 	input->LevelInit();
 
-	//for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
-	//{
-	//	ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
+	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
+	{
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 		GetViewEffects()->LevelInit();
-	//}
+	}
 
 	// Tell mode manager that map is changing
 	modemanager->LevelInit( pMapName );
@@ -2498,11 +2498,11 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 	clienteffects->Flush();
 	view->LevelInit();
 	tempents->LevelInit();
-	//for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
-	//{
-	//	ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
+	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
+	{
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 		ResetToneMapping(1.0);
-	//}
+	}
 
 	IGameSystem::LevelInitPreEntityAllSystems(pMapName);
 
@@ -2543,9 +2543,9 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 	// Check low violence settings for this map
 	g_RagdollLVManager.SetLowViolence( pMapName );
 
-	//for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
-	//{
-		//ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
+	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
+	{
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 
 		engine->TickProgressBar();
 
@@ -2555,7 +2555,7 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 		{
 			GetViewPortInterface()->LevelInit();
 		}
-	//}
+	}
 		ConVarRef ui_lastact_played("ui_lastact_played");
 		ui_lastact_played.SetValue(MapNameToChapterFixed(pMapName));
 

@@ -2945,7 +2945,7 @@ void VGui_SetGameDLLPanelsVisible( bool show )
 
 void CEngineVGui::SetProgressLevelName( const char *levelName )
 {
-//	staticGameUIFuncs->SetProgressLevelName( levelName );
+	staticGameUIFuncs->SetProgressLevelName( levelName );
 }
 
 void CEngineVGui::OnToolModeChanged( bool bGameMode )

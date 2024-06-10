@@ -157,7 +157,7 @@ void LoadingProgress::UpdateWorkingAnim()
 		if ( ( m_flLastEngineTime + 0.1f ) < time )
 		{
 			m_flLastEngineTime = time;
-			m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetNumFrames() + 1); //TODO!: IDK GetFrames()
+			m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetFrame() + 1 );
 		}
 	}
 }
@@ -241,7 +241,7 @@ void LoadingProgress::PaintBackground()
 		int x, y, wide, tall;
 
 		m_pWorkingAnim->GetBounds( x, y, wide, tall );
-		m_pWorkingAnim->GetImage()->SetFrame( m_pWorkingAnim->GetNumFrames() ); //TODO!: IDK: GetFrames()
+		m_pWorkingAnim->GetImage()->SetFrame(m_pWorkingAnim->GetFrame());
 
 		surface()->DrawSetColor( Color( 255, 255, 255, 255 ) );
 		surface()->DrawSetTexture( m_pWorkingAnim->GetImage()->GetID() );
