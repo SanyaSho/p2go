@@ -6,14 +6,14 @@
 
 #include "cbase.h"
 
-//#include "c_gameinstructor.h"
-//#include "c_baselesson.h"
+#include "c_gameinstructor.h"
+#include "c_baselesson.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
 
-/*void CScriptedIconLesson::Mod_PreReadLessonsFromFile(void)
+void CScriptedIconLesson::Mod_PreReadLessonsFromFile(void)
 {
 
 }
@@ -28,4 +28,4 @@ bool C_GameInstructor::Mod_HiddenByOtherElements( void )
 {
 
 	return false;
-}*/
+}

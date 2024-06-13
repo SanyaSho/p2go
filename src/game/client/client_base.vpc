@@ -185,7 +185,7 @@ $Project
 		$File	"C_MaterialModifyControl.cpp"
 		$File	"c_memorylog.cpp"								[$X360||$PS3]
 		$File	"c_memorylog.h"									[$X360||$PS3]
-		$File	"c_mod_lesson_stubs.cpp"
+		//$File	"c_mod_lesson_stubs.cpp" not in p2asw
 		$File	"c_movie_display.cpp"
 		$File	"c_particle_system.cpp"
 		$File	"c_physbox.cpp"

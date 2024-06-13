@@ -377,7 +377,7 @@ public:
 
 ISaveRestoreBlockHandler *GetEntitySaveRestoreBlockHandler();
 ISaveRestoreBlockHandler *GetViewEffectsRestoreBlockHandler();
-//ISaveRestoreBlockHandler *GetGameInstructorRestoreBlockHandler();
+ISaveRestoreBlockHandler *GetGameInstructorRestoreBlockHandler();
 
 CUtlLinkedList<CDataChangedEvent, unsigned short> g_DataChangedEvents;
 CUtlLinkedList<CDataChangedEvent, unsigned short> g_DataChangedPostEvents;
@@ -1367,7 +1367,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetEntitySaveRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetPhysSaveRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetViewEffectsRestoreBlockHandler() );
-	//g_pGameSaveRestoreBlockSet->AddBlockHandler( GetGameInstructorRestoreBlockHandler() );
+	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetGameInstructorRestoreBlockHandler() );
 
 	ClientWorldFactoryInit();
 
@@ -1763,7 +1763,7 @@ void CHLClient::Shutdown( void )
 	C_BaseAnimating::ShutdownBoneSetupThreadPool();
 	ClientWorldFactoryShutdown();
 
-	//g_pGameSaveRestoreBlockSet->RemoveBlockHandler( GetGameInstructorRestoreBlockHandler() );
+	g_pGameSaveRestoreBlockSet->RemoveBlockHandler( GetGameInstructorRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->RemoveBlockHandler( GetViewEffectsRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->RemoveBlockHandler( GetPhysSaveRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->RemoveBlockHandler( GetEntitySaveRestoreBlockHandler() );
