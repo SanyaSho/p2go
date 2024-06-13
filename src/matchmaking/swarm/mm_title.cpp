@@ -224,7 +224,8 @@ bool CMatchTitle::StartServerMap( KeyValues *pSettings )
 	KeyValues *pGameDllReserve = g_pMatchFramework->GetMatchNetworkMsgController()->PackageGameDetailsForReservation( pSettings );
 	KeyValues::AutoDelete autodelete( pGameDllReserve );
 
-	if (pInfoChapter->GetString("game/save"))
+	const char* saveString = pInfoChapter->GetString("game/save", nullptr);
+	if (saveString && saveString[0] != '\0')
 	{
 		pGameDllReserve->SetString("game/save", pInfoChapter->GetString("game/save"));
 	}
