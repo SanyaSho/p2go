@@ -6,7 +6,7 @@
 
 #include "mm_title.h"
 #include "matchext_swarm.h"
-#include "swarm.spa.h"
+#include "steam/isteamuserstats.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -55,7 +55,7 @@ TitleDataFieldsDescription_t const * CMatchTitle::DescribeTitleDataStorage()
 #endif
 
 		// END MARKER
-		TD_ENTRY( NULL, DB_TD1, DT_U8, 0 )
+		TD_ENTRY( NULL, DB_TD1, DT_uint8, 0 )
 	};
 
 #undef TD_ENTRY
@@ -67,7 +67,7 @@ TitleAchievementsDescription_t const * CMatchTitle::DescribeTitleAchievements()
 {
 	static TitleAchievementsDescription_t tad[] =
 	{
-#include "swarm.xhelp.achtitledesc.txt"
+//#include "swarm.xhelp.achtitledesc.txt"
 		// END MARKER
 		{ NULL, 0 }
 	};
@@ -79,7 +79,7 @@ TitleAvatarAwardsDescription_t const * CMatchTitle::DescribeTitleAvatarAwards()
 {
 	static TitleAvatarAwardsDescription_t taad[] =
 	{
-#include "swarm.xhelp.avawtitledesc.txt"
+//#include "swarm.xhelp.avawtitledesc.txt"
 		// END MARKER
 		{ NULL, 0 }
 	};

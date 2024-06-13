@@ -135,6 +135,8 @@
 #include "paint/paint_saverestore.h"
 #include "prop_portal_shared.h"
 #include "portal_shareddefs.h"
+// HACK!
+#include "matchmaking/swarm/imatchext_swarm.h"
 #endif // PORTAL2
 
 #ifdef DOTA_DLL
@@ -230,6 +232,8 @@ IBlackBox *blackboxrecorder = NULL;
 IASW_Mission_Chooser *missionchooser = NULL;
 IMatchExtSwarm *g_pMatchExtSwarm = NULL;
 #endif
+
+IMatchExtSwarm* g_pMatchExt = NULL; // HACK!
 
 IGameSystem *SoundEmitterSystem();
 void SoundSystemPreloadSounds( void );
@@ -805,7 +809,11 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 		return false;
 #endif
 
-	if ( !g_pMatchFramework )
+	// HACK!
+	if ((g_pMatchExt = (IMatchExtSwarm*)appSystemFactory(IMATCHEXT_SWARM_INTERFACE, NULL)) == NULL)
+		return false;
+
+	if (!g_pMatchFramework)
 		return false;
 	if ( IMatchExtensions *pIMatchExtensions = g_pMatchFramework->GetMatchExtensions() )
 		pIMatchExtensions->RegisterExtensionInterface(
@@ -3888,7 +3896,7 @@ bool CServerGameDLL::ShouldHoldGameServerReservation(float flTimeElapsedWithoutC
 	return false; // let the server get unreserved
 }
 
-void CServerGameDLL::ApplyGameSettings(KeyValues *pKV)
+/*void CServerGameDLL::ApplyGameSettings(KeyValues* pKV)
 {
 	if (!pKV)
 	{
@@ -3917,7 +3925,7 @@ void CServerGameDLL::ApplyGameSettings(KeyValues *pKV)
 			// map rotation process
 			pMapGroupName = engine->IsDedicatedServer() ? STRING(gpGlobals->mapGroupName) : pMapGroupName;
 		}
-		*/
+		*//*
 
 		if (pMapGroupName && (pMapGroupName[0] != '\0') && !pMapNameFromKV)
 		{
@@ -3986,6 +3994,7 @@ void CServerGameDLL::ApplyGameSettings(KeyValues *pKV)
 				// Cheats were disabled; revert all cheat cvars to their default values.
 				// This must be done heading into multiplayer games because people can play
 				// demos etc and set cheat cvars with sv_cheats 0.
+				/*
 				g_pCVar->RevertFlaggedConVars(FCVAR_CHEAT);
 
 				// we know that the loading screen data is correct, so let the loading screen know
@@ -4045,7 +4054,7 @@ void CServerGameDLL::ApplyGameSettings(KeyValues *pKV)
 				engine->ServerExecute();
 		}
 	}
-}
+}*/
 
 //-----------------------------------------------------------------------------
 // Purpose: 

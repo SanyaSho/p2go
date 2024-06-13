@@ -248,7 +248,7 @@ void CGameUI::Initialize( CreateInterfaceFn factory )
 #ifdef _X360
 	xonline = (IXOnline *)factory( XONLINE_INTERFACE_VERSION, NULL );
 #endif
-#ifdef SWARM_DLL
+#ifdef PORTAL2 // HACK!
 	g_pMatchExt = ( IMatchExtSwarm * ) factory( IMATCHEXT_SWARM_INTERFACE, NULL );
 #endif
 	bFailed = !enginesurfacefuncs || !gameuifuncs || !enginevguifuncs ||
@@ -256,7 +256,7 @@ void CGameUI::Initialize( CreateInterfaceFn factory )
 #ifdef _X360
 		!xonline ||
 #endif
-#ifdef SWARM_DLL
+#ifdef PORTAL2 // HACK!
 		!g_pMatchExt ||
 #endif
 		!g_pMatchFramework;

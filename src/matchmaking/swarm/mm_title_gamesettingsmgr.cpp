@@ -6,7 +6,7 @@
 
 #include "mm_title.h"
 #include "mm_title_richpresence.h"
-#include "swarm.spa.h"
+//#include "swarm.spa.h"
 #include "matchext_swarm.h"
 
 #include "vstdlib/random.h"
@@ -17,6 +17,7 @@
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+#include <csgo_limits.inl>
 
 
 ConVar mm_matchmaking_version( "mm_matchmaking_version", "9" );
@@ -27,6 +28,20 @@ class CMatchTitleGameSettingsMgr : public IMatchTitleGameSettingsMgr
 public:
 	// Extends server game details
 	virtual void ExtendServerDetails( KeyValues *pDetails, KeyValues *pRequest );
+
+	virtual void UpdateTeamProperties(KeyValues* pCurrentSettings, KeyValues* pTeamProperties);
+
+	virtual void ExtendDatacenterReport(KeyValues* cmd, char const* szReason);
+
+	// Defines dedicated server search key
+	virtual KeyValues* DefineDedicatedSearchKeys(KeyValues* pSettings, bool bNeedOfficialServer, int nSearchPass);
+
+	void LoadMatchSettings(void);
+
+	virtual KeyValues* ExtendTeamLobbyToGame(KeyValues* pSettings);
+
+	// Initializes full game settings from potentially abbreviated game settings
+	virtual void InitializeGameSettings(KeyValues* pSettings, const char* szReason);
 
 	// Adds the essential part of game details to be broadcast
 	virtual void ExtendLobbyDetailsTemplate( KeyValues *pDetails, char const *szReason, KeyValues *pFullSettings );
@@ -43,12 +58,8 @@ public:
 	// Defines session search keys for matchmaking
 	virtual KeyValues * DefineSessionSearchKeys( KeyValues *pSettings );
 
-	// Defines dedicated server search key
-	virtual KeyValues * DefineDedicatedSearchKeys( KeyValues *pSettings );
-
-
-	// Initializes full game settings from potentially abbreviated game settings
-	virtual void InitializeGameSettings( KeyValues *pSettings );
+	// Sets the bspname key given a mapgroup
+	virtual void SetBspnameFromMapgroup(KeyValues* pSettings) {};
 
 	// Extends game settings update packet before it gets merged with
 	// session settings and networked to remote clients
@@ -75,11 +86,97 @@ public:
 	// Returns the update/delete package to be applied to session settings
 	// and pushed to dependent two sesssion of the two teams.
 	virtual KeyValues * PrepareTeamLinkForGame( KeyValues *pSettingsLocal, KeyValues *pSettingsRemote );
+
+	// Prepares the client lobby for migration
+	// this function is called when the client session is still in the state
+	// of "client" while handling the original host disconnection and decision
+	// has been made that local machine will be elected as new "host"
+	// Returns NULL if migration should proceed normally
+	// Returns [ kvroot { "error" "n/a" } ] if migration should be aborted.
+	virtual KeyValues* PrepareClientLobbyForMigration(KeyValues* pSettingsLocal, KeyValues* pMigrationInfo) { return NULL; }
+
+	// Prepares the session for server disconnect
+	// this function is called when the session is still in the active gameplay
+	// state and while localhost is handling the disconnection from game server.
+	// Returns NULL to allow default flow
+	// Returns [ kvroot { "disconnecthdlr" "<opt>" } ] where <opt> can be:
+	//		"destroy" : to trigger a disconnection error and destroy the session
+	//		"lobby" : to initiate a "salvaging" lobby transition
+	virtual KeyValues* PrepareClientLobbyForGameDisconnect(KeyValues* pSettingsLocal, KeyValues* pDisconnectInfo)
+	{
+		// Every event that causes a disconnection from game server is unsalvagable in CS:GO
+		// in other products it should be possible to keep all players that were playing on game server
+		// in the lobby together and send them to lobby UI
+		return new KeyValues("disconnecthdrl", "disconnecthdlr", "destroy");
+	}
+
+	// Validates if client profile can set a stat or get awarded an achievement
+	virtual bool AllowClientProfileUpdate(KeyValues* kvUpdate)
+	{
+		return true;			// Always all profile to be updated for CStrike15, all platforms
+	}
+
+	// Retrieves the indexed formula from the match system settings file. (MatchSystem.360.res)
+	char const* CMatchTitleGameSettingsMgr::GetFormulaAverage(int index)
+	{
+		// Ensure the matchmaking settings are loaded.
+		LoadMatchSettings();
+
+		return "newValue";
+	}
 };
 
 CMatchTitleGameSettingsMgr g_MatchTitleGameSettingsMgr;
 IMatchTitleGameSettingsMgr *g_pIMatchTitleGameSettingsMgr = &g_MatchTitleGameSettingsMgr;
 
+// Called by the client to notify matchmaking that it should update matchmaking properties based
+// on player distribution among the teams.
+void CMatchTitleGameSettingsMgr::UpdateTeamProperties(KeyValues* pCurrentSettings, KeyValues* pTeamProperties)
+{
+	// TODO STUB
+}
+
+// Adds data for datacenter reporting
+void CMatchTitleGameSettingsMgr::ExtendDatacenterReport(KeyValues* cmd, char const* szReason)
+{
+	// *shrug*
+}
+
+void CMatchTitleGameSettingsMgr::LoadMatchSettings(void)
+{
+	// TODO STUB
+}
+
+KeyValues* CMatchTitleGameSettingsMgr::ExtendTeamLobbyToGame(KeyValues* pSettings)
+{
+	KeyValues* pUpdate = KeyValues::FromString(
+		"update",
+		" update { "
+		" system { "
+		" network LIVE "
+		" netFlag #empty#"
+		" } "
+		" options { "
+		" bypasslobby 1"
+		" } "
+		" game {"
+		" } "
+		" members {"
+		" } "
+		" } "
+	);
+
+	// Add in bsp name from map group name
+	const char* pMapGroupName = pSettings->GetString("game/mapgroupname", NULL);
+	Assert(pMapGroupName);
+	const char* pMapName = pSettings->GetString("game/map", NULL);
+	Assert(pMapName);
+
+	DevMsg("CMatchTitleGameSettingsMgr::ExtendTeamLobbyToGame\n");
+	KeyValuesDumpAsDevMsg(pUpdate);
+
+	return pUpdate;
+}
 
 //
 // Mission information block
@@ -268,7 +365,7 @@ void AppendToRollup( char const *sz, CRC32_t &u )
 	char const *p2 = p1;
 	while ( *p2 )
 	{
-		while ( *p2 && !isupper( *p2 ) )
+		while ( *p2 && !V_isupper( *p2 ) )
 		{
 			++ p2;
 		}
@@ -413,7 +510,7 @@ KeyValues * CMatchTitleGameSettingsMgr::RollupGameDetails( KeyValues *pDetails, 
 }
 
 // Defines dedicated server search key
-KeyValues * CMatchTitleGameSettingsMgr::DefineDedicatedSearchKeys( KeyValues *pSettings )
+KeyValues * CMatchTitleGameSettingsMgr::DefineDedicatedSearchKeys(KeyValues* pSettings, bool bNeedOfficialServer, int nSearchPass)
 {
 	if ( IsPC() )
 	{
@@ -507,7 +604,7 @@ KeyValues * CMatchTitleGameSettingsMgr::DefineSessionSearchKeys( KeyValues *pSet
 	
 	char const *szGameMode = pSettings->GetString( "game/mode", "" );
 
-	if ( IsX360() )
+	/*if (IsX360())
 	{
 
 		if ( char const *szValue = pSettings->GetString( "game/mode", NULL ) )
@@ -593,7 +690,7 @@ KeyValues * CMatchTitleGameSettingsMgr::DefineSessionSearchKeys( KeyValues *pSet
 		}
 
 	}
-	else
+	else*/
 	{
 
 		char const *szGameMode = pSettings->GetString( "game/mode" );
@@ -676,9 +773,9 @@ KeyValues * CMatchTitleGameSettingsMgr::DefineSessionSearchKeys( KeyValues *pSet
 		pResult->AddSubKey( pNextSearchPass );
 
 		// When matchmaking for a game in progress allow lobbies to also be considered if no games in progress found
-		if ( IsX360() )
-			pNextSearchPass->SetInt( CFmtStr( "Contexts/%d", CONTEXT_STATE ), CONTEXT_STATE_LOBBY );
-		else
+		//if ( IsX360() )
+		//	pNextSearchPass->SetInt( CFmtStr( "Contexts/%d", CONTEXT_STATE ), CONTEXT_STATE_LOBBY );
+		//else
 			pNextSearchPass->SetString( "Filter=/game:state", "lobby" );
 	}
 
@@ -701,9 +798,9 @@ KeyValues * CMatchTitleGameSettingsMgr::DefineSessionSearchKeys( KeyValues *pSet
 			pLastPass = pNextSearchPass;
 
 			// Search for chapter = 0
-			if ( IsX360() )
-				pNextSearchPass->SetInt( CFmtStr( "Properties/%d", PROPERTY_CHAPTER ), 0 );
-			else
+			//if ( IsX360() )
+			//	pNextSearchPass->SetInt( CFmtStr( "Properties/%d", PROPERTY_CHAPTER ), 0 );
+			//else
 				pNextSearchPass->SetInt( "Filter=/game:chapter", 0 );
 		}
 
@@ -717,9 +814,9 @@ KeyValues * CMatchTitleGameSettingsMgr::DefineSessionSearchKeys( KeyValues *pSet
 			pLastPass = pNextSearchPass;
 
 			// Search for campaign = ANY
-			if ( IsX360() )
-				pNextSearchPass->SetInt( CFmtStr( "Contexts/%d", CONTEXT_CAMPAIGN ), CONTEXT_CAMPAIGN_ANY );
-			else
+			//if ( IsX360() )
+			//	pNextSearchPass->SetInt( CFmtStr( "Contexts/%d", CONTEXT_CAMPAIGN ), CONTEXT_CAMPAIGN_ANY );
+			//else
 				pNextSearchPass->SetString( "Filter=/game:campaign", "" );
 		}
 	}
@@ -733,7 +830,7 @@ ConVar mm_test_slots( "mm_test_slots", "0", FCVAR_DEVELOPMENTONLY, "Force the ga
 #endif
 
 // Initializes full game settings from potentially abbreviated game settings
-void CMatchTitleGameSettingsMgr::InitializeGameSettings( KeyValues *pSettings )
+void CMatchTitleGameSettingsMgr::InitializeGameSettings(KeyValues* pSettings, const char* szReason)
 {
 	MEM_ALLOC_CREDIT();
 	char const *szNetwork = pSettings->GetString( "system/network", "LIVE" );

@@ -124,13 +124,13 @@ void CFadeOutStartGame::StartGame()
 
 		IMatchSession *pSession = g_pMatchFramework->GetMatchSession();
 		char const *szSessionMapName;
-		szSessionMapName = pSession ? pSession->GetSessionSettings()->GetString( "game/map" ) : "";
+		szSessionMapName = pSession ? pSession->GetSessionSettings()->GetString("game/mission") : "";
 
 		if ( !IsGameConsole() && 
-			!m_LoadFilename.IsEmpty())/*&&*/
-			//GameUI().IsInLevel() /*&&*/)
-			//szSessionMapName[0] &&
-			//!V_stricmp( szSessionMapName, m_MapName.Get() ) )
+			!m_LoadFilename.IsEmpty() &&
+			GameUI().IsInLevel() && 
+			szSessionMapName[0] &&
+			!V_stricmp( szSessionMapName, m_MapName.Get() ) )
 		{
 			engine->ExecuteClientCmd( CFmtStr( "load %s", m_LoadFilename.Get() ) );
 		}

@@ -24,10 +24,10 @@
 //		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
 //	WARNING!! WARNING!! WARNING!! WARNING!!
 //
-struct TitleData1
+/*struct TitleData1
 {
 	uint64 unused;
-};
+};*/
 
 //
 //
@@ -40,7 +40,7 @@ struct TitleData1
 //		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
 //	WARNING!! WARNING!! WARNING!! WARNING!!
 //
-struct TitleData2
+/*struct TitleData2
 {
 	// Achievement Counters
 	uint8 iCountXxx;	// ACHIEVEMENT_XXX
@@ -48,7 +48,7 @@ struct TitleData2
 	
 	// Achievement Component Bitfields
 	uint8 iCompXxx;		// ACHIEVEMENT_XXX
-};
+};*/
 
 //
 //
@@ -61,10 +61,10 @@ struct TitleData2
 //		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
 //	WARNING!! WARNING!! WARNING!! WARNING!!
 //
-struct TitleData3
+/*struct TitleData3
 {
 	uint64 unused; // unused, free for taking
-};
+};*/
 
 
 abstract_class IMatchExtSwarm

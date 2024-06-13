@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro SRCDIR	".."
-$Macro GAMENAME "swarm"
+$Macro GAMENAME "portal2"
 $Macro GAMESUBDIR "swarm"
 
 $Macro OUTBINDIR	"$SRCDIR\..\game\$GAMENAME\bin"
@@ -16,7 +16,7 @@ $Include "matchmaking_inc.vpc"
 
 $Project
 {
-	$Folder "Swarm"
+	$Folder "Swarm (Modified)"
 	{
 		$File	"$GAMESUBDIR/matchext_swarm.h"
 		$File	"$GAMESUBDIR/matchext_swarm.cpp"

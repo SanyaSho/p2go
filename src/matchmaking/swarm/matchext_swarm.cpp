@@ -5,7 +5,7 @@
 //===========================================================================//
 
 #include "matchext_swarm.h"
-#include "swarm.spa.h"
+//#include "swarm.spa.h"
 
 #include "utlvector.h"
 #include "utlstringmap.h"
@@ -336,41 +336,42 @@ KeyValues * CMatchExtSwarm::GetAllMissions()
 }
 
 // Get server map information for the session settings
-KeyValues * CMatchExtSwarm::GetMapInfo( KeyValues *pSettings, KeyValues **ppMissionInfo )
+KeyValues* CMatchExtSwarm::GetMapInfo(KeyValues* pSettings, KeyValues** ppMissionInfo)
 {
-	if ( !m_pKeyValues )
+	if (!m_pKeyValues)
 		return NULL;
 
-	char const *szGameMode = pSettings->GetString( "game/mode", NULL );
-	if ( !szGameMode || !*szGameMode )
+	char const* szGameMode = pSettings->GetString("game/mode", NULL);
+	if (!szGameMode || !*szGameMode)
 		return NULL;
 
-	char const *szCampaign = pSettings->GetString( "game/campaign", NULL );
-	if ( !szCampaign || !*szCampaign )
+	char const* szMap = pSettings->GetString("game/mission", NULL); // This should be swapped back to game/map but whatever
+	if (!szMap || !*szMap)
 		return NULL;
 
-	int nMapNumber = pSettings->GetInt( "game/chapter", 0 );
-	if ( nMapNumber <= 0 )
+	char const* szSave = pSettings->GetString("game/save", NULL);
+
+	int nMapNumber = pSettings->GetInt("game/chapter", 0);
+	if (nMapNumber <= 0)
 		return NULL;
 
-	// Find the campaign key
-	KeyValues *pMissionKey = ( KeyValues * ) m_pKeyValues->GetPtr( CFmtStr( "GameModes/%s/%s", szGameMode, szCampaign ), NULL );
-	if ( !pMissionKey )
-		return NULL;
+	char const* szOptions = pSettings->GetString("options/play", NULL);
+	// It's ok if this returns NULL - "normal" mode doesn't seem to set anything for this
 
-	// Find the total number of chapters in that mission's game mode
-	int numChapters = pMissionKey->GetInt( CFmtStr( "modes/%s/chapters", szGameMode ), 0 );
-	if ( nMapNumber > numChapters )
-		return NULL;
+	// This is likely wrong but matchmaking confuses me too much
+	KeyValues* pCollectedInfo = new KeyValues("MapInfo");
+	pCollectedInfo->SetString("game/save", szSave);
+	pCollectedInfo->SetString("game/mode", szGameMode); // Should this be mode?
+	pCollectedInfo->SetString("map", szMap);
+	pCollectedInfo->SetInt("game/chapter", nMapNumber); // Should this be chapter?
+	if (szOptions) {
+		pCollectedInfo->SetString("options/play", szOptions);
+	}
 
-	KeyValues *pChapterKey = pMissionKey->FindKey( CFmtStr( "modes/%s/%d", szGameMode, nMapNumber ) );
-	if ( !pChapterKey )
-		return NULL;
+	if (ppMissionInfo)
+		*ppMissionInfo = pCollectedInfo;
 
-	if ( ppMissionInfo )
-		*ppMissionInfo = pMissionKey;
-
-	return pChapterKey;
+	return pCollectedInfo;
 }
 
 KeyValues * CMatchExtSwarm::GetMapInfoByBspName( KeyValues *pSettings, char const *szBspMapName, KeyValues **ppMissionInfo )

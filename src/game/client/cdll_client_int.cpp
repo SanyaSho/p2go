@@ -836,7 +836,6 @@ public:
 	virtual void OnHltvReplay(const CSVCMsg_HltvReplay& msg) OVERRIDE { return; }
 	virtual void OnHltvReplayTick() OVERRIDE { return; }
 	virtual int GetHltvReplayDelay() OVERRIDE { return 0; }
-	int MapNameToChapterFixed(const char* pMapName);
 	CHLClient();
 
 	virtual int						Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals );
@@ -1569,8 +1568,11 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 #endif
 
 #ifdef PORTAL2
-	if ( !g_pMatchFramework )
+	// HACK
+	if ((g_pMatchExt = (IMatchExtSwarm*)appSystemFactory(IMATCHEXT_SWARM_INTERFACE, NULL)) == NULL)
 		return false;
+	//if ( !g_pMatchFramework )
+	//	return false;
 	GameInstructor_Init();
 	//  if client.dll needs to register any matchmaking extensions do it here:
 	// 	if ( IMatchExtensions *pIMatchExtensions = g_pMatchFramework->GetMatchExtensions() )
@@ -2556,8 +2558,6 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 			GetViewPortInterface()->LevelInit();
 		}
 	}
-		ConVarRef ui_lastact_played("ui_lastact_played");
-		ui_lastact_played.SetValue(MapNameToChapterFixed(pMapName));
 
 #if defined( REPLAY_ENABLED )
 	// Initialize replay ragdoll recorder
@@ -2567,265 +2567,6 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 	}
 #endif
 }
-
-int CHLClient::MapNameToChapterFixed(const char* pMapName)
-{
-	// Check if the current map is one of the specific maps
-	if (V_strcmp(pMapName, "sp_a1_intro1") == 0)
-	{
-		// map is a part of act one
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro2") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro3") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro4") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro5") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro6") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro7") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_wakeup") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_stairs") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_dual_lasers") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_over_goo") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_catapult_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_trust_fling") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_pit_flings") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_fizzler_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_sphere_peek") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_ricochet") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bridge_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bridge_the_gap") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_turret_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_relays") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_turret_blocker") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_vs_turret") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_pull_the_rug") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_column_blocker") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_chaining") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_triple_laser") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts1") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts2") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts3") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts4") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts5") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts6") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_core") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_00") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_01") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_03") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_jump_intro") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_bomb_flings") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_crazy_box") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_transition01") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_speed_ramp") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_speed_flings") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_portal_intro") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_end") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_intro") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_intro") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_trust_drop") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_wall_button") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_polarity") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_catch") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_stop_the_box") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_laser_catapult") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_laser_platform") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_speed_catch") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_jump_polarity") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale1") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale2") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale3") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale4") == 0)
-	{
-		return 5;
-	}
-	else
-	{
-		return 0; // Unknown Map
-	}
-}
-
 
 //-----------------------------------------------------------------------------
 // Purpose: Per level init

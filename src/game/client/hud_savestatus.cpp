@@ -119,10 +119,6 @@ bool CHudSaveStatus::ShouldDraw()
 
 	// notify on autosaves, except autosavedangerous
 	// autosavedangerous notifications are suppressed until marked safe, and might get discarded
-
-	// We don't have some of these functions in Swarm. I worked around that by instead
-	// redirecting the HL2-style save message here from DispatchHudText() in message.cpp
-//#if 0
 	if (engine->IsSaveInProgress() &&
 		!engine->IsAutoSaveDangerousInProgress() &&
 		!(IsPC() && engine->IsAutoSaveInProgress()))
@@ -141,7 +137,6 @@ bool CHudSaveStatus::ShouldDraw()
 			bNeedsDraw = true;
 		}
 	}
-//#endif
 
 #if defined( _PS3 )
 	bool bIsSteamProfileSave = false;

@@ -58,6 +58,13 @@ static CViewVectors g_DefaultViewVectors(
 	Vector(0, 0, 14)			//VEC_DEAD_VIEWHEIGHT (m_vDeadViewHeight)
 );
 
+#ifdef PORTAL2
+ConVar sv_portal_players("sv_portal_players", "1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN);
+bool IsGameRulesMultiplayer()
+{
+	return (sv_portal_players.GetInt() > 1);
+}
+#endif
 
 // ------------------------------------------------------------------------------------ //
 // CGameRulesProxy implementation.

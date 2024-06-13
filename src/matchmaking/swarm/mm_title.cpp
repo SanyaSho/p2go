@@ -6,13 +6,13 @@
 
 #include "mm_title.h"
 #include "mm_title_richpresence.h"
-#include "swarm.spa.h"
 #include "matchext_swarm.h"
 
 #include "fmtstr.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+#include <netmessages_signon.h>
 
 
 CMatchTitle::CMatchTitle()
@@ -203,14 +203,20 @@ bool CMatchTitle::StartServerMap( KeyValues *pSettings )
 	KeyValues *pInfoMission = NULL;
 	KeyValues *pInfoChapter = g_pMatchExtSwarm->GetMapInfo( pSettings, &pInfoMission );
 	Assert( pInfoChapter );
-	if ( !pInfoChapter || !pInfoMission )
+	if (!pInfoChapter || !pInfoMission) {
+		Msg("NO MISSION (GetMapInfo failed)\n");
 		return false;
+	}
 
 	// Check that we have the server interface and that the map is valid
-	if ( !g_pMatchExtensions->GetIVEngineServer() )
+	if (!g_pMatchExtensions->GetIVEngineServer()) {
+		Msg("NO SERVER INTERFACE\n");
 		return false;
-	if ( !g_pMatchExtensions->GetIVEngineServer()->IsMapValid( pInfoChapter->GetString( "map" ) ) )
+	}
+	if (!g_pMatchExtensions->GetIVEngineServer()->IsMapValid(pInfoChapter->GetString("map"))) {
 		return false;
+	}
+	Msg("Map OK\n");
 
 	//
 	// Prepare game dll reservation package
@@ -218,6 +224,10 @@ bool CMatchTitle::StartServerMap( KeyValues *pSettings )
 	KeyValues *pGameDllReserve = g_pMatchFramework->GetMatchNetworkMsgController()->PackageGameDetailsForReservation( pSettings );
 	KeyValues::AutoDelete autodelete( pGameDllReserve );
 
+	if (pInfoChapter->GetString("game/save"))
+	{
+		pGameDllReserve->SetString("game/save", pInfoChapter->GetString("game/save"));
+	}
 	pGameDllReserve->SetString( "map/mapcommand", ( numPlayers <= 1 ) ? "map" : "ss_map" );
 
 	if ( !Q_stricmp( "commentary", pSettings->GetString( "options/play", "" ) ) )

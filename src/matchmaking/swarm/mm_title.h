@@ -27,6 +27,9 @@ public:
 	// Title ID
 	virtual uint64 GetTitleID();
 
+	// Describe title settings using a bitwise combination of flags
+	virtual uint64 GetTitleSettingsFlags();
+
 	// Service ID for XLSP
 	virtual uint64 GetTitleServiceID();
 
@@ -50,6 +53,12 @@ public:
 
 	// Title avatar awards
 	virtual TitleAvatarAwardsDescription_t const * DescribeTitleAvatarAwards();
+
+	// Title DLC description
+	virtual TitleDlcDescription_t const* DescribeTitleDlcs();
+
+	// Run every frame
+	virtual void RunFrame() {}
 
 	// Title leaderboards
 	virtual KeyValues * DescribeTitleLeaderboard( char const *szLeaderboardView );

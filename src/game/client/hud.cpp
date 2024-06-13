@@ -882,73 +882,45 @@ bool CHud::HudDisabled( void )
 //-----------------------------------------------------------------------------
 // Purpose: Return true if the passed in sections of the HUD shouldn't be drawn
 //-----------------------------------------------------------------------------
-bool CHud::IsHidden( int iHudFlags )
+bool CHud::IsHidden(int iHudFlags)
 {
 	// Not in game?
-	if ( !m_bEngineIsInGame )
+	if (!m_bEngineIsInGame)
 		return true;
 
-	// Grab the local or observed player
-	//C_BasePlayer *pPlayer = GetHudPlayer();
-
-	// Grab the local player
-	C_BasePlayer *localPlayer = C_BasePlayer::GetLocalPlayer();
-
-	//if ( !pPlayer )
-	//	return true;
-
-	int iHideHud = localPlayer->m_Local.m_iHideHUD;
-	ConVarRef hidehudref( "hidehud" );
-	if ( hidehudref.GetInt() )
-	{
-		iHideHud = hidehudref.GetInt();
-	}
-
-	// Everything hidden?
-	if ( iHideHud & HIDEHUD_ALL )
+	// No local player yet?
+	C_BasePlayer* pPlayer = C_BasePlayer::GetLocalPlayer(m_nSplitScreenSlot);
+	if (!pPlayer)
 		return true;
 
-	// hide health if not chasing a target
-	if ( localPlayer->GetObserverMode() == OBS_MODE_ROAMING || 
-		localPlayer->GetObserverMode() == OBS_MODE_FIXED || 
-		localPlayer->GetObserverMode() == OBS_MODE_FREEZECAM || 
-		localPlayer->GetObserverMode() == OBS_MODE_DEATHCAM )
+	// Get current hidden flags
+	int iHideHud = pPlayer->m_Local.m_iHideHUD;
+	if (hidehud.GetInt())
 	{
-		if ( (iHudFlags & HIDEHUD_HEALTH) || (iHudFlags & HIDEHUD_WEAPONSELECTION) )
-			return true;
+		iHideHud = hidehud.GetInt();
 	}
 
 	// Hide all hud elements if we're blurring the background, since they don't blur properly
-	if ( GetClientMode()->GetBlurFade() )
+	if (GetClientMode()->GetBlurFade())
+		return true;
+
+	// Everything hidden?
+	if (iHideHud & HIDEHUD_ALL)
 		return true;
 
 	// Don't show hud elements when we're at the mainmenu with a background map running
-	if ( engine->IsLevelMainMenuBackground() )
+	if (engine->IsLevelMainMenuBackground())
 		return true;
 
 	// Local player dead?
-	if ( ( iHudFlags & HIDEHUD_PLAYERDEAD ) && ( localPlayer->GetHealth() <= 0 ) )
+	if ((iHudFlags & HIDEHUD_PLAYERDEAD) && (pPlayer->GetHealth() <= 0))
 		return true;
 
 	// Need the HEV suit ( HL2 )
-	if ( ( iHudFlags & HIDEHUD_NEEDSUIT ) && ( !localPlayer->IsSuitEquipped() ) )
+	if ((iHudFlags & HIDEHUD_NEEDSUIT) && (!pPlayer->IsSuitEquipped()))
 		return true;
 
-#if defined( CSTRIKE15_REAL )
-	if ( CSGameRules() && CSGameRules()->IsPlayingTraining() )
-	{
-		C_CSPlayer *pCSPlayer = static_cast<C_CSPlayer *>( pPlayer );
-		// hide the mini scoreboard?
-		if ( ( iHudFlags & HIDEHUD_MINISCOREBOARD ) && ( pCSPlayer && pCSPlayer->IsMiniScoreHidden() ) )
-			return true;
-
-		// hide the radar?
-		if ( ( iHudFlags & HIDEHUD_RADAR ) && ( pCSPlayer && pCSPlayer->IsRadarHidden() ) )
-			return true;
-	}
-#endif
-
-	return ( ( iHudFlags & iHideHud ) != 0 );
+	return ((iHudFlags & iHideHud) != 0);
 }
 
 //-----------------------------------------------------------------------------

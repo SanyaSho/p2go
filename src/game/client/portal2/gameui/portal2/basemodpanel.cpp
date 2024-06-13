@@ -169,31 +169,20 @@ struct ChapterContext_t
 	int			m_nChapterNum;
 	int			m_nSubChapterNum;
 };
+
+ChapterContext_t g_ChapterContextNames[] =
+{
 #define CFG( spmapname, chapternum, subchapter ) { #spmapname, chapternum, subchapter },
-//			 map name,	chapter,	act number
-ChapterContext_t g_ChapterContextNames[] = 
-{
-	CFG(sp_a1_intro1, 1, 1)
-	CFG(sp_a2_laser_intro, 2, 2)
-	CFG(sp_a2_sphere_peek, 3, 2)
-	CFG(sp_a2_column_blocker, 4, 2)
-	CFG(sp_a2_bts3, 5, 2)
-	CFG(sp_a3_00, 6, 3)
-	CFG(sp_a3_speed_ramp, 7, 3)
-	CFG(sp_a4_intro, 8, 4)
-	CFG(sp_a4_finale1, 9, 4)
-	CFG(sp_a5_credits, 10, 5)
-      { NULL, 0 },
-};
+#include "../common/xlast_portal2/inc_sp_maps.inc"
 #undef CFG
+	  { NULL, 0 },
+};
 
-
-
-ChapterContext_t g_ChapterMPContextNames[] = 
+ChapterContext_t g_ChapterMPContextNames[] =
 {
-//#define CFG( coopmapname, chapternum, subchapter, total ) { #coopmapname, chapternum, subchapter },
-//#include "../common/xlast_portal2/inc_coop_maps.inc"
-//#undef CFG
+#define CFG( coopmapname, chapternum, subchapter, total ) { #coopmapname, chapternum, subchapter },
+#include "../common/xlast_portal2/inc_coop_maps.inc"
+#undef CFG
 	{ NULL, 0 },
 };
 
@@ -2024,7 +2013,7 @@ CEG_NOINLINE void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, b
 			// It is critical to get map info by the actual levelname that is being loaded, because
 			// for level transitions the server is still in the old map and the game settings returned
 			// will reflect the old state of the server.
-			//pChapterInfo = g_pMatchExt->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo ); // TODO!!
+			pChapterInfo = g_pMatchExt->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo );
 			Q_strncpy( chGameMode, pGameSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
 		}
 	}
@@ -2044,9 +2033,9 @@ CEG_NOINLINE void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, b
 	{
 		if ( KeyValues *pSettings = pSession->GetSessionSettings() )
 		{
-//			pChapterInfo = g_pMatchExt->GetMapInfo( pSettings, &pMissionInfo );
-//			szMapNameFromSession = pSettings->GetString( "game/map" );
-//			Q_strncpy( chGameMode, pSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
+			pChapterInfo = g_pMatchExt->GetMapInfo( pSettings, &pMissionInfo );
+			szMapNameFromSession = pSettings->GetString("game/mission");
+			Q_strncpy( chGameMode, pSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
 		}
 	}
 
@@ -2062,11 +2051,9 @@ CEG_NOINLINE void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, b
 		pChapterInfo->SetString( "state", pSession ? pSession->GetSessionSettings()->GetString( "game/state", "lobby" ) : "lobby" );
 	}
 
-	//pChapterInfo->SetString( "lastmap", m_LastLoadedLevelName.Get() );
-	//m_LastLoadedLevelName = engine->GetLevelName();
-	//m_LastLoadedLevelName = pChapterInfo->GetString( "map", "" );
-	//ui_lastact_played.SetValue( ChapterToAct( MapNameToChapter( m_LastLoadedLevelName.Get() ) ) );
-	//ui_lastact_played.SetValue(MapNameToChapterFixed(engine->GetLevelName()));
+	pChapterInfo->SetString("lastmap", m_LastLoadedLevelName.Get());
+	m_LastLoadedLevelName = pChapterInfo->GetString("map", "");
+	ui_lastact_played.SetValue(ChapterToAct(MapNameToChapter(m_LastLoadedLevelName.Get())));
 
 	pLoadingProgress->SetPosterData( pChapterInfo, chGameMode );
 	pLoadingProgress->SetProgress( 0.0f );
@@ -2575,15 +2562,15 @@ void CBaseModPanel::OnEvent( KeyValues *pEvent )
 			}
 		}
 	}
-#if !defined( NO_STEAM )
+#if !defined( NO_STEAM ) && defined( PORTAL2_PUZZLEMAKER )
 	else if ( !V_stricmp( "CommunityMap_Added", szEvent ) )
 	{
 #if !defined( _PS3 )		
 		// Add the new map into the list (use the current time to approximate the subscription time)
-		//uint64 mapID = pEvent->GetUint64( "mapID", 0 );
-		//CRTime::UpdateRealTime();
-		//AddCommunityMap( mapID, CRTime::RTime32TimeCur() );
-		//Log_Msg( LOG_WORKSHOP, "[BaseModPanel] Event: Community map added (%llu)\n", mapID );
+		uint64 mapID = pEvent->GetUint64( "mapID", 0 );
+		CRTime::UpdateRealTime();
+		AddCommunityMap( mapID, CRTime::RTime32TimeCur() );
+		Log_Msg( LOG_WORKSHOP, "[BaseModPanel] Event: Community map added (%llu)\n", mapID );
 #endif // !PS3
 	}
 	else if ( !V_stricmp( "CommunityMap_Removed", szEvent ) )
@@ -2779,10 +2766,7 @@ void CBaseModPanel::OnNavigateTo( const char* panelName )
 	}
 }
 
-extern void RadialMenuMouseCallback( uint8 *pData, size_t iSize );
-//void RadialMenuMouseCallback(uint8* pData, size_t iSize) {
-
-//}
+extern void RadialMenuMouseCallback(uint8* pData, size_t iSize);
 
 //=============================================================================
 void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
@@ -3780,27 +3764,21 @@ bool CBaseModPanel::IsBackgroundMusicPlaying()
 // per Morasky
 #define BACKGROUND_MUSIC_DUCK	0.35f
 
-bool CBaseModPanel::StartBackgroundMusic( float fVol )
+bool CBaseModPanel::StartBackgroundMusic(float fVol)
 {
-	if ( IsBackgroundMusicPlaying() )
+	if (IsBackgroundMusicPlaying())
 		return true;
-	
-	if ( m_BackgroundMusicString.IsEmpty() )
+
+	if (m_BackgroundMusicString.IsEmpty())
 		return false;
 
 	// trying to exit, cannot start it
-//	if ( m_ExitingFrameCount )
-//		return false;
-	
-	// TODO: did i miss an interface update somewhere along the way?
-	m_nBackgroundMusicGUID = enginesound->EmitAmbientSound( m_BackgroundMusicString, BACKGROUND_MUSIC_DUCK * fVol );
-	// PB TODO lol
-	char command[256];
-	//Q_snprintf(command, sizeof(command), "play %s volume %.2f", m_BackgroundMusicString, BACKGROUND_MUSIC_DUCK * fVol);
-	//engine->ClientCmd_Unrestricted(command);
+	if (m_ExitingFrameCount)
+		return false;
 
-	return true;
-	return ( m_nBackgroundMusicGUID != 0 );
+	enginesound->EmitAmbientSound(m_BackgroundMusicString, BACKGROUND_MUSIC_DUCK * fVol);
+	m_nBackgroundMusicGUID = enginesound->GetGuidForLastSoundEmitted();
+	return (m_nBackgroundMusicGUID != 0);
 }
 
 void CBaseModPanel::UpdateBackgroundMusicVolume( float fVol )
@@ -3822,7 +3800,7 @@ void CBaseModPanel::ReleaseBackgroundMusic()
 
 	// need to stop the sound now, do not queue the stop
 	// we must release the 2-5 MB held by this resource
-	enginesound->StopSoundByGuid(m_nBackgroundMusicGUID);// , true );
+	enginesound->StopSoundByGuid(m_nBackgroundMusicGUID);//, true );
 #if defined( _GAMECONSOLE )
 	enginesound->UnloadSound( m_BackgroundMusicString );
 #endif
@@ -3830,40 +3808,40 @@ void CBaseModPanel::ReleaseBackgroundMusic()
 	m_nBackgroundMusicGUID = 0;
 }
 
-void CBaseModPanel::SafeNavigateTo( Panel *pExpectedFrom, Panel *pDesiredTo, bool bAllowStealFocus )
+void CBaseModPanel::SafeNavigateTo(Panel* pExpectedFrom, Panel* pDesiredTo, bool bAllowStealFocus)
 {
-	Panel *pOriginalFocus = ipanel()->GetPanel( GetCurrentKeyFocus(), GetModuleName() );
+	Panel* pOriginalFocus = ipanel()->GetPanel(GetCurrentKeyFocus(), GetModuleName());
 	bool bSomeoneElseHasFocus = pOriginalFocus && (pOriginalFocus != pExpectedFrom);
 	bool bActuallyChangingFocus = (pExpectedFrom != pDesiredTo);
 	bool bNeedToReturnKeyFocus = !bAllowStealFocus && bSomeoneElseHasFocus && bActuallyChangingFocus;
 
 	pDesiredTo->NavigateTo();
 
-	if ( bNeedToReturnKeyFocus )
+	if (bNeedToReturnKeyFocus)
 	{
 		pDesiredTo->NavigateFrom();
 		pOriginalFocus->NavigateTo();
 	}
 }
 
-int CBaseModPanel::MapNameToChapter( const char *pMapName, bool bSinglePlayer /*= true*/ )
+int CBaseModPanel::MapNameToChapter(const char* pMapName, bool bSinglePlayer /*= true*/)
 {
 	char baseMapName[MAX_PATH];
-	V_FileBase( pMapName, baseMapName, sizeof( baseMapName ) );
+	V_FileBase(pMapName, baseMapName, sizeof(baseMapName));
 
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
 
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !pChapterNames[i].m_pMapName )
+		if (!pChapterNames[i].m_pMapName)
 			break;
 
-		if ( !V_stricmp( pChapterNames[i].m_pMapName, baseMapName ) )
+		if (!V_stricmp(pChapterNames[i].m_pMapName, baseMapName))
 		{
-			if ( bSinglePlayer )
+			if (bSinglePlayer)
 				return pChapterNames[i].m_nChapterNum;
 			else
-				return GetCoopTrackFromChapter( pChapterNames[i].m_nChapterNum );
+				return GetCoopTrackFromChapter(pChapterNames[i].m_nChapterNum);
 		}
 	}
 
@@ -3871,293 +3849,39 @@ int CBaseModPanel::MapNameToChapter( const char *pMapName, bool bSinglePlayer /*
 	return 0;
 }
 
-int CBaseModPanel::MapNameToSubChapter( const char *pMapName )
+int CBaseModPanel::MapNameToSubChapter(const char* pMapName)
 {
-/*	char baseMapName[MAX_PATH];
-	V_FileBase( pMapName, baseMapName, sizeof( baseMapName ) );
+	char baseMapName[MAX_PATH];
+	V_FileBase(pMapName, baseMapName, sizeof(baseMapName));
 
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !g_ChapterContextNames[i].m_pMapName )
+		if (!g_ChapterContextNames[i].m_pMapName)
 			break;
 
-		if ( !V_stricmp( g_ChapterContextNames[i].m_pMapName, baseMapName ) )
+		if (!V_stricmp(g_ChapterContextNames[i].m_pMapName, baseMapName))
 		{
 			return g_ChapterContextNames[i].m_nSubChapterNum;
 		}
 	}
 
 	// unknown
-	return 0;*/
-	// Check if the current map is one of the specific maps
-	if (V_strcmp(pMapName, "sp_a1_intro1") == 0)
-	{
-		// map is a part of act one
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro2") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro3") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro4") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro5") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro6") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_intro7") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a1_wakeup") == 0)
-	{
-		return 1;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_stairs") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_dual_lasers") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_over_goo") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_catapult_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_trust_fling") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_pit_flings") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_fizzler_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_sphere_peek") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_ricochet") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bridge_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bridge_the_gap") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_turret_intro") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_relays") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_turret_blocker") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_vs_turret") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_pull_the_rug") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_column_blocker") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_laser_chaining") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_triple_laser") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts1") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts2") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts3") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts4") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts5") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_bts6") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a2_core") == 0)
-	{
-		return 2;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_00") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_01") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_03") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_jump_intro") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_bomb_flings") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_crazy_box") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_transition01") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_speed_ramp") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_speed_flings") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_portal_intro") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a3_end") == 0)
-	{
-		return 3;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_intro") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_intro") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_trust_drop") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_wall_button") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_polarity") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_tb_catch") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_stop_the_box") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_laser_catapult") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_laser_platform") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_speed_catch") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_jump_polarity") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale1") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale2") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale3") == 0)
-	{
-		return 4;
-	}
-	else if (V_strcmp(pMapName, "sp_a4_finale4") == 0)
-	{
-		return 5;
-	}
-	else
-	{
-		return 0; // Unknown Map
-	}
+	return 0;
 }
 
-const char *CBaseModPanel::ActToMapName( int nAct )
+const char* CBaseModPanel::ActToMapName(int nAct)
 {
 	// find first matching act
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !g_ChapterContextNames[i].m_pMapName )
+		if (!g_ChapterContextNames[i].m_pMapName)
 			break;
 
-		const char *pMapName = g_ChapterContextNames[i].m_pMapName;
-		const char *pActPrefix = V_stristr( pMapName, "sp_a" );
-		if ( pActPrefix )
+		const char* pMapName = g_ChapterContextNames[i].m_pMapName;
+		const char* pActPrefix = V_stristr(pMapName, "sp_a");
+		if (pActPrefix)
 		{
-			if ( atoi( pActPrefix + 4 ) == nAct ) 
+			if (atoi(pActPrefix + 4) == nAct)
 			{
 				return g_ChapterContextNames[i].m_pMapName;
 			}
@@ -4168,14 +3892,14 @@ const char *CBaseModPanel::ActToMapName( int nAct )
 	return "";
 }
 
-const char *CBaseModPanel::ChapterToMapName( int nChapter )
+const char* CBaseModPanel::ChapterToMapName(int nChapter)
 {
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !g_ChapterContextNames[i].m_pMapName )
+		if (!g_ChapterContextNames[i].m_pMapName)
 			break;
 
-		if ( g_ChapterContextNames[i].m_nChapterNum == nChapter )
+		if (g_ChapterContextNames[i].m_nChapterNum == nChapter)
 		{
 			return g_ChapterContextNames[i].m_pMapName;
 		}
@@ -4185,22 +3909,22 @@ const char *CBaseModPanel::ChapterToMapName( int nChapter )
 	return "";
 }
 
-int CBaseModPanel::GetMapNumInChapter( int nChapter, const char *pMapName, bool bSinglePlayer /*= true*/  )
+int CBaseModPanel::GetMapNumInChapter(int nChapter, const char* pMapName, bool bSinglePlayer /*= true*/)
 {
-	int nNumMaps = GetNumMaps( bSinglePlayer );
+	int nNumMaps = GetNumMaps(bSinglePlayer);
 	int i = 0;
 	int nMapNum = 0;
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
-	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack( nChapter );
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack(nChapter);
 
-	while (  i < nNumMaps && pChapterNames[i].m_nChapterNum <= nRealChapter )
+	while (i < nNumMaps && pChapterNames[i].m_nChapterNum <= nRealChapter)
 	{
-		if ( pChapterNames[i].m_nChapterNum == nRealChapter )
+		if (pChapterNames[i].m_nChapterNum == nRealChapter)
 		{
 			nMapNum++;
-			if ( !V_stricmp(pChapterNames[i].m_pMapName, pMapName)  )
+			if (!V_stricmp(pChapterNames[i].m_pMapName, pMapName))
 			{
-				if ( !bSinglePlayer )
+				if (!bSinglePlayer)
 					return pChapterNames[i].m_nSubChapterNum;
 
 				break;
@@ -4209,22 +3933,22 @@ int CBaseModPanel::GetMapNumInChapter( int nChapter, const char *pMapName, bool 
 
 		i++;
 	}
-	
-	if ( i >= nNumMaps || pChapterNames[i].m_nChapterNum > nRealChapter )
+
+	if (i >= nNumMaps || pChapterNames[i].m_nChapterNum > nRealChapter)
 		return -1;
 	else
 		return nMapNum;
 }
 
-int CBaseModPanel::ChapterToAct( int nChapter )
+int CBaseModPanel::ChapterToAct(int nChapter)
 {
-	const char *pMapName = ChapterToMapName( nChapter );
+	const char* pMapName = ChapterToMapName(nChapter);
 
-	const char *pPrefix = V_stristr( pMapName, "sp_a" );
-	if ( pPrefix )
+	const char* pPrefix = V_stristr(pMapName, "sp_a");
+	if (pPrefix)
 	{
-		int nAct = atoi( pPrefix + 4 );
-		if ( nAct )
+		int nAct = atoi(pPrefix + 4);
+		if (nAct)
 			return nAct;
 	}
 
@@ -4233,43 +3957,42 @@ int CBaseModPanel::ChapterToAct( int nChapter )
 }
 
 
-int CBaseModPanel::GetNumChapters( bool bSinglePlayer /*= true*/ )
+int CBaseModPanel::GetNumChapters(bool bSinglePlayer /*= true*/)
 {
-/*	static int nNumSPChapters = 0;
+	static int nNumSPChapters = 0;
 	static int nNumMPChapters = 0;
 
-	int &nNumChapters = bSinglePlayer ? nNumSPChapters : nNumMPChapters;
+	int& nNumChapters = bSinglePlayer ? nNumSPChapters : nNumMPChapters;
 
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
 
-	if ( !nNumChapters )
+	if (!nNumChapters)
 	{
-		for ( int i = 0; ; i++ )
+		for (int i = 0; ; i++)
 		{
-			if ( !pChapterNames[i].m_pMapName )
+			if (!pChapterNames[i].m_pMapName)
 				break;
 
-			nNumChapters = MAX( nNumChapters, pChapterNames[i].m_nChapterNum );
+			nNumChapters = MAX(nNumChapters, pChapterNames[i].m_nChapterNum);
 		}
 	}
-	return nNumChapters;*/
-	return 10;
+	return nNumChapters;
 }
 
-int CBaseModPanel::GetNumMaps( bool bSinglePlayer /*= true*/ )
+int CBaseModPanel::GetNumMaps(bool bSinglePlayer /*= true*/)
 {
 	static int nNumSPMaps = 0;
 	static int nNumMPMaps = 0;
 
-	int &nNumMaps = bSinglePlayer ? nNumSPMaps : nNumMPMaps;
+	int& nNumMaps = bSinglePlayer ? nNumSPMaps : nNumMPMaps;
 
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
 
-	if ( !nNumMaps )
+	if (!nNumMaps)
 	{
-		for ( int i = 0; ; i++ )
+		for (int i = 0; ; i++)
 		{
-			if ( !pChapterNames[i].m_pMapName )
+			if (!pChapterNames[i].m_pMapName)
 				break;
 
 			nNumMaps++;
@@ -4278,36 +4001,36 @@ int CBaseModPanel::GetNumMaps( bool bSinglePlayer /*= true*/ )
 	return nNumMaps;
 }
 
-int CBaseModPanel::GetNumMapsInChapter( int nChapter, bool bSinglePlayer /*= true*/ )
+int CBaseModPanel::GetNumMapsInChapter(int nChapter, bool bSinglePlayer /*= true*/)
 {
 	int nNumMaps = 0;
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
 
-	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack( nChapter );
+	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack(nChapter);
 
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !pChapterNames[i].m_pMapName )
+		if (!pChapterNames[i].m_pMapName)
 			break;
 
-		if ( pChapterNames[i].m_nChapterNum == nRealChapter )
+		if (pChapterNames[i].m_nChapterNum == nRealChapter)
 			nNumMaps++;
 	}
 	return nNumMaps;
 }
 
-const char * CBaseModPanel::GetMapName( int nChapter, int nMap, bool bSinglePlayer /*= true*/ )
+const char* CBaseModPanel::GetMapName(int nChapter, int nMap, bool bSinglePlayer /*= true*/)
 {
-	ChapterContext_t *pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
+	ChapterContext_t* pChapterNames = bSinglePlayer ? g_ChapterContextNames : g_ChapterMPContextNames;
 
-	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack( nChapter );
+	int nRealChapter = bSinglePlayer ? nChapter : GetCoopChapterFromTrack(nChapter);
 
-	for ( int i = 0; ; i++ )
+	for (int i = 0; ; i++)
 	{
-		if ( !pChapterNames[i].m_pMapName )
+		if (!pChapterNames[i].m_pMapName)
 			break;
 
-		if ( pChapterNames[i].m_nChapterNum == nRealChapter )
+		if (pChapterNames[i].m_nChapterNum == nRealChapter)
 		{
 			return pChapterNames[i + nMap - 1].m_pMapName;
 		}
@@ -4315,13 +4038,13 @@ const char * CBaseModPanel::GetMapName( int nChapter, int nMap, bool bSinglePlay
 	return "";
 }
 
-int CBaseModPanel::GetCoopTrackFromChapter( int nChapterNum )
+int CBaseModPanel::GetCoopTrackFromChapter(int nChapterNum)
 {
-	if ( nChapterNum >= 3 && nChapterNum <= 7 )
+	if (nChapterNum >= 3 && nChapterNum <= 7)
 	{
 		return nChapterNum - 2;
 	}
-	else if ( nChapterNum == 9 )
+	else if (nChapterNum == 9)
 	{
 		return nChapterNum - 3;
 	}
@@ -4331,66 +4054,79 @@ int CBaseModPanel::GetCoopTrackFromChapter( int nChapterNum )
 	}
 }
 
-int CBaseModPanel::GetCoopChapterFromTrack( int nTrackNum )
+int CBaseModPanel::GetCoopChapterFromTrack(int nTrackNum)
 {
-	 if ( nTrackNum <= 5 )
-	 {
-		 return nTrackNum + 2;
-	 }
-	 else if ( nTrackNum == 6 )
-	 {
-		 return 9;
-	 }
-	 else
-	 {
-		 return 0; // unknown
-	 }
+	if (nTrackNum <= 5)
+	{
+		return nTrackNum + 2;
+	}
+	else if (nTrackNum == 6)
+	{
+		return 9;
+	}
+	else
+	{
+		return 0; // unknown
+	}
 }
 
 
 int CBaseModPanel::GetChapterProgress()
 {
 #if !defined( _CERT )
-	bool bUnlockChapters = CommandLine()->FindParm( "-dev" ) && CommandLine()->FindParm( "-unlockchapters" );
-	if ( bUnlockChapters )
+	bool bUnlockChapters = CommandLine()->FindParm("-dev") && CommandLine()->FindParm("-unlockchapters");
+	if (bUnlockChapters)
 	{
 		// all chapters unlocked
 		return GetNumChapters();
 	}
 
-	if ( CommandLine()->FindParm( "-dev" ) && CommandLine()->FindParm( "-nochapterprogress" ) )
+	if (CommandLine()->FindParm("-dev") && CommandLine()->FindParm("-nochapterprogress"))
 	{
 		return 0;
 	}
 #endif
 
 	// determine progress
-	//int iUserSlot = GetLastActiveUserId();
-	//int iController = XBX_GetUserId( iUserSlot );
-	//IPlayerLocal *pPlayer = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( iController );
-	//if ( pPlayer )
-	//{
-	//	int nNumChapters = GetNumChapters();
+	int iUserSlot = GetLastActiveUserId();
+	int iController = XBX_GetUserId(iUserSlot);
+	IPlayerLocal* pPlayer = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer(iController);
+	if (pPlayer)
+	{
+		int nNumChapters = GetNumChapters();
 
-	//	// Check if player has unlocked "ACH.SHOOT_THE_MOON", then all chapters should be available
-	//	KeyValues *kvAwards = new KeyValues( "read_awards", "ACH.SHOOT_THE_MOON", int(0) );
-	//	KeyValues::AutoDelete autodelete_kvAwards( kvAwards );
-	//	pPlayer->GetAwardsData( kvAwards );
-	//	if ( kvAwards->GetInt( "ACH.SHOOT_THE_MOON" ) )
-	//		return nNumChapters; // player has unlocked all chapters
+		// Check if player has unlocked "ACH.SHOOT_THE_MOON", then all chapters should be available
+		KeyValues* kvAwards = new KeyValues("read_awards", "ACH.SHOOT_THE_MOON", int(0));
+		KeyValues::AutoDelete autodelete_kvAwards(kvAwards);
+		pPlayer->GetAwardsData( kvAwards );
+		if (kvAwards->GetInt("ACH.SHOOT_THE_MOON"))
+			return nNumChapters; // player has unlocked all chapters
 
-	//	// Read players progress
-	//	TitleData1 const *pTitleData = ( TitleData1 const * )pPlayer->GetPlayerTitleData( 0 );
-	//	if ( pTitleData && nNumChapters )
-	//	{			
-	//		nNumChapters = MIN( (unsigned int)nNumChapters, pTitleData->uiSinglePlayerProgressChapter );
-	//		nNumChapters = MAX( nNumChapters, 0 );
-	//		return nNumChapters;
-	//	}
-	//}
+		// Read players progress
+		// 
+		// This is normally done through "title data", which on PC gets mapped to Steam stats.
+		// Swarm doesn't have those stats, which means chapters would never stay unlocked.
+		// I just hooked it up to the old sv_unlockedchapters cvar, that should be better for mods anyway.
+
+		static ConVarRef sv_unlockedchapters("sv_unlockedchapters");
+		if (sv_unlockedchapters.IsValid() && nNumChapters)
+		{
+			nNumChapters = MIN(nNumChapters, sv_unlockedchapters.GetInt());
+			nNumChapters = MAX(nNumChapters, 0);
+			return nNumChapters;
+		}
+
+		//TitleData1 const *pTitleData = ( TitleData1 const * )pPlayer->GetPlayerTitleData( 0 );
+		//if ( pTitleData && nNumChapters )
+		//{			
+		//	nNumChapters = MIN( (unsigned int)nNumChapters, pTitleData->uiSinglePlayerProgressChapter );
+		//	nNumChapters = MAX( nNumChapters, 0 );
+		//	return nNumChapters;
+		//}
+	}
 
 	// no progress
-	return 10;
+	return 0;
 }
 
 void CBaseModPanel::GetBackgroundMovieName( char *pOutBuffer, int nOutBufferSize )
@@ -4420,75 +4156,71 @@ void CBaseModPanel::GetBackgroundMusicName( char *pOutBuffer, int nOutBufferSize
 
 void CBaseModPanel::SelectBackgroundPresentation()
 {
-	static ConVarRef cl_finale_completed( "cl_finale_completed" );
+	static ConVarRef cl_finale_completed("cl_finale_completed");
 
 	// determine player's progess
 	// background is determined by last level played
-	int nMaxActs = 10;
+	int nMaxActs = ChapterToAct(GetNumChapters());
 
 	int nAct;
-	if ( IsGameConsole() || !m_LastLoadedLevelName.IsEmpty() )
+	if (IsGameConsole() || !m_LastLoadedLevelName.IsEmpty())
 	{
-		//nAct = ChapterToAct( MapNameToChapter( m_LastLoadedLevelName.Get() ) );
-		nAct = ui_lastact_played.GetInt();
+		nAct = ChapterToAct(MapNameToChapter(m_LastLoadedLevelName.Get()));
 	}
 	else
 	{
 		// user could have been with archived convars, validate to ensure expected results
 		// not allowing the finale background to be a restore candidate
 		nAct = ui_lastact_played.GetInt();
-		if ( nAct < 0 || nAct >= nMaxActs )
+		if (nAct < 0 || nAct >= nMaxActs)
 		{
 			nAct = 0;
 		}
 	}
 
-	if ( nAct == nMaxActs-1 && cl_finale_completed.GetBool() )
+	if (nAct == nMaxActs - 1 && cl_finale_completed.GetBool())
 	{
 		// finale was just completed, use the finale background
 		nAct = nMaxActs;
-		cl_finale_completed.SetValue( false );
+		cl_finale_completed.SetValue(false);
 	}
 
 #if !defined( _CERT )
 	// dev override to view backgrounds
-	int nOverride = CommandLine()->ParmValue( "-background", 0 );
-	if ( nOverride > 0 )
+	int nOverride = CommandLine()->ParmValue("-background", 0);
+	if (nOverride > 0)
 	{
 		nAct = nOverride;
 	}
 #endif
 
-	nAct = clamp( nAct, 1, nMaxActs );
+	nAct = clamp(nAct, 1, nMaxActs);
 	m_nCurrentActPresentation = nAct;
 
-	//const AspectRatioInfo_t &aspectRatioInfo = materials->GetAspectRatioInfo();
-	//bool bIsWidescreen = aspectRatioInfo.m_bIsWidescreen;
-
-	float aspectRatio = (float)GetWide() / (float)GetTall();
-	bool bIsWidescreen = aspectRatio >= 1.5999f;
+	const AspectRatioInfo_t& aspectRatioInfo = materials->GetAspectRatioInfo();
+	bool bIsWidescreen = aspectRatioInfo.m_bIsWidescreen;
 
 	// get the substitute movie image, matched to the movie chosen
 	// used to hide long i/o on loading entire menu movie, blends away to reveal movie
 	CFmtStr pFadeFilename("");
-	if ( m_bMoveToCommunityMapQueue || m_bMoveToEditorMainMenu )
+	if (m_bMoveToCommunityMapQueue || m_bMoveToEditorMainMenu)
 	{
-		pFadeFilename.AppendFormat( "vgui/backgrounds/community_background%s", ( bIsWidescreen ? "_widescreen" : "" ) );
+		pFadeFilename.AppendFormat("vgui/backgrounds/community_background%s", (bIsWidescreen ? "_widescreen" : ""));
 	}
 	else
 	{
-		pFadeFilename.AppendFormat( "vgui/backgrounds/background%02d%s", m_nCurrentActPresentation, ( bIsWidescreen ? "_widescreen" : "" ) );
+		pFadeFilename.AppendFormat("vgui/backgrounds/background%02d%s", m_nCurrentActPresentation, (bIsWidescreen ? "_widescreen" : ""));
 	}
 
-	if ( m_iBackgroundImageID != -1 )
+	if (m_iBackgroundImageID != -1)
 	{
 		// evict prior image
-		surface()->DestroyTextureID( m_iBackgroundImageID );
+		surface()->DestroyTextureID(m_iBackgroundImageID);
 		m_iBackgroundImageID = -1;
 	}
 
 	m_iBackgroundImageID = surface()->CreateNewTextureID();
-	surface()->DrawSetTextureFile( m_iBackgroundImageID, pFadeFilename, true, false );
+	surface()->DrawSetTextureFile(m_iBackgroundImageID, pFadeFilename, true, false);
 
 	bool bUseMono = false;
 #if defined( _X360 )
@@ -4505,14 +4237,13 @@ void CBaseModPanel::SelectBackgroundPresentation()
 	// it will be a stream resource if the installer is dormant
 	// On PC it will be a streaming MP3
 	char backgroundMusic[MAX_PATH];
-	GetBackgroundMusicName( backgroundMusic, sizeof( backgroundMusic ), bUseMono );
-	if ( enginesound->PrecacheSound( backgroundMusic, true, false ) )
+	GetBackgroundMusicName(backgroundMusic, sizeof(backgroundMusic), bUseMono);
+	if (enginesound->PrecacheSound(backgroundMusic, true, false))
 	{
 		// successfully precached
 		m_BackgroundMusicString = backgroundMusic;
-	}
 }
-
+}
 extern int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment );
 
 bool CBaseModPanel::GetSaveGameInfos( CUtlVector< SaveGameInfo_t > &saveGameInfos, bool bFindAll )

@@ -16,6 +16,8 @@
 
 #define STORAGE_COUNT_FOR_BITS( aStorageType, numBits ) ( ( (numBits) + 8*sizeof( aStorageType ) - 1 ) / ( 8* sizeof( aStorageType ) ) )
 
+// Disabled these for p2asw because we don't have the include files
+// and most of the code using these is console only anyway
 
 //
 //
@@ -38,8 +40,7 @@
 //		{
 //#define CFG( fieldname, ctx, idx, num ) fieldname,
 //#define CFG_DISABLED( fieldname, ctx, idx, num ) CFG( fieldname )
-////FixMe?
-////#include "xlast_portal2/inc_coop_maps.inc"
+//#include "xlast_portal2/inc_coop_maps.inc"
 //#undef CFG_DISABLED
 //#undef CFG
 //			mapbits_last_bit_used,
@@ -52,8 +53,7 @@
 //		{
 //#define CFG( fieldname ) taunt_##fieldname,
 //#define CFG_DISABLED( fieldname ) CFG( fieldname )
-//// FixMe?
-////#include "xlast_portal2/inc_coop_taunts.inc"
+//#include "xlast_portal2/inc_coop_taunts.inc"
 //#undef CFG_DISABLED
 //#undef CFG
 //			tauntbits_last_bit_used,
@@ -65,8 +65,7 @@
 //		{
 //#define CFG( fieldname ) taunt_equipslot_##fieldname,
 //#define CFG_DISABLED( fieldname ) CFG( fieldname )
-//// FixMe?
-////#include "xlast_portal2/inc_coop_taunts_equipslots.inc"
+//#include "xlast_portal2/inc_coop_taunts_equipslots.inc"
 //#undef CFG_DISABLED
 //#undef CFG
 //			taunt_equipslots_total
@@ -81,8 +80,7 @@
 //		{
 //#define CFG( fieldname ) lesson_##fieldname,
 //#define CFG_DISABLED( fieldname ) CFG( fieldname )
-//// FixMe?
-////#include "xlast_portal2/inc_gameinstructor_lessons.inc"
+//#include "xlast_portal2/inc_gameinstructor_lessons.inc"
 //#undef CFG_DISABLED
 //#undef CFG
 //			lessonbits_last_bit_used,
@@ -101,18 +99,18 @@
 //	};
 //	GameInstructorData_t gameinstructor;
 //};
+
 //
-////
-////
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////		This structure TitleData2 should remain
-////		intact after we ship otherwise
-////		users profiles will be busted.
-////		You are allowed to add fields at the end
-////		as long as structure size stays under
-////		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////
+//
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//		This structure TitleData2 should remain
+//		intact after we ship otherwise
+//		users profiles will be busted.
+//		You are allowed to add fields at the end
+//		as long as structure size stays under
+//		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//
 //struct TitleData2
 //{
 //	// Achievement component bits
@@ -121,8 +119,7 @@
 //		kAchievementComponentTotalCount = 0
 //#define CFG( name, compcount, ... ) \
 //		+ STORAGE_COUNT_FOR_BITS( uint32, compcount )
-//// FixMe?
-////#include "xlast_portal2/inc_achievements.inc"
+//#include "xlast_portal2/inc_achievements.inc"
 //#undef CFG
 //	};
 //	uint32 bitsAchievementsComponents[ kAchievementComponentTotalCount ];
@@ -134,8 +131,7 @@
 //	enum AwardBits_t
 //	{
 //#define CFG( award, ... ) bitAward##award,
-//// FixMe?
-////#include "xlast_portal2/inc_asset_awards.inc"
+//#include "xlast_portal2/inc_asset_awards.inc"
 //#undef CFG
 //		bitAward_last_bit_used,
 //		bitAwards_total = 32 // leave room for total 32 awards
@@ -154,34 +150,34 @@
 //	// DLC ownership bits
 //	uint32 dlcbits[2];
 //};
+
 //
-////
-////
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////		This structure TitleData3 should remain
-////		intact after we ship otherwise
-////		users profiles will be busted.
-////		You are allowed to add fields at the end
-////		as long as structure size stays under
-////		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////
-//// struct TitleData3
-//// {
-//// 	uint64 unused; // unused, free for taking
-//// };
-////
-////
-////
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////		This structure TitleData3 should remain
-////		intact after we ship otherwise
-////		users profiles will be busted.
-////		You are allowed to add fields at the end
-////		as long as structure size stays under
-////		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
-////	WARNING!! WARNING!! WARNING!! WARNING!!
-////
+//
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//		This structure TitleData3 should remain
+//		intact after we ship otherwise
+//		users profiles will be busted.
+//		You are allowed to add fields at the end
+//		as long as structure size stays under
+//		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//
+// struct TitleData3
+// {
+// 	uint64 unused; // unused, free for taking
+// };
+//
+//
+//
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//		This structure TitleData3 should remain
+//		intact after we ship otherwise
+//		users profiles will be busted.
+//		You are allowed to add fields at the end
+//		as long as structure size stays under
+//		XPROFILE_SETTING_MAX_SIZE = 1000 bytes.
+//	WARNING!! WARNING!! WARNING!! WARNING!!
+//
 //struct TitleData3
 //{
 //	uint32 version;
@@ -189,8 +185,7 @@
 //	struct ConVarsSystem_t
 //	{
 //#define CFG( name, scfgType, cppType, ... ) cppType name;
-//// FixMe?
-////#include "xlast_portal2/inc_gameconsole_settings_sys.inc"
+//#include "xlast_portal2/inc_gameconsole_settings_sys.inc"
 //#undef CFG
 //		uint8  unused_uint8[2];
 //		uint32 unused_values[9];
@@ -198,8 +193,7 @@
 //		enum Bits_bitfields_t
 //		{
 //#define CFG( name ) name,
-//// FixMe?
-////#include "xlast_portal2/inc_gameconsole_settings_sys_bits.inc"
+//#include "xlast_portal2/inc_gameconsole_settings_sys_bits.inc"
 //#undef CFG
 //			bit_last
 //		};
@@ -212,16 +206,14 @@
 //	struct ConVarsUser_t
 //	{
 //#define CFG( name, scfgType, cppType ) cppType name;
-//// FixMe?
-////#include "xlast_portal2/inc_gameconsole_settings_usr.inc"
+//#include "xlast_portal2/inc_gameconsole_settings_usr.inc"
 //#undef CFG
 //		uint32 unused_values[8];
 //
 //		enum Bits_bitfields_t
 //		{
 //#define CFG( name ) name,
-//// FixMe?
-////#include "xlast_portal2/inc_gameconsole_settings_usr_bits.inc"
+//#include "xlast_portal2/inc_gameconsole_settings_usr_bits.inc"
 //#undef CFG
 //			bit_last
 //		};
@@ -235,8 +227,7 @@
 //	struct GameStats_t
 //	{
 //#define CFG( name, scfgType, cppType ) cppType name;
-////FixMe?
-////#include "xlast_portal2/inc_gamestats.inc"
+//#include "xlast_portal2/inc_gamestats.inc"
 //#undef CFG
 //		uint32 unused_values[50];
 //	};
@@ -245,7 +236,8 @@
 //};
 
 
-
+// FIXME: Shouldn't hardcode mp_coop_lobby_3 here, need to handle mp_coop_start
+// too once co-op progress saving is reimplemented in a different way.
 #define PORTAL2_LOBBY_CONFIG_COOP( szNetwork, szAccess ) \
 		" system { " \
 			" network " szNetwork " " \
@@ -253,7 +245,7 @@
 		" } " \
 		" game { " \
 			" mode coop " \
-			" map default " \
+			" mission mp_coop_lobby_3 " \
 		" } "
 
 

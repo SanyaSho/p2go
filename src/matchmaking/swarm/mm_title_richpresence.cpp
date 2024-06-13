@@ -5,7 +5,56 @@
 //===========================================================================//
 
 #include "mm_title_richpresence.h"
-#include "swarm.spa.h"
+//#include "swarm.spa.h"
+//
+// Matchmaking queries
+//
+// These values are passed as the dwProcedureIndex parameter to
+// XSessionSearch to indicate which matchmaking query to run.
+//
+
+#define SESSION_MATCH_QUERY_PLAYER_MATCH            1
+#define SESSION_MATCH_QUERY_ALL_SESSIONS            3
+#define SESSION_MATCH_QUERY_PLAYER_MATCH_ANY_LEVEL  4
+#define SESSION_MATCH_QUERY_PLAYER_MATCH_TEAM       5
+#define SESSION_MATCH_QUERY_ALL_SESSIONS_TEAM       6
+#define SESSION_MATCH_QUERY_PLAYER_MATCH_ANY_LEVEL_TEAM 7
+
+//
+// Context ids
+//
+// These values are passed as the dwContextId to XUserSetContext.
+//
+
+#define CONTEXT_STATE_GAME                           1
+#define CONTEXT_STATE_FINALE                          3
+#define CONTEXT_STATE_LOBBY                       5
+
+#define CONTEXT_GAME_MODE_VERSUS                            10
+#define CONTEXT_GAME_MODE_TEAMVERSUS                         14
+#define CONTEXT_GAME_MODE_SCAVENGE                       16
+#define CONTEXT_GAME_MODE_TEAMSCAVENGE                       17
+#define CONTEXT_GAME_MODE_SURVIVAL                       18
+#define CONTEXT_GAME_MODE_REALISM                       19
+#define CONTEXT_GAME_MODE_COOP                       20
+
+#define CONTEXT_DIFFICULTY_EASY                       1
+#define CONTEXT_DIFFICULTY_HARD                       2
+#define CONTEXT_DIFFICULTY_IMPOSSIBLE                      3
+#define CONTEXT_DIFFICULTY_NORMAL                      4
+
+#define CONTEXT_ACCESS_PUBLIC                       1
+#define CONTEXT_ACCESS_FRIENDS                       2
+#define CONTEXT_ACCESS_PRIVATE                      3
+
+//
+// Property ids
+//
+// These values are passed as the dwPropertyId value to XUserSetProperty
+// and as the dwPropertyId value in the XUSER_PROPERTY structure.
+//
+
+#define PROPERTY_MMVERSION           0x10000003
 
 #include "matchext_swarm.h"
 
@@ -106,7 +155,7 @@ void MM_Title_RichPresence_Update( KeyValues *pFullSettings, KeyValues *pUpdated
 		return;
 	}
 
-	// Also set players information during initial rich presence update
+	/* Also set players information during initial rich presence update
 	if ( !pUpdatedSettings && pFullSettings )
 	{
 		MM_Title_RichPresence_PlayersChanged( pFullSettings );
@@ -227,15 +276,15 @@ void MM_Title_RichPresence_Update( KeyValues *pFullSettings, KeyValues *pUpdated
 		dwLevelPresence = pInfoChapter->GetInt( "x360presence", dwLevelPresence );	// let the chapter override
 
 		SetAllUsersContext( X_CONTEXT_PRESENCE, dwLevelPresence );
-	}
+	}*/
 }
 
 void MM_Title_RichPresence_PlayersChanged( KeyValues *pFullSettings )
 {
-	if ( int numPlayers = pFullSettings->GetInt( "members/numPlayers" ) )
+	/*if (int numPlayers = pFullSettings->GetInt("members/numPlayers"))
 	{
 		static int val; // must be valid for the async call
 		val = numPlayers;
 		SetAllUsersProperty( PROPERTY_NUMPLAYERS, sizeof( val ), &val );
-	}
+	}*/
 }

@@ -1632,7 +1632,7 @@ void CUIGameData::InitiateSplitscreenPartnerDetection( const char* szGameMode, c
 	pSettings->SetString( "game/mode", szGameMode );
 	if ( !V_stricmp( szGameMode, "coop_challenge" ) )
 	{
-		pSettings->SetString( "game/map", szMapName );
+		pSettings->SetString("game/mission", szMapName);
 	}
 	OpenWaitScreen( IsPS3() ? "#L4D360UI_PressStartBothForSplitscreen" : "#L4D360UI_PressStartToBeginSplitscreen", 0.0f, pSettings );
 }
@@ -1661,13 +1661,13 @@ CEG_NOINLINE void CUIGameData::InitiateOnlineCoopPlay( CBaseModFrame *pCaller, c
 		KeyValues::AutoDelete autodelete( pSettings );
 	#ifndef _CERT
 		if ( ui_coop_map_default.GetString()[0] )
-			pSettings->SetString( "game/map", ui_coop_map_default.GetString() );
+			pSettings->SetString("game/mission", ui_coop_map_default.GetString());
 	#endif
 		pSettings->SetString( "game/type", "quickmatch" );
 		pSettings->SetString( "game/mode", szGameMode );
 		if ( bShouldSetMapName && szMapName )
 		{
-			pSettings->SetString( "game/map", szMapName );
+			pSettings->SetString("game/mission", szMapName);
 		}
 		pSettings->SetString( "game/platform", IsPS3() ? "ps3" : "default" );
 		g_pMatchFramework->MatchSession( pSettings );
@@ -1732,12 +1732,12 @@ CEG_NOINLINE void CUIGameData::InitiateOnlineCoopPlay( CBaseModFrame *pCaller, c
 	pSettings->SetString( "game/mode", szGameMode );
 	if ( bShouldSetMapName )
 	{
-		pSettings->SetString( "game/map", szMapName );
+		pSettings->SetString("game/mission", szMapName);
 	}
 
 #ifndef _CERT
 	if ( ui_coop_map_default.GetString()[0] )
-		pSettings->SetString( "game/map", ui_coop_map_default.GetString() );
+		pSettings->SetString("game/mission", ui_coop_map_default.GetString());
 #endif
 #ifdef _X360
 	if ( !bOnline )
@@ -1777,10 +1777,13 @@ CEG_NOINLINE void CUIGameData::InitiateSinglePlayerPlay( const char *pMapName, c
 	}
 
 	pSettings->SetString( "game/mode", "sp" );
-	pSettings->SetString( "game/map", pMapName );
 	if ( pSaveName && *pSaveName )
 	{
 		pSettings->SetString( "game/save", pSaveName );
+	}
+	else
+	{
+		pSettings->SetString("game/mission", pMapName);
 	}
 
 	KeyValues::AutoDelete autodelete( pSettings );
@@ -1805,56 +1808,56 @@ CEG_NOINLINE void CUIGameData::InitiateSinglePlayerPlay( const char *pMapName, c
 
 CEG_NOINLINE void CUIGameData::InitiateSplitscreenPlay()
 {
-	CEG_PROTECT_MEMBER_FUNCTION( CUIGameData_InitiateSplitscreenPlay );
+	CEG_PROTECT_MEMBER_FUNCTION(CUIGameData_InitiateSplitscreenPlay);
 
-//	// Start a splitscreen game
-//	KeyValues *pSettings = KeyValues::FromString(
-//		"settings",
-//		PORTAL2_LOBBY_CONFIG_COOP( "offline", "public" )
-//		" options { "
-//		" action create "
-//		" } "
-//		);
-//
-//	bool bImmediateStart = true;
-//	const char *pchGameMode = CStartCoopGame::CoopGameMode();
-//	if ( pchGameMode && pchGameMode[ 0 ] != '\0' )
-//	{
-//		pSettings->SetString( "game/mode", pchGameMode );
-//		const char *pchChallengeMap = CStartCoopGame::CoopChallengeMap();
-//		if ( pchGameMode && !V_stricmp( pchGameMode, "coop_challenge" ) )
-//		{
-//			if ( IsX360() )
-//			{
-//				// must be "lan" so Silver account can play challenge mode
-//				pSettings->SetString( "system/network", "lan" );
-//				bImmediateStart = false;
-//			}
-//			pSettings->SetString( "game/map", pchChallengeMap );
-//		}
-//	}
-//
-//#ifndef _CERT
-//	if ( ui_coop_map_default.GetString()[0] )
-//		pSettings->SetString( "game/map", ui_coop_map_default.GetString() );
-//#endif
-//
-//	if ( bImmediateStart )
-//	{
-//		CBaseModPanel::GetSingleton().GetTransitionEffectPanel()->PreventTransitions( true );
-//	}
-//
-//	KeyValues::AutoDelete autodelete( pSettings );
-//	g_pMatchFramework->CreateSession( pSettings );
-//
-//	// Automatically start the splitscreen session, no configuration required
-//	if ( IMatchSession *pMatchSession = g_pMatchFramework->GetMatchSession() )
-//	{
-//		if ( bImmediateStart )
-//		{
-//			pMatchSession->Command( KeyValues::AutoDeleteInline( new KeyValues( "Start" ) ) );
-//		}
-//	}
+	// Start a splitscreen game
+	KeyValues* pSettings = KeyValues::FromString(
+		"settings",
+		PORTAL2_LOBBY_CONFIG_COOP("offline", "public")
+		" options { "
+		" action create "
+		" } "
+	);
+
+	bool bImmediateStart = true;
+	const char* pchGameMode = CStartCoopGame::CoopGameMode();
+	if (pchGameMode && pchGameMode[0] != '\0')
+	{
+		pSettings->SetString("game/mode", pchGameMode);
+		const char* pchChallengeMap = CStartCoopGame::CoopChallengeMap();
+		if (pchGameMode && !V_stricmp(pchGameMode, "coop_challenge"))
+		{
+			if (IsX360())
+			{
+				// must be "lan" so Silver account can play challenge mode
+				pSettings->SetString("system/network", "lan");
+				bImmediateStart = false;
+			}
+			pSettings->SetString("game/mission", pchChallengeMap);
+		}
+	}
+
+#ifndef _CERT
+	if (ui_coop_map_default.GetString()[0])
+		pSettings->SetString("game/mission", ui_coop_map_default.GetString());
+#endif
+
+	if (bImmediateStart)
+	{
+		CBaseModPanel::GetSingleton().GetTransitionEffectPanel()->PreventTransitions(true);
+	}
+
+	KeyValues::AutoDelete autodelete(pSettings);
+	g_pMatchFramework->CreateSession(pSettings);
+
+	// Automatically start the splitscreen session, no configuration required
+	if (IMatchSession* pMatchSession = g_pMatchFramework->GetMatchSession())
+	{
+		if (bImmediateStart)
+		{
+			pMatchSession->Command(KeyValues::AutoDeleteInline(new KeyValues("Start")));
+		}
+	}
 }
 
 CON_COMMAND_F( ui_reloadscheme, "Reloads the resource files for the active UI window", 0 )
