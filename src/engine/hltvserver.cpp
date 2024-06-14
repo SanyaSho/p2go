@@ -3290,7 +3290,7 @@ bool CHLTVServer::CheckHltvPasswordMatch( const char *szPasswordProvidedByClient
 	//
 	// Check if client is connecting via watchable reservation
 	//
-	if ( tv_advertise_watchable.GetBool() && sv.IsReserved() && sv.GetReservationCookie() &&
+	/*if (tv_advertise_watchable.GetBool()/* && sv.IsReserved() && sv.GetReservationCookie() */ /*&&
 		szPasswordProvidedByClient && ( Q_strlen( szPasswordProvidedByClient ) == 64 ) )
 	{
 		// Decode client TV watchable password ascii
@@ -3317,7 +3317,7 @@ bool CHLTVServer::CheckHltvPasswordMatch( const char *szPasswordProvidedByClient
 				return true;
 		}
 	}
-
+	*/
 	return false;
 }
 

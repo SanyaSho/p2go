@@ -450,7 +450,7 @@ void CHostState::State_NewGame()
 	// run the server at the console
 	SetState( HS_RUN, true );
 
-	sv.ClearReservationStatus();
+//	sv.ClearReservationStatus();
 }
 
 void CHostState::State_LoadGame()

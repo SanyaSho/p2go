@@ -1,7 +1,9 @@
 # Portal 2 (ASW) in CSGO
 
 This project is aimed to port P2ASW to the leaked CSGO engine to no longer worry about Alien Swarm's limitations.<br>
-Partially used code from https://github.com/tupoy-ya/Kisak-Strike and my other project, https://github.com/EpicSentry/HL2-CSGO<br>
+Partially used code from https://github.com/tupoy-ya/Kisak-Strike, my other project https://github.com/EpicSentry/HL2-CSGO and https://gitlab.com/mikkokko/csgo_src (P2P fixes)<br>
+Physics/IVP are a mix of Kisak-Strike and https://github.com/nillerusr/source-physics<br>
+
 What is P2ASW? Check it out here: https://github.com/EpicSentry/P2ASW/<br>
 This repository uses Git LFS for libraries and the platform folder.<br>
 

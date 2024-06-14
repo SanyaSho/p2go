@@ -1,4 +1,4 @@
-﻿//===== Copyright � 1996-2005, Valve Corporation, All rights reserved. ======//
+﻿﻿//===== Copyright � 1996-2005, Valve Corporation, All rights reserved. ======//
 //
 // Purpose:  baseclientstate.cpp: implementation of the CBaseClientState class.
 // 
@@ -1072,6 +1072,16 @@ void CBaseClientState::ConnectInternal( const char *pchPublicAddress, char const
 #endif
 #endif
 
+	// mikko p2p hack: see if it's a valid steam id in [U:1:123456789] format
+	if ( *pchPublicAddress == '[' )
+	{
+		CSteamID SteamID( pchPublicAddress );
+		if ( SteamID.IsValid() )
+		{
+			m_ListenServerSteamID = SteamID.ConvertToUint64();
+		}
+	}
+
 	m_Remote.RemoveAll();
 	m_Remote.AddRemote( pchPublicAddress, "public" );
 	m_Remote.AddRemote( pchPrivateAddress, "private" );
@@ -1711,9 +1721,9 @@ bool CBaseClientState::ProcessConnectionlessPacket( netpacket_t *packet )
 			// The host can disable access to secure servers if you load unsigned code (mods, plugins, hacks)
 			if ( dc.m_bGSSecure && !Host_IsSecureServerAllowed() )
 			{
-				m_netadrReserveServer.RemoveAll();
-				m_nServerReservationCookie = 0;				
-				m_pServerReservationCallback = NULL;
+				//m_netadrReserveServer.RemoveAll();
+				//m_nServerReservationCookie = 0;				
+				//m_pServerReservationCallback = NULL;
 #if !defined(DEDICATED)
 				g_pMatchFramework->CloseSession();
 				g_pMatchFramework->GetEventsSubscription()->BroadcastEvent( new KeyValues( "OnClientInsecureBlocked", "reason", "connect" ) );
@@ -1844,7 +1854,7 @@ bool CBaseClientState::ProcessConnectionlessPacket( netpacket_t *packet )
 					EngineVGui()->ShowPasswordUI( password.GetString() );
 #endif
 				}
-				else if ( dc.m_chLobbyType[0] && !sv.IsActive() && !dc.m_unLobbyID &&
+				/*else if (dc.m_chLobbyType[0] && !sv.IsActive() && !dc.m_unLobbyID &&
 					m_nServerReservationCookie )
 				{
 					// Server protocol violation - client has reserved this server, but server
@@ -1852,7 +1862,7 @@ bool CBaseClientState::ProcessConnectionlessPacket( netpacket_t *packet )
 					Warning( "Server error - failed to handle reservation request.\n" );
 					Disconnect();
 					return false;
-				}
+				}*/
 				else if ( StringHasPrefix( context, "connect-retry" ) &&
 						  dc.m_chLobbyType[0] && !sv.IsActive() && !dc.m_unLobbyID )
 						  // Server tells us that we need to issue another "connect" with a valid
@@ -1874,7 +1884,7 @@ bool CBaseClientState::ProcessConnectionlessPacket( netpacket_t *packet )
 					// This response is sent by anonymous community servers - we cannot 
 					// direct-connect unless we are on the same LAN network
 				{
-					COM_ExplainDisconnection( true, "You cannot connect to this CS:GO server because it is restricted to LAN connections only.\n" );
+					COM_ExplainDisconnection( true, "You cannot connect to this Portal 2 server because it is restricted to LAN connections only.\n" );
 					Disconnect();
 					break;
 				}
@@ -2241,62 +2251,7 @@ void CBaseClientState::HandleDeferredConnection()
 			ResendGameDetailsRequest( dc.m_adrServerAddress );
 		}
 #else
-		bool bCanSendConnectPacketRightNow = false;
-		
-		// Always allow to connect if we have a reservation in m_nServerReservationCookie
-		if ( m_nServerReservationCookie )
-			bCanSendConnectPacketRightNow = true;
-
-		// Always allow to connect to listen server peer SteamID
-		if ( m_ListenServerSteamID )
-			bCanSendConnectPacketRightNow = true;
-
-		// Always allow to connect from dedicated or ValveDS or GOTV relay
-		if ( IsClientStateTv() || NET_IsDedicated() || sv.IsDedicated() || ( serverGameDLL && serverGameDLL->IsValveDS() ) )
-			bCanSendConnectPacketRightNow = true;
-
-		if ( !bCanSendConnectPacketRightNow && (
-			!dc.m_unGSSteamID ||														// Connecting to GOTV relay
-			( CSteamID( dc.m_unGSSteamID ).GetEAccountType() == k_EAccountTypeInvalid )	// Connecting to sv_lan 1 server
-			) )
-		{
-			static const bool s_bAllowLanWhitelist = !CommandLine()->FindParm( "-ignorelanwhitelist" );
-			bCanSendConnectPacketRightNow = // only allow for LAN server setup to bypass GC auth
-				dc.m_adrServerAddress.IsLocalhost() || dc.m_adrServerAddress.IsLoopback()		// localhost/loopback
-				|| ( s_bAllowLanWhitelist && dc.m_adrServerAddress.IsReservedAdr() )			// LAN RFC 1918
-				;
-		}
-		
-		// If we determined that client is good to go then just follow up with a real connect packet
-		if ( bCanSendConnectPacketRightNow )
-		{
-			SendConnectPacket( dc.m_adrServerAddress, dc.m_nChallenge, dc.m_nAuthprotocol, dc.m_unGSSteamID, dc.m_bGSSecure );
-			return;
-		}
-
-		// Check that if we are falling through we have a good game server Steam ID to ask GC about
-		if ( !dc.m_unGSSteamID || !CSteamID( dc.m_unGSSteamID ).BGameServerAccount() )
-		{
-			Disconnect( true ); // cannot retry this attempt - the GS SteamID is not good
-			COM_ExplainDisconnection( true, "You cannot connect to this Portal 2 server because it is restricted to LAN connections only.\n" );
-			return;
-		}
-		
-		//
-		// Otherwise we require that client obtained a GS cookie from GC
-		// which allows GC to deny connections to blacklisted game servers
-		//
-		uint64 uiReservationCookie = 0ull;
-		{
-			KeyValues *kvCreateSession = new KeyValues( "OnEngineLevelLoadingSession" );
-			kvCreateSession->SetString( "reason", "CreateSession" );
-			kvCreateSession->SetString( "adr", ns_address_render( dc.m_adrServerAddress ).String() );
-			kvCreateSession->SetUint64( "gsid", dc.m_unGSSteamID );
-			kvCreateSession->SetPtr( "ptr", &uiReservationCookie );
-			g_pMatchFramework->GetEventsSubscription()->BroadcastEvent( kvCreateSession );
-		}
-
-			SendConnectPacket( dc.m_adrServerAddress, dc.m_nChallenge, dc.m_nAuthprotocol, dc.m_unGSSteamID, dc.m_bGSSecure );
+		SendConnectPacket( dc.m_adrServerAddress, dc.m_nChallenge, dc.m_nAuthprotocol, dc.m_unGSSteamID, dc.m_bGSSecure );
 #endif
 	}
 	else
@@ -3427,8 +3382,8 @@ bool CBaseClientState::ShouldUseDirectConnectAddress( const CAddressList &list )
 	if ( m_DirectConnectLobby.m_adrRemote.IsType<netadr_t>() && !m_DirectConnectLobby.m_adrRemote.AsType<netadr_t>().GetIPHostByteOrder() )
 		return false;
 	// Either joining unreserved server or same lobby ID
-	if ( m_DirectConnectLobby.m_unLobbyID != 0ull && m_DirectConnectLobby.m_unLobbyID != m_nServerReservationCookie )
-		return false;
+	//if ( m_DirectConnectLobby.m_unLobbyID != 0ull && m_DirectConnectLobby.m_unLobbyID != m_nServerReservationCookie )
+	//	return false;
 	// Already in list
 	if ( list.IsAddressInList( m_DirectConnectLobby.m_adrRemote ) )											
 		return false;

@@ -1599,12 +1599,13 @@ public:
 	// Sets server reservation payload
 	bool ReserveServerForQueuedGame( char const *szReservationPayload )
 	{
-		bool bResult = sv.ReserveServerForQueuedGame( szReservationPayload );
+		/*bool bResult = sv.ReserveServerForQueuedGame(szReservationPayload);
 		if ( bResult && szReservationPayload && ( szReservationPayload[0] != 'R' ) )
 		{
 			ServerCommand( "removeallids\n" );
 		}
-		return bResult;
+		return bResult;*/
+		return true; // ?
 	}
 
 	bool GetEngineHltvInfo( CEngineHltvInfo_t &info )

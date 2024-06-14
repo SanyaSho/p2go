@@ -690,8 +690,8 @@ IClient *CBaseServer::ConnectClient ( const ns_address &adr, int protocol, int c
 #endif
 
 	// Make sure client user info carries correct cookie
-	bool bValidatedUserInfo = false;
-	if ( GetReservationCookie() != 0u )
+	bool bValidatedUserInfo = true;
+	/*if (GetReservationCookie() != 0u)
 	{
 		if ( splitScreenClients.Count() )
 		{
@@ -723,7 +723,7 @@ IClient *CBaseServer::ConnectClient ( const ns_address &adr, int protocol, int c
 	else
 	{
 		bValidatedUserInfo = true;
-	}
+	}*/
 	// If we failed to validate user info - reject
 	if ( !bValidatedUserInfo )
 	{

@@ -893,7 +893,7 @@ bool CBaseClient::SendServerInfo( void )
 
 	serverinfo.WriteToBuffer( msg );
 
-	if ( g_pMatchFramework && !sv.GetReservationCookie() )
+	if ( g_pMatchFramework/* && !sv.GetReservationCookie()*/)
 	{
 		KeyValues *kvUpdate = new KeyValues( "OnEngineListenServerStarted" );
 		if ( Steam3Server().SteamGameServer() )
@@ -950,7 +950,7 @@ bool CBaseClient::SendServerInfo( void )
 
 void CBaseClient::OnSteamServerLogonSuccess( uint32 externalIP )
 {
-	if ( g_pMatchFramework && !sv.GetReservationCookie() )
+	if ( g_pMatchFramework/* && !sv.GetReservationCookie()*/)
 	{
 		KeyValues *kvUpdate = new KeyValues( "OnEngineListenServerStarted" );
 		kvUpdate->SetInt( "externalIP", externalIP );		
@@ -2034,7 +2034,7 @@ struct SessionClient_t
 
 		// Prefer to preserve the clients that have the original
 		// reservation session (that's the lobby leader)
-		if ( a->xSession != b->xSession )
+		if (a->xSession != b->xSession)
 		{
 			if ( a->xSession == sv.GetReservationCookie() )
 				return -1;
@@ -2107,7 +2107,7 @@ void HostValidateSessionImpl()
 	//	Set the new reservation cookie and drop the rest
 	//
 	int iDropIndex = 0;
-	if ( arrSessions[0].xSession )
+	if (arrSessions[0].xSession)
 	{
 		Msg( "[SESSION] Updating reservation cookie: %llx, keeping %d players.\n",
 			arrSessions[0].xSession, arrSessions[0].numPlayers );

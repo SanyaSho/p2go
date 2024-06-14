@@ -495,7 +495,15 @@ static inline bool IsSteamSocketType( ESocketIndex_t eSocketType )
 // assumes you have already called IsSteamSocketType
 static inline int GetChannelForSocketType( ESocketIndex_t eSocketType )
 {
-	return (eSocketType == NS_CLIENT) ? INetSupport::SP2PC_RECV_CLIENT : INetSupport::SP2PC_RECV_SERVER;
+	// mikko: these came from inetsupport.h
+	enum
+	{
+		// see top of net_steamsocketmgr.cpp for why we need seperate channels for client & server
+		SP2PC_RECV_CLIENT = 0,
+		SP2PC_RECV_SERVER
+	};
+
+	return (eSocketType == NS_CLIENT) ? SP2PC_RECV_CLIENT : SP2PC_RECV_SERVER;
 }
 
 // each virtual socket we have open to another user
