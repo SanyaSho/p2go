@@ -14,10 +14,13 @@ This repository uses Git LFS for libraries and the platform folder.<br>
 - VPhysics DLL code included.
 - Mostly working save/restore.
 - Valve Bink video DLL compiling from source.
+- Matchmaking DLL fixed from Swarm.
+- Working P2P networking. (see credits)
 
 **Differences/stuff removed in P2GO:**<br>
 - SourceTV/GOTV removed (Not important for Portal 2)<br>
 - Do a search for "TODO!", these are things that are important that I couldn't get working or that cause crashes.
+- Multiplayer is really buggy, often crashing your game while loading the coop lobby.
 
 **Using and building P2GO:**
 - Generate the project using CreateSolution.bat and build with VS2015 (2022 with 2015 build tools will work).<br>
