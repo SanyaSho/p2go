@@ -424,6 +424,12 @@ void UpgradePlayerPotatogun( void )
 	}
 }
 
+int GetMapIndexInPlayOrder( bool )
+{
+	// Stub
+	return -2; // Not a workshop map
+}
+
 
 HSCRIPT GetPlayer( void )
 {
@@ -452,6 +458,7 @@ void CPortalGameRules::RegisterScriptFunctions( void )
 	ScriptRegisterFunction( g_pScriptVM, UpgradePlayerPortalgun, "Give player the portalgun." );
 	ScriptRegisterFunction( g_pScriptVM, UpgradePlayerPotatogun, "Give player the portalgun." );
 	ScriptRegisterFunction( g_pScriptVM, TryDLC1InstalledOrCatch, "Tests if the DLC1 is installed for Try/Catch blocks." );
+	ScriptRegisterFunction( g_pScriptVM, GetMapIndexInPlayOrder, "For workshop maps, determines which index (by order played) this map is. Returns -1 if entry is not found or -2 if this is not a workshop map." );
 	g_pScriptVM->RegisterInstance( &PlayerVoiceListener(), "PlayerVoiceListener" );
 }
 #endif // !CLIENT_DLL
