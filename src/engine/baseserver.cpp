@@ -1244,10 +1244,10 @@ bool CBaseServer::ProcessConnectionlessPacket(netpacket_t * packet)
 						  buf.PutUnsignedChar( S2A_INFO_SRC );
 						  buf.PutUnsignedChar( 17 ); // Hardcoded protocol version number
 						  extern ConVar host_name_store;
-						  buf.PutString( host_name_store.GetBool() ? GetName() : "Counter-Strike: Global Offensive" );
+						  buf.PutString( host_name_store.GetBool() ? GetName() : "Portal 2" );
 						  buf.PutString( GetMapName() );
-						  buf.PutString( "csgo" );
-						  buf.PutString( "Counter-Strike: Global Offensive" );
+						  buf.PutString( "portal2" );
+						  buf.PutString( "Portal 2" );
 
 						  // The next field is a 16-bit version of the AppID.  If our AppID < 65536,
 						  // then let's go ahead and put in in there, to maximize compatibility

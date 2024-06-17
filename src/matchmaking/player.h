@@ -13,7 +13,7 @@ class PlayerLocal;
 
 #include "mm_framework.h"
 #include "matchmaking/iplayer.h"
-#include "matchmaking/cstrike15/imatchext_cstrike15.h"
+#include "matchmaking/portal2/imatchext_portal2.h"
 #include "playerrankingdata.h"
 #include "mathlib/expressioncalculator.h"
 

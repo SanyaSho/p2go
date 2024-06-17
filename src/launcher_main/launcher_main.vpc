@@ -11,11 +11,11 @@ $Macro OUTBINDIR	"$SRCDIR\..\game"
 // Renames will not work.
 $Macro OUTBINNAME	"default"
 $Macro OUTBINNAME	"portal2"	[$WIN32]
-$Macro OUTBINNAME	"csgo_win64"	[$WIN64]
-$Macro OUTBINNAME	"csgo_osx" [$OSX32]
-$Macro OUTBINNAME	"csgo_osx64" [$OSX64]
-$Macro OUTBINNAME	"csgo_linux" [$LINUX32]
-$Macro OUTBINNAME	"csgo_linux64" [$LINUX64]
+$Macro OUTBINNAME	"portal2_win64"	[$WIN64]
+$Macro OUTBINNAME	"portal2_osx" [$OSX32]
+$Macro OUTBINNAME	"portal2_osx64" [$OSX64]
+$Macro OUTBINNAME	"portal2_linux" [$LINUX32]
+$Macro OUTBINNAME	"portal2_linux64" [$LINUX64]
 
 $Include "$SRCDIR\vpc_scripts\source_exe_base.vpc"
 

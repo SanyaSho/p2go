@@ -216,7 +216,6 @@ bool CMatchTitle::StartServerMap( KeyValues *pSettings )
 	if (!g_pMatchExtensions->GetIVEngineServer()->IsMapValid(pInfoChapter->GetString("map"))) {
 		return false;
 	}
-	Msg("Map OK\n");
 
 	//
 	// Prepare game dll reservation package

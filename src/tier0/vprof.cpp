@@ -1847,7 +1847,7 @@ static bool TelemetryInitialize()
 		g_TelemetryLoaded = true;
 	}
 
-	char *pGameName = "csgo";
+	char *pGameName = "portal2";
 
 #if defined( IS_WINDOWS_PC )
 	char baseExeFilename[512];

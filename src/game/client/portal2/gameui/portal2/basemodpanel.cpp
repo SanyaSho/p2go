@@ -4116,13 +4116,14 @@ int CBaseModPanel::GetChapterProgress()
 			return nNumChapters;
 		}
 
-		//TitleData1 const *pTitleData = ( TitleData1 const * )pPlayer->GetPlayerTitleData( 0 );
-		//if ( pTitleData && nNumChapters )
-		//{			
-		//	nNumChapters = MIN( (unsigned int)nNumChapters, pTitleData->uiSinglePlayerProgressChapter );
-		//	nNumChapters = MAX( nNumChapters, 0 );
-		//	return nNumChapters;
-		//}
+		// Testing
+		TitleData1 const *pTitleData = ( TitleData1 const * )pPlayer->GetPlayerTitleData( 0 );
+		if ( pTitleData && nNumChapters )
+		{			
+			nNumChapters = MIN( (unsigned int)nNumChapters, pTitleData->uiSinglePlayerProgressChapter );
+			nNumChapters = MAX( nNumChapters, 0 );
+			return nNumChapters;
+		}
 	}
 
 	// no progress

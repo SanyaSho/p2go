@@ -252,7 +252,7 @@ void CMatchExtSwarm::Initialize()
 	m_mapMissionsLoaded.Purge();
 
 	m_pKeyValues = KeyValues::FromString(
-		"AlienSwarm",
+		"Portal2",
 		" GameModes { "
 			" coop { } "
 #ifndef _DEMO

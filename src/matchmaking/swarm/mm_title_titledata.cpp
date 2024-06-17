@@ -11,63 +11,116 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-TitleDataFieldsDescription_t const * CMatchTitle::DescribeTitleDataStorage()
+static TitleDataFieldsDescription_t const* PrepareTitleDataStorageDescription()
 {
 #define TD_ENTRY( szName, nTD, eDataType, numBytesOffset ) \
-	{ szName, TitleDataFieldsDescription_t::nTD, TitleDataFieldsDescription_t::eDataType, numBytesOffset }
+	{ \
+		TitleDataFieldsDescription_t aTDFD = { szName, TitleDataFieldsDescription_t::nTD, TitleDataFieldsDescription_t::eDataType, numBytesOffset }; \
+		s_tdfd.AddToTail( aTDFD ); \
+	}
 
-	static TitleDataFieldsDescription_t tdfd[] =
+	static CUtlVector< TitleDataFieldsDescription_t > s_tdfd;
+
+	// Single player progress
+	TD_ENTRY("SP.progress", DB_TD1, DT_uint32, offsetof(TitleData1, uiSinglePlayerProgressChapter));
+
+		// COOP MAPS
+#define CFG( fieldname, ctx, idx, num ) \
+	TD_ENTRY( "MP.complete." #fieldname,DB_TD1,	DT_BITFIELD,	8*offsetof( TitleData1, coop.mapbits ) + TitleData1::CoopData_t::fieldname )
+#define CFG_DISABLED( fieldname, ctx, idx, num )
+#include "xlast_portal2/inc_coop_maps.inc"
+#undef CFG_DISABLED
+#undef CFG
+
+		// GAME INSTRUCTOR LESSONS
+#define CFG( fieldname ) \
+	TD_ENTRY( "GI.lesson." #fieldname,	DB_TD1,	DT_uint8,	offsetof( TitleData1, gameinstructor.lessoninfo[ TitleData1::GameInstructorData_t::lesson_##fieldname ] ) )
+#define CFG_DISABLED( fieldname )
+#include "xlast_portal2/inc_gameinstructor_lessons.inc"
+#undef CFG_DISABLED
+#undef CFG
+
+		// Storage for achievements components
+	uint32 uiAchievementComponentBitsUsed = 0;
+#define CFG( name, compcount, ... ) \
+	{ \
+		COMPILE_TIME_ASSERT( (compcount == 0) || (compcount > 1) ); \
+		int numAchNameChars = Q_strlen( "ACH." #name ); \
+		for ( int iComponent = 0; iComponent < compcount; ++ iComponent ) \
+		{ \
+			char *pszComponentName = new char[ numAchNameChars + 10 ]; \
+			Q_snprintf( pszComponentName, numAchNameChars + 10, "%s[%d]", "ACH." #name, iComponent+1 ); \
+			TD_ENTRY( pszComponentName,	DB_TD2,	DT_BITFIELD,	8*offsetof( TitleData2, bitsAchievementsComponents ) + uiAchievementComponentBitsUsed + iComponent ) \
+		} \
+		uiAchievementComponentBitsUsed += 32 * STORAGE_COUNT_FOR_BITS( uint32, compcount ); \
+	}
+//#include "inc_achievements.inc" // TODO - No idea how this is supposed to be laid out properly so it's mostly a guess and probably a very wrong one
+#undef CFG
+
+	// Custom achievements data
 	{
-#if 0
-		// ACHIEVEMENTS
-		TD_ENTRY( "TD2.COUNT.ACH_BEAT_CAMPAIGNS_EXPERT_MODE",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountBeatCampaignsExpertMode		) ),
-		TD_ENTRY( "TD2.COUNT.ACH_CUT_OFF_HEADS_MELEE",			DB_TD2,	DT_U8,		offsetof( TitleData2, iCountCutOffHeadsMelee			) ),
-		TD_ENTRY( "TD2.COUNT.ACH_KILL_WITH_EVERY_MELEE",		DB_TD2,	DT_U8,		offsetof( TitleData2, iCountKillWithEveryMelee			) ),
-		TD_ENTRY( "TD2.COUNT.ACH_KILL_INFECTED_WITH_CHAINSAW",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountKillInfectedWithChainsaw	) ),
-		TD_ENTRY( "TD2.COUNT.ACH_RES_SURVIVORS_WITH_DEFIB",		DB_TD2,	DT_U8,		offsetof( TitleData2, iCountResSurvivorsWithDefib		) ),
-		TD_ENTRY( "TD2.COUNT.ACH_SPEED_REVIVE_WITH_ADRENALINE",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountSpeedReviveWithAdrenaline	) ),
-		TD_ENTRY( "TD2.COUNT.ACH_IGNITE_INFECTED_FIRE_AMMO",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountIgniteInfectedFireAmmo		) ),
-		TD_ENTRY( "TD2.COUNT.ACH_KILL_EVERY_UNCOMMON_INFECTED",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountKillEveryUncommonInfected	) ),
-		TD_ENTRY( "TD2.COUNT.ACH_KILL_SUBMERGED_MUDMEN",		DB_TD2,	DT_U8,		offsetof( TitleData2, iCountKillSubmergedMudmen			) ),
-		TD_ENTRY( "TD2.COUNT.ACH_COLLECT_CEDA_VIALS",			DB_TD2,	DT_U8,		offsetof( TitleData2, iCountCollectCEDAVials			) ),
-		TD_ENTRY( "TD2.COUNT.ACH_SCAVENGE_COLLECT_CAN_GRIND",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCountScavengeCollectCanGrind		) ),
-		TD_ENTRY( "TD2.COUNT.ACH_SCAVENGE_CAN_DROP_GRIND",		DB_TD2,	DT_U8,		offsetof( TitleData2, iCountScavengeCanDropGrind		) ),
-		TD_ENTRY( "TD2.COUNT.ACH_HONK_A_CLOWNS_NOSE",			DB_TD2,	DT_U8,		offsetof( TitleData2, iCountHonkAClownsNose				) ),
-		TD_ENTRY( "TD2.COMP.ACH_BEAT_CAMPAIGNS_EXPERT_MODE",	DB_TD2,	DT_U8,		offsetof( TitleData2, iCompBeatCampaignsExpertMode		) ),
-		TD_ENTRY( "TD2.COMP.ACH_KILL_WITH_EVERY_MELEE",			DB_TD2,	DT_U16,		offsetof( TitleData2, iCompKillWithEveryMelee			) ),
-		TD_ENTRY( "TD2.COMP.ACH_KILL_EVERY_UNCOMMON_INFECTED",	DB_TD2,	DT_U16,		offsetof( TitleData2, iCompKillEveryUncommonInfected	) ),
+		char const* szAch = "ACH.SPREAD_THE_LOVE";
+		int numAchNameChars = Q_strlen(szAch);
+		for (int iComponent = 0; iComponent < TitleData2::kAchievement_SpreadTheLove_FriendsHuggedCount; ++iComponent)
+		{
+			char* pszComponentName = new char[numAchNameChars + 10];
+			Q_snprintf(pszComponentName, numAchNameChars + 10, "%s[%d]", szAch, iComponent + 1);
+			TD_ENTRY(pszComponentName, DB_TD2, DT_uint64, offsetof(TitleData2, ach_SpreadTheLove_FriendsHugged[iComponent]));
+		}
+	}
+	{
+		char const* szAch = "ACH.SPEED_RUN_COOP";
+		int numAchNameChars = Q_strlen(szAch);
+		for (int iComponent = 0; iComponent < TitleData2::kAchievement_SpeedRunCoop_QualifiedRunsCount; ++iComponent)
+		{
+			char* pszComponentName = new char[numAchNameChars + 10];
+			Q_snprintf(pszComponentName, numAchNameChars + 10, "%s[%d]", szAch, iComponent + 1);
+			TD_ENTRY(pszComponentName, DB_TD2, DT_uint16, offsetof(TitleData2, ach_SpeedRunCoop_MapsQualified[iComponent]));
+		}
+	}
 
-		// AVATAR AWARDS
-		TD_ENTRY( "TD2.COUNT.ASSET_MED_KIT",					DB_TD2,	DT_U8,		offsetof( TitleData2, iCountBeatCampaignsAnyMode		) ),
-		TD_ENTRY( "TD2.COMP.ASSET_MED_KIT",						DB_TD2,	DT_U8,		offsetof( TitleData2, iCompBeatCampaignsAnyMode			) ),
-		TD_ENTRY( "TD2.COUNT.ASSET_PIPE_BOMB",					DB_TD2,	DT_U16,		offsetof( TitleData2, iCountKillTenThousandZombies		) ),
-		TD_ENTRY( "TD2.COUNT.ASSET_GAS_CAN",					DB_TD2,	DT_U8,		offsetof( TitleData2, iCountWinScavengerMatches			) ),
-		TD_ENTRY( "TD2.COUNT.ASSET_FRYING_PAN",					DB_TD2, DT_U8,		offsetof( TitleData2, iCountWinVersusMatches			) ),
+	// remaining fields to consider:
+	// COOP TAUNTS
+	// system convars
+	// profile-specific convars
+	// game stats
 
-		// ZOMBIE PANEL SEEN COUNTS
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_INTRO",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelIntro			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_SMOKER",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelSmoker			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_BOOMER",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelBoomer			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_HUNTER",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelHunter			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_SPITTER",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelSpitter			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_JOCKEY",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelJockey			) ),
-		TD_ENTRY( "TD2.COUNT.ZOMBIE_PANEL_CHARGER",				DB_TD2, DT_U8,		offsetof( TitleData2, iCountZombiePanelCharger			) ),
+#ifdef _PS3
+// DLC ownership bits
+#define CFG( fieldname ) \
+	TD_ENTRY( "DLC." #fieldname,DB_TD2,	DT_BITFIELD,	8*offsetof( TitleData2, dlcbits ) + fieldname )
+	CFG(0x12)
+		CFG(0x13)
+		CFG(0x14)
+#undef CFG
 #endif
 
 		// END MARKER
-		TD_ENTRY( NULL, DB_TD1, DT_uint8, 0 )
-	};
+		TD_ENTRY(NULL, DB_TD1, DT_0, 0)
 
 #undef TD_ENTRY
 
-	return tdfd;
+	COMPILE_TIME_ASSERT(TitleData1::CoopData_t::mapbits_total >= TitleData1::CoopData_t::mapbits_last_bit_used);
+	//COMPILE_TIME_ASSERT(TitleData1::CoopData_t::tauntbits_total >= TitleData1::CoopData_t::tauntbits_last_bit_used);
+	COMPILE_TIME_ASSERT(TitleData1::GameInstructorData_t::lessonbits_total >= TitleData1::GameInstructorData_t::lessonbits_last_bit_used);
+
+	return s_tdfd.Base();
+}
+
+TitleDataFieldsDescription_t const * CMatchTitle::DescribeTitleDataStorage()
+{
+	static TitleDataFieldsDescription_t const* s_pTDFD = PrepareTitleDataStorageDescription();
+	return s_pTDFD;
 }
 
 TitleAchievementsDescription_t const * CMatchTitle::DescribeTitleAchievements()
 {
 	static TitleAchievementsDescription_t tad[] =
 	{
-//#include "swarm.xhelp.achtitledesc.txt"
+#define CFG( name, compcount, ... ) \
+		{ "ACH." #name, ACHIEVEMENT_##name, compcount },
+//#include "inc_achievements.inc"
+#undef CFG
 		// END MARKER
 		{ NULL, 0 }
 	};
@@ -79,7 +132,9 @@ TitleAvatarAwardsDescription_t const * CMatchTitle::DescribeTitleAvatarAwards()
 {
 	static TitleAvatarAwardsDescription_t taad[] =
 	{
-//#include "swarm.xhelp.avawtitledesc.txt"
+#define CFG( award, ... ) { "AV_" #award, AVATARASSETAWARD_##award, "AV_TD_" #award },
+//#include "inc_asset_awards.inc"
+#undef CFG
 		// END MARKER
 		{ NULL, 0 }
 	};
@@ -88,51 +143,81 @@ TitleAvatarAwardsDescription_t const * CMatchTitle::DescribeTitleAvatarAwards()
 }
 
 // Title leaderboards
-KeyValues * CMatchTitle::DescribeTitleLeaderboard( char const *szLeaderboardView )
+KeyValues* CMatchTitle::DescribeTitleLeaderboard(char const* szLeaderboardView)
 {
-	// Check if this is a survival leaderboard
-	if ( char const *szSurvivalMap = StringAfterPrefix( szLeaderboardView, "survival_" ) )
+	// Check if this is a challenge leaderboard
+	if (char const* szChallenge = StringAfterPrefix(szLeaderboardView, "challenge_besttime_"))
 	{
-		if ( IsX360() )
+		// 		if ( IsX360() )
+		// 		{
+		// 			// Find the corresponding record in the mission script
+		// 			KeyValues *pSettings = new KeyValues( "settings" );
+		// 			KeyValues::AutoDelete autodelete_pSettings( pSettings );
+		// 			pSettings->SetString( "game/mode", "survival" );
+		// 
+		// 			KeyValues *pMissionInfo = NULL;
+		// 			KeyValues *pMapInfo = g_pMatchExtSwarm->GetMapInfoByBspName( pSettings, szSurvivalMap, &pMissionInfo );
+		// 			if ( !pMapInfo || !pMissionInfo )
+		// 				return NULL;
+		// 
+		// 			// Find the leaderboard description in the map info
+		// 			KeyValues *pLbDesc = pMapInfo->FindKey( "x360leaderboard" );
+		// 			if ( !pLbDesc )
+		// 				return NULL;
+		// 			
+		// 			// Insert the required keys
+		// 			pLbDesc = pLbDesc->MakeCopy();
+		// 
+		// 			static KeyValues *s_pRatingKey = KeyValues::FromString( ":rating",			// X360 leaderboards are rated
+		// 				" name besttime "														// game name of the rating field is "besttime"
+		// 				" type uint64 "															// type is uint64
+		// 				" rule max"																// rated field must be greater than cached value so that it can be written
+		// 				);
+		// 			pLbDesc->AddSubKey( s_pRatingKey->MakeCopy() );
+		// 			pLbDesc->SetString( "besttime/type", "uint64" );
+		// 
+		// 			return pLbDesc;
+		// 		}
+		// 
+		if (!IsX360())
 		{
-			// Find the corresponding record in the mission script
-			KeyValues *pSettings = new KeyValues( "settings" );
-			KeyValues::AutoDelete autodelete_pSettings( pSettings );
-			pSettings->SetString( "game/mode", "survival" );
-
-			KeyValues *pMissionInfo = NULL;
-			KeyValues *pMapInfo = g_pMatchExtSwarm->GetMapInfoByBspName( pSettings, szSurvivalMap, &pMissionInfo );
-			if ( !pMapInfo || !pMissionInfo )
-				return NULL;
-
-			// Find the leaderboard description in the map info
-			KeyValues *pLbDesc = pMapInfo->FindKey( "x360leaderboard" );
-			if ( !pLbDesc )
-				return NULL;
-			
-			// Insert the required keys
-			pLbDesc = pLbDesc->MakeCopy();
-
-			static KeyValues *s_pRatingKey = KeyValues::FromString( ":rating",			// X360 leaderboards are rated
-				" name besttime "														// game name of the rating field is "besttime"
-				" type uint64 "															// type is uint64
-				" rule max"																// rated field must be greater than cached value so that it can be written
-				);
-			pLbDesc->AddSubKey( s_pRatingKey->MakeCopy() );
-			pLbDesc->SetString( "besttime/type", "uint64" );
-
-			return pLbDesc;
-		}
-
-		if ( IsPC() )
-		{
-			KeyValues *pSettings = KeyValues::FromString( "SteamLeaderboard",
+			KeyValues* pSettings = KeyValues::FromString("SteamLeaderboard",
 				" :score besttime "														// :score is the leaderboard value mapped to game name "besttime"
-				);
+			);
 
-			pSettings->SetInt( ":sort", k_ELeaderboardSortMethodDescending );			// Sort order when fetching and displaying leaderboard data
-			pSettings->SetInt( ":format", k_ELeaderboardDisplayTypeTimeMilliSeconds );	// Note: this is actually 1/100th seconds type, Steam change pending
-			pSettings->SetInt( ":upload", k_ELeaderboardUploadScoreMethodKeepBest );	// Upload method when writing to leaderboard
+			pSettings->SetInt(":sort", k_ELeaderboardSortMethodAscending);			// Sort order when fetching and displaying leaderboard data
+			pSettings->SetInt(":format", k_ELeaderboardDisplayTypeTimeMilliSeconds);	// Note: this is actually 1/100th seconds type, Steam change pending
+			pSettings->SetInt(":upload", k_ELeaderboardUploadScoreMethodKeepBest);	// Upload method when writing to leaderboard
+
+			return pSettings;
+		}
+	}
+	if (char const* szChallenge = StringAfterPrefix(szLeaderboardView, "challenge_distance_"))
+	{
+		if (!IsX360())
+		{
+			KeyValues* pSettings = KeyValues::FromString("SteamLeaderboard",
+				" :score distance "														// :score is the leaderboard value mapped to game name "distance"
+			);
+
+			pSettings->SetInt(":sort", k_ELeaderboardSortMethodAscending);			// Sort order when fetching and displaying leaderboard data
+			pSettings->SetInt(":format", k_ELeaderboardDisplayTypeNumeric);			// Note: this is actually 1/100th seconds type, Steam change pending
+			pSettings->SetInt(":upload", k_ELeaderboardUploadScoreMethodKeepBest);	// Upload method when writing to leaderboard
+
+			return pSettings;
+		}
+	}
+	if (char const* szChallenge = StringAfterPrefix(szLeaderboardView, "challenge_portals_"))
+	{
+		if (!IsX360())
+		{
+			KeyValues* pSettings = KeyValues::FromString("SteamLeaderboard",
+				" :score portals "														// :score is the leaderboard value mapped to game name "portals"
+			);
+
+			pSettings->SetInt(":sort", k_ELeaderboardSortMethodAscending);			// Sort order when fetching and displaying leaderboard data
+			pSettings->SetInt(":format", k_ELeaderboardDisplayTypeNumeric);			// Note: this is actually 1/100th seconds type, Steam change pending
+			pSettings->SetInt(":upload", k_ELeaderboardUploadScoreMethodKeepBest);	// Upload method when writing to leaderboard
 
 			return pSettings;
 		}
@@ -140,4 +225,3 @@ KeyValues * CMatchTitle::DescribeTitleLeaderboard( char const *szLeaderboardView
 
 	return NULL;
 }
-

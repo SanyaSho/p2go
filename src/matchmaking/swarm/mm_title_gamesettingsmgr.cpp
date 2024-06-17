@@ -8,6 +8,7 @@
 #include "mm_title_richpresence.h"
 //#include "swarm.spa.h"
 #include "matchext_swarm.h"
+#include <csgo_limits.inl>
 
 #include "vstdlib/random.h"
 #include "checksum_crc.h"
@@ -17,7 +18,6 @@
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
-#include <csgo_limits.inl>
 
 
 ConVar mm_matchmaking_version( "mm_matchmaking_version", "9" );
