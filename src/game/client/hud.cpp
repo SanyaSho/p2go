@@ -888,24 +888,47 @@ bool CHud::IsHidden(int iHudFlags)
 	if (!m_bEngineIsInGame)
 		return true;
 
+#if defined( CSTRIKE15_REAL )
+	// Grab the local or observed player
+	C_BasePlayer* pPlayer = GetHudPlayer();
+
+	// Grab the local player
+	C_CSPlayer* localPlayer = C_CSPlayer::GetLocalCSPlayer();
+#else
 	// No local player yet?
-	C_BasePlayer* pPlayer = C_BasePlayer::GetLocalPlayer(m_nSplitScreenSlot);
+	C_BasePlayer* pPlayer = C_BasePlayer::GetLocalPlayer();
+	if (!pPlayer)
+		return true;
+#endif
+
 	if (!pPlayer)
 		return true;
 
-	// Get current hidden flags
 	int iHideHud = pPlayer->m_Local.m_iHideHUD;
-	if (hidehud.GetInt())
+	ConVarRef hidehudref("hidehud");
+	if (hidehudref.GetInt())
 	{
-		iHideHud = hidehud.GetInt();
+		iHideHud = hidehudref.GetInt();
 	}
-
-	// Hide all hud elements if we're blurring the background, since they don't blur properly
-	if (GetClientMode()->GetBlurFade())
-		return true;
 
 	// Everything hidden?
 	if (iHideHud & HIDEHUD_ALL)
+		return true;
+
+#if defined( CSTRIKE15_REAL )
+	// hide health if not chasing a target
+	if (localPlayer->GetObserverMode() == OBS_MODE_ROAMING ||
+		localPlayer->GetObserverMode() == OBS_MODE_FIXED ||
+		localPlayer->GetObserverMode() == OBS_MODE_FREEZECAM ||
+		localPlayer->GetObserverMode() == OBS_MODE_DEATHCAM)
+	{
+		if ((iHudFlags & HIDEHUD_HEALTH) || (iHudFlags & HIDEHUD_WEAPONSELECTION))
+			return true;
+	}
+#endif
+
+	// Hide all hud elements if we're blurring the background, since they don't blur properly
+	if (GetClientMode()->GetBlurFade())
 		return true;
 
 	// Don't show hud elements when we're at the mainmenu with a background map running
@@ -919,6 +942,20 @@ bool CHud::IsHidden(int iHudFlags)
 	// Need the HEV suit ( HL2 )
 	if ((iHudFlags & HIDEHUD_NEEDSUIT) && (!pPlayer->IsSuitEquipped()))
 		return true;
+
+#if defined( CSTRIKE15_REAL )
+	if (CSGameRules() && CSGameRules()->IsPlayingTraining())
+	{
+		C_CSPlayer* pCSPlayer = static_cast<C_CSPlayer*>(pPlayer);
+		// hide the mini scoreboard?
+		if ((iHudFlags & HIDEHUD_MINISCOREBOARD) && (pCSPlayer && pCSPlayer->IsMiniScoreHidden()))
+			return true;
+
+		// hide the radar?
+		if ((iHudFlags & HIDEHUD_RADAR) && (pCSPlayer && pCSPlayer->IsRadarHidden()))
+			return true;
+	}
+#endif
 
 	return ((iHudFlags & iHideHud) != 0);
 }
