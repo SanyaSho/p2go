@@ -858,12 +858,11 @@ void CGameUI::StartProgressBar()
 //-----------------------------------------------------------------------------
 bool CGameUI::ContinueProgressBar(float progressFraction, bool showDialog)
 {
-#if defined( INCLUDE_SCALEFORM )
-	CLoadingScreenScaleform::Activate();
-	return CLoadingScreenScaleform::SetProgressPoint(progressFraction, showDialog);
-#else
-	return false;
-#endif
+	if (!g_hLoadingDialog.Get())
+		return false;
+
+	g_hLoadingDialog->Activate();
+	return g_hLoadingDialog->SetProgressPoint(progressFraction);
 }
 
 //-----------------------------------------------------------------------------
@@ -893,15 +892,16 @@ void CGameUI::StopProgressBar(bool bError, const char *failureReason, const char
 //-----------------------------------------------------------------------------
 bool CGameUI::SetProgressBarStatusText(const char* statusText, bool showDialog)
 {
+	if (!g_hLoadingDialog.Get())
+		return false;
+
 	if (!statusText)
 		return false;
 
 	if (!stricmp(statusText, m_szPreviousStatusText))
 		return false;
 
-#if defined( INCLUDE_SCALEFORM )
-	CLoadingScreenScaleform::SetStatusText(statusText, showDialog);
-#endif
+	g_hLoadingDialog->SetStatusText(statusText);
 	Q_strncpy(m_szPreviousStatusText, statusText, sizeof(m_szPreviousStatusText));
 	return true;
 }
@@ -1075,7 +1075,7 @@ bool CGameUI::LoadingProgressWantsIsolatedRender( bool bContextValid )
 
 bool CGameUI::IsPlayingFullScreenVideo()
 {
-	return false;// VGui_IsPlayingFullScreenVideo();
+	return VGui_IsPlayingFullScreenVideo();
 }
 
 bool CGameUI::IsTransitionEffectEnabled()
@@ -1142,7 +1142,7 @@ void CGameUI::RestoreTopLevelMenu()
 bool CGameUI::UpdateProgressBar(float progress, const char* statusText, bool showDialog)
 {
 	// if either the progress bar or the status text changes, redraw the screen
-	bool bRedraw = false;
+	/*bool bRedraw = false;
 
 	if (ContinueProgressBar(progress, showDialog))
 	{
@@ -1154,7 +1154,8 @@ bool CGameUI::UpdateProgressBar(float progress, const char* statusText, bool sho
 		bRedraw = true;
 	}
 
-	return bRedraw;
+	return bRedraw;*/
+	return GetUiBaseModPanelClass().UpdateProgressBar(progress, statusText);
 }
 
 //-----------------------------------------------------------------------------

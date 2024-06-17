@@ -19,7 +19,7 @@ DECLARE_HUDELEMENT( CHudSubtitles );
 
 CHudSubtitles::CHudSubtitles( const char *pElementName ) :
 	CHudElement( pElementName ),
-	BaseClass( NULL, "HudSubtitles" )
+	BaseClass( NULL, "HudCloseCaption" )
 {
 	vgui::Panel *pParent = GetClientMode()->GetViewport();
 	SetParent( pParent );
