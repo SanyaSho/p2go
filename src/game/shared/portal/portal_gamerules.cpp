@@ -424,7 +424,7 @@ void UpgradePlayerPotatogun( void )
 	}
 }
 
-int GetMapIndexInPlayOrder( bool )
+int GetMapIndexInPlayOrder( void )
 {
 	// Stub
 	return -2; // Not a workshop map
